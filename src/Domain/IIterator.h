@@ -80,7 +80,7 @@ namespace Domain
 
         const T* operator ->() const
         {
-            return >get();
+            return &get();
         }
 
         protected:
