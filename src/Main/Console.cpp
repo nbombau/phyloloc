@@ -7,9 +7,9 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-#include "../Phylopp/Domain/ListIterator.h"
-#include "../Phylopp/Domain/INode.h"
-#include "../Phylopp/Domain/ITree.h"
+#include "../Domain/ListIterator.h"
+#include "../Domain/INode.h"
+#include "../Domain/ITree.h"
 #include "../Phylopp/Traversal/INodeVisitor.h"
 #include "../Phylopp/Traversal/Traverser.h"
 

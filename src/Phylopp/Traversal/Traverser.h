@@ -58,7 +58,7 @@ namespace Traversal
         void traverseDown(T* t, V* v)
         {
             //A queue shall be used to avoid recursion
-            std::queue<T*, list<T*>> queue;
+            std::queue<T*, list<T*> > queue;
 
             //Push the root        
             queue.push(t);
