@@ -14,9 +14,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
-    //scale(qreal(0.8), qreal(0.8));
-    setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
+    resize(parentWidget()->width(),parentWidget()->height());
 }
 
 void GraphWidget::wheelEvent(QWheelEvent *event)
@@ -44,7 +43,7 @@ void GraphWidget::draw()
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     //Uncomment to set the fixed size for the cambas.
-    scene->setSceneRect(-200, -200, 500, 500);
+    scene->setSceneRect(-50, -50, 180, 180);
     //scale(qreal(0.005), qreal(0.005));
     //scene->setSceneRect(-200, -200, 1000, 1000);
     //TODO test with a big cambas!!!
@@ -70,7 +69,6 @@ void GraphWidget::draw()
     node8->setPos(0, 50);
     node9->setPos(50, 50);
 
-
     scene->addItem(node1);
     scene->addItem(node2);
     scene->addItem(node3);
@@ -94,4 +92,33 @@ void GraphWidget::draw()
     scene->addItem(new Edge(node9, node8));
 
     setScene(scene);
+    reScaleScene();
+}
+
+void GraphWidget::resizeEvent ( QResizeEvent * event )
+{
+    resize(parentWidget()->width(),parentWidget()->height());
+    //reScaleScene();
+}
+
+void GraphWidget::reScaleScene()
+{
+    if(this->scene()->width()>this->scene()->height())
+    {
+        if(this->scene()->width()>this->parentWidget()->width()){
+            printf("1\n");
+            scale(qreal(this->scene()->width()/this->parentWidget()->width()),qreal(this->scene()->width()/this->parentWidget()->width()));
+        }else{
+            printf("2\n");
+            scale(qreal(this->parentWidget()->width()/this->scene()->width()),qreal(this->parentWidget()->width()/this->scene()->width()));
+        }
+    } else {
+        if(this->scene()->height()>this->parentWidget()->height()){
+            printf("3\n");
+            scale(qreal(this->scene()->height()/this->parentWidget()->height()),qreal(this->scene()->height()/this->parentWidget()->height()));
+        } else {
+            printf("4\n");
+            scale(qreal(this->parentWidget()->height()/this->scene()->height()),qreal(this->parentWidget()->height()/this->scene()->height()));
+        }
+    }
 }

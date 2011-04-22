@@ -19,10 +19,12 @@ protected:
     void wheelEvent(QWheelEvent *event);
     void drawBackground(QPainter *painter, const QRectF &rect);
     void scaleView(qreal scaleFactor);
+    void resizeEvent ( QResizeEvent * event );
 
 private:
     int timerId;
     Node *centerNode;
+    void reScaleScene();
 };
 
 #endif
