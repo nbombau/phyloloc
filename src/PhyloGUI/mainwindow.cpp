@@ -35,9 +35,9 @@ void MainWindow::on_actionOpen_triggered()
         foreach(path, filePaths)
         {
             dir=QFileInfo(path);
-            ui->listWidget->addItem(dir.fileName());
-            printf(dir.absoluteFilePath().toAscii().data());
-            printf("\n");
+            QListWidgetItem *newItem = new QListWidgetItem;
+            newItem->setText(dir.fileName());
+            ui->listWidget->addItem(newItem);
         }
     }
 }
@@ -52,4 +52,12 @@ void MainWindow::on_actionOptions_triggered()
     OptionsDialog od;
     od.show();
     od.exec();
+}
+
+void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
+{
+    //get item select in list
+    printf(item->text().toAscii().data());
+
+    //TODO look for tree and redraw
 }
