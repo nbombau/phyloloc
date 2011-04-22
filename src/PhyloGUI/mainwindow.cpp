@@ -44,7 +44,6 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionSave_As_triggered()
 {
-
 }
 
 void MainWindow::on_actionOptions_triggered()
