@@ -5,7 +5,6 @@
 
 class Node;
 
-//! [0]
 class GraphWidget : public QGraphicsView
 {
     Q_OBJECT
@@ -25,6 +24,5 @@ private:
     int timerId;
     Node *centerNode;
 };
-//! [0]
 
 #endif

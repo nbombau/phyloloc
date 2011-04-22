@@ -2,7 +2,6 @@
 #include "edge.h"
 #include "node.h"
 #include <QSizePolicy>
-
 #include <QtGui>
 
 #include <math.h>
@@ -11,13 +10,12 @@ GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
     //Properties
-    setResizeAnchor(QGraphicsView::AnchorViewCenter);
-    setMinimumSize(461, 271);
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(FullViewportUpdate);
+    setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
-    scale(qreal(0.8), qreal(0.8));
+    //scale(qreal(0.8), qreal(0.8));
+    setMinimumSize(400, 400);
     setDragMode(QGraphicsView::ScrollHandDrag);
 }
 
@@ -41,16 +39,16 @@ void GraphWidget::scaleView(qreal scaleFactor)
     scale(scaleFactor, scaleFactor);
 }
 
-void GraphWidget::draw(){
-    QGraphicsScene *scene = new QGraphicsScene();
-    //this->setSizePolicy( QSizePolicy( QSizePolicy::Ignored, QSizePolicy::Ignored ));
+void GraphWidget::draw()
+{
+    QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     //Uncomment to set the fixed size for the cambas.
-    //scene->setSceneRect(-200, -200, 561, 340);
-
-    scene->setSceneRect(-200, -200, 1000, 1000);
+    scene->setSceneRect(-200, -200, 500, 500);
+    //scale(qreal(0.005), qreal(0.005));
+    //scene->setSceneRect(-200, -200, 1000, 1000);
     //TODO test with a big cambas!!!
-    scene->setSceneRect(-200, -200, 5000, 5000);
+    //scene->setSceneRect(-200, -200, 5000, 5000);
 
     Node *node1 = new Node(this);
     Node *node2 = new Node(this);
@@ -94,5 +92,6 @@ void GraphWidget::draw(){
     scene->addItem(new Edge(node7, node4));
     scene->addItem(new Edge(node8, node7));
     scene->addItem(new Edge(node9, node8));
+
     setScene(scene);
 }
