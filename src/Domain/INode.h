@@ -33,7 +33,7 @@ namespace Domain
         * Description: Informs whether the node is the root of a tree.
         * @return true if the node is root, false otherwise
         */
-        virtual bool isRoot() const = 0;
+        virtual const bool isRoot() const = 0;
 
         /**
         * Method: isLeaf
@@ -41,7 +41,7 @@ namespace Domain
         * Description: Informs whether the node is a Leaf
         * @return true if the node is leaf
         */
-        virtual bool isLeaf() const = 0;
+        virtual const bool isLeaf() const = 0;
 
         /**
         * Method: getParent
@@ -59,7 +59,7 @@ namespace Domain
         * client to iterate through the node's children.
         * @returns ListIterator to iterate through the node's children
         */
-        virtual ListIterator<T>* getChildrenIterator() = 0;
+        virtual ListIterator<T>* getChildrenIterator() const = 0;
 
         /**
         * Method: addChild
@@ -129,16 +129,16 @@ namespace Domain
     {
         public:
 
-            virtual bool isRoot() const { return parent == NULL; }
+            virtual const bool isRoot() const { return parent == NULL; }
 
-            virtual bool isLeaf() const { return children.empty(); }
+            virtual const bool isLeaf() const { return children.empty(); }
 
             virtual T* getParent() const 
             {
                 return parent->self();
             }
 
-            virtual ListIterator<T>* getChildrenIterator()
+            virtual ListIterator<T>* getChildrenIterator() const
             {
                 return new ListIterator<T>(children);
             }
