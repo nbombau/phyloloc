@@ -33,7 +33,15 @@ namespace Domain
         * Description: Informs whether the node is the root of a tree.
         * @return true if the node is root, false otherwise
         */
-        virtual bool isRoot() = 0;
+        virtual bool isRoot() const = 0;
+
+        /**
+        * Method: isLeaf
+        * ---------------
+        * Description: Informs whether the node is a Leaf
+        * @return true if the node is leaf
+        */
+        virtual bool isLeaf() const = 0;
 
         /**
         * Method: getParent
@@ -42,7 +50,7 @@ namespace Domain
         * @return if the node is not root, the parent of the node; and 
         * null otherwise
         */
-        virtual T* getParent() = 0;
+        virtual T* getParent() const = 0;
 
         /**
         * Method: getChildrenIterator
@@ -68,14 +76,46 @@ namespace Domain
         * Description: Gets the name associated to the node
         * @return the node's name
         */
-		virtual string getName() = 0;
+		virtual string getName() const = 0;
+
+        /**
+        * Method: getLocation
+        * ---------------
+        * Description: Gets the location associated to the node
+        * @return the node's location
+        */
+        virtual string getLocation() const = 0;
+
+        /**
+        * Method: getBranchLength
+        * ---------------
+        * Description: Gets the branch length associated to the node
+        * @return the node's branch length
+        */
+        virtual float getBranchLength() const = 0;
 
         /**
         * Method: setName
         * ---------------
         * Description: Sets the name associated to the node
         */
-        virtual void setName(const string& n) = 0;           
+        virtual void setName(const string& n) = 0;
+
+        /**
+        * Method: setLocation
+        * ---------------
+        * Description: Sets the name associated to the node
+        */
+        virtual void setLocation(const string& n) = 0;
+
+        /**
+        * Method: setBranchLength
+        * ---------------
+        * Description: Sets the name associated to the node
+        */
+        virtual void setBranchLength(const float n) = 0;
+
+
 	};
 
     /**
@@ -89,9 +129,11 @@ namespace Domain
     {
         public:
 
-            virtual bool isRoot()  { return parent == NULL; }
+            virtual bool isRoot() const { return parent == NULL; }
 
-            virtual T* getParent() 
+            virtual bool isLeaf() const { return children.empty(); }
+
+            virtual T* getParent() const 
             {
                 return parent->self();
             }
@@ -109,7 +151,7 @@ namespace Domain
                 return child;
             }
 
-            virtual string getName()
+            virtual string getName() const 
             {
                 return name;
             }
@@ -117,6 +159,26 @@ namespace Domain
             virtual void setName(const string& n)
             {
                 name = n;
+            }
+
+            virtual string getLocation() const
+            {
+                return location;
+            }
+
+            virtual void setLocation(const string& n)
+            {
+                location = n;
+            }
+
+            virtual float getBranchLength() const
+            {
+                return branchLength;
+            }
+
+            virtual void setBranchLength(const float n)
+            {
+                branchLength = n;
             }
 
             Node() { }
@@ -127,6 +189,8 @@ namespace Domain
             T* parent;
             list<T*> children;
             string name;
+            string location;
+            float branchLength;
 
             /**
             * Method: self
