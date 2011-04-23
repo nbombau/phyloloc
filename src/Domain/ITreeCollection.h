@@ -44,7 +44,7 @@ namespace Domain
         * trees of the collection.
         * @return trees iterator 
         */
-        ListIterator<ITree<T>> getIterator()
+        ListIterator<ITree<T>>* getIterator()
         {
             return new ListIterator<ITree<T>>(trees);
         }
@@ -54,7 +54,8 @@ namespace Domain
         //Destructor
         ~ITreeCollection()
         {
-            delete_container(trees);
+			//TODO: Free resources
+            //delete_container(trees);
         }
     };
 }
