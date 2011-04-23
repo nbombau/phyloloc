@@ -41,7 +41,7 @@ namespace Traversal
         * @param t a phylogenetic tree
         * @param v a visitor to be applied on the tree's nodes
         */
-        void traverseDown(Domain::ITree<T>* t, INodeVisitor<T>* v)
+        void traverseDown(Domain::ITree<T>* t, V* v)
         {
             traverseDown(t->getRoot(), v);
         }
