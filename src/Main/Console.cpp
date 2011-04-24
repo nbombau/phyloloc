@@ -32,14 +32,26 @@ public:
     }
 };
 
+void FillTree(ITreeCollection<GuiNode>& col)
+{
+    ITree<GuiNode>* t = col.addTree();
+    GuiNode* n= t->getRoot();
+    n->setName("nodo!");
+
+}
+
 int main()
 {
 
-    ITreeCollection<GuiAspect> col = ITreeCollection<GuiAspect>();
+    ITreeCollection<GuiNode> col = ITreeCollection<GuiNode>();
 
     FillTree(col);
 
-    printf("GUI ASPECT\n");
+    ITree<GuiNode>* tree = col.addTree();
+    GuiNode* n= tree->getRoot();
+    n->setName("nodo!");
+
+     printf("%s\n", n->getName().c_str());
 
     GuiNode n2 = GuiNode();
     GuiNode* c2 = n2.addChild();
@@ -78,9 +90,4 @@ int main()
 }
 
 
-void FillTree(ITreeCollection<GuiNode>& col)
-{
-    ITree<GuiNode>* t = col.addTree();
-    GuiNode* = t->getRoot();
-    
-}
+

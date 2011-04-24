@@ -19,7 +19,8 @@ namespace Domain
     template <class T>
     class ITreeCollection
     {
-        std::list<ITree<T>*> trees;
+
+    public:
 
         /*
         * Method: addTree
@@ -34,8 +35,6 @@ namespace Domain
             return tree;
         }
 
-    public:
-
         /*
         * Method: getIterator
         * -------------------
@@ -45,10 +44,8 @@ namespace Domain
         */
         ListIterator<ITree<T> >* getIterator()
         {
-            return new ListIterator<ITree<T>>(trees);
+            return new ListIterator<ITree<T> >(trees);
         }
-
-    protected:
 
         //Destructor
         ~ITreeCollection()
@@ -56,6 +53,10 @@ namespace Domain
 			//TODO: Free resources
             //delete_container(trees);
         }
+
+    private:
+
+        std::list<ITree<T>*> trees;
     };
 }
 
