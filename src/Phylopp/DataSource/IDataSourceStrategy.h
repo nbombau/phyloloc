@@ -28,7 +28,7 @@ namespace DataSource
         * @param info information to access the datasource
         * @return loaded tree collection
         */
-        virtual ITreeCollection<T>* load(IDataSourceInfo<K>* info) = 0;
+        virtual void load(K& info,ITreeCollection<T>& trees) = 0;
 
         /**
         * Method: load
@@ -37,7 +37,7 @@ namespace DataSource
         * @param trees treeCollection to be saved
         * @param info information to access the datasource
         */
-        virtual void save(ITreeCollection<T>* trees, IDataSourceInfo<K>* info) = 0;
+        virtual void save(ITreeCollection<T>* trees, K& info) = 0;
     };
 }
 
