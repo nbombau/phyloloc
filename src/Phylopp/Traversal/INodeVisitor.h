@@ -22,7 +22,7 @@ namespace Traversal
         * during a traversal.
         * @param t a node
         */
-        virtual void visit(T* t) = 0;
+        virtual void visit(T& t) = 0;
     };
 }
 

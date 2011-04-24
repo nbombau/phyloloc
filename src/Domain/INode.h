@@ -13,9 +13,6 @@
 
 namespace Domain
 {
-
-    using namespace std;
-
     /**
     * Interface: INode
     * ----------------------
@@ -76,7 +73,7 @@ namespace Domain
         * Description: Gets the name associated to the node
         * @return the node's name
         */
-		virtual string getName() const = 0;
+		virtual std::string getName() const = 0;
 
         /**
         * Method: getLocation
@@ -84,7 +81,7 @@ namespace Domain
         * Description: Gets the location associated to the node
         * @return the node's location
         */
-        virtual string getLocation() const = 0;
+        virtual std::string getLocation() const = 0;
 
         /**
         * Method: getBranchLength
@@ -99,14 +96,14 @@ namespace Domain
         * ---------------
         * Description: Sets the name associated to the node
         */
-        virtual void setName(const string& n) = 0;
+        virtual void setName(const std::string& n) = 0;
 
         /**
         * Method: setLocation
         * ---------------
         * Description: Sets the name associated to the node
         */
-        virtual void setLocation(const string& n) = 0;
+        virtual void setLocation(const std::string& n) = 0;
 
         /**
         * Method: setBranchLength
@@ -151,22 +148,22 @@ namespace Domain
                 return child;
             }
 
-            virtual string getName() const 
+            virtual std::string getName() const 
             {
                 return name;
             }
 
-            virtual void setName(const string& n)
+            virtual void setName(const std::string& n)
             {
                 name = n;
             }
 
-            virtual string getLocation() const
+            virtual std::string getLocation() const
             {
                 return location;
             }
 
-            virtual void setLocation(const string& n)
+            virtual void setLocation(const std::string& n)
             {
                 location = n;
             }
@@ -187,9 +184,9 @@ namespace Domain
         protected:
 
             T* parent;
-            list<T*> children;
-            string name;
-            string location;
+            std::list<T*> children;
+            std::string name;
+            std::string location;
             float branchLength;
 
             /**
@@ -207,21 +204,13 @@ namespace Domain
     };
 
     /**
-    * Class: PlacesNode
+    * Class: BaseAspect
     * -----------------
-    * Description: Base underlying node class for the Node template
+    * Description: Base underlying node aspect for the Node template
     */
-    class PlacesNode : public Node<PlacesNode>
+    class BaseAspect
     {
-    public:
-        PlacesNode()
-        {}
-    protected:
-        ~PlacesNode()
-        {
-            //TODO: Free resources
-            //delete_container(children);
-        }
+
     };
 }
 

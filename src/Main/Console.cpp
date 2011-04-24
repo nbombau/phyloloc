@@ -8,6 +8,7 @@
 #include <fstream>
 #include <list>
 #include "../Domain/ListIterator.h"
+#include "../PhyloGUI/GuiAspect.h"
 #include "../Domain/INode.h"
 #include "../Domain/ITree.h"
 #include "../Phylopp/Traversal/INodeVisitor.h"
@@ -16,51 +17,55 @@
 using namespace std;
 using namespace Domain;
 using namespace Traversal;
+using namespace PhyloGui;
 
-class PrintfVisitor : public INodeVisitor<PlacesNode>
+
+typedef GuiAspect<BaseAspect> GuiNode;
+
+class PrintfVisitor : public INodeVisitor<GuiNode>
 {
 public:
-    void visit(PlacesNode* n)
+    void visit(GuiNode& n)
     {
-        printf("%s\n", n->getName().c_str());
+        printf("%s\n", n.getName().c_str());
     }
 };
 
 int main()
 {
-    list<int> enteros;
-    enteros.push_back(1);
-    enteros.push_back(4);
-    enteros.push_back(5);
 
-    PlacesNode* n = new PlacesNode();
-    PlacesNode* c = n->addChild();
-    c->setName("a2"); 
-    c = n->addChild();
-    c->setName("a3"); 
-    c = n->addChild();
-    c->setName("a4"); 
-    c = n->addChild();
-    c->setName("a5"); 
-    c = n->addChild();
-    c->setName("a6"); 
+    printf("GUI ASPECT\n");
+
+    GuiNode n2 = GuiNode();
+    GuiNode* c2 = n2.addChild();
+    c2->setName("a2"); 
+    c2 = n2.addChild();
+    c2->setName("a3"); 
+    c2 = n2.addChild();
+    c2->setName("a4"); 
+    c2 = n2.addChild();
+    c2->setName("a5"); 
+    c2 = n2.addChild();
+    c2->setName("a6"); 
 
     printf("ITERATOR\n");
 
-    ListIterator<PlacesNode>* iter = n->getChildrenIterator();
+    ListIterator<GuiNode>* iter2 = n2.getChildrenIterator();
     int i = 2;
-    while(!iter->end())
+    while(!iter2->end())
     {
-        printf("nodo: %d \n", i);
-        iter->next();
+        printf("nodoGui: %d \n", i);
+        iter2->next();
         i++;
     }
 
+    delete iter2;
+
     printf("TRAVERSER\n");
 
-    Traverser<PlacesNode, PrintfVisitor>* t = new Traverser<PlacesNode, PrintfVisitor>();
-    PrintfVisitor* v = new PrintfVisitor();
-    t->traverseDown(n, v);
+    Traverser<GuiNode, PrintfVisitor> t = Traverser<GuiNode, PrintfVisitor>();
+    PrintfVisitor v = PrintfVisitor();
+    t.traverseDown(n2, v);
 
     printf("Hello World");
     getchar();

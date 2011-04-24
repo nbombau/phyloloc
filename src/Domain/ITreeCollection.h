@@ -9,7 +9,6 @@
 
 namespace Domain
 {
-    using namespace std;
 
     /**
     * Class: ITreeCollection
