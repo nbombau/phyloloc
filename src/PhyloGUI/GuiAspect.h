@@ -15,32 +15,32 @@ namespace PhyloGui
 
         ~GuiAspect() {}
 
-        virtual bool isSelected() const
+        bool isSelected() const
         {
             return selected;
         }
 
-        virtual bool isExpanded() const
+        bool isExpanded() const
         {
             return expanded;
         }
 
-        virtual std::string getColor() const
+        std::string getColor() const
         {
             return color;
         }
 
-        virtual void setSelected(const bool s)
+        void setSelected(const bool s)
         {
             selected = s;
         }
 
-        virtual void setExpanded(const bool e)
+        void setExpanded(const bool e)
         {
             expanded = e;
         }
 
-        virtual void getColor(const std::string c)
+        void getColor(const std::string c)
         {
             color = c;
         }

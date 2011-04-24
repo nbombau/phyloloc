@@ -30,7 +30,7 @@ namespace Domain
         * Description: Informs whether the node is the root of a tree.
         * @return true if the node is root, false otherwise
         */
-        virtual const bool isRoot() const = 0;
+        virtual bool isRoot() const = 0;
 
         /**
         * Method: isLeaf
@@ -38,7 +38,7 @@ namespace Domain
         * Description: Informs whether the node is a Leaf
         * @return true if the node is leaf
         */
-        virtual const bool isLeaf() const = 0;
+        virtual bool isLeaf() const = 0;
 
         /**
         * Method: getParent
@@ -126,21 +126,21 @@ namespace Domain
     {
         public:
 
-            virtual const bool isRoot() const { return parent == NULL; }
+            bool isRoot() const { return parent == NULL; }
 
-            virtual const bool isLeaf() const { return children.empty(); }
+            bool isLeaf() const { return children.empty(); }
 
-            virtual T* getParent() const 
+            T* getParent() const 
             {
                 return parent->self();
             }
 
-            virtual ListIterator<T>* getChildrenIterator() const
+            ListIterator<T>* getChildrenIterator() const
             {
                 return new ListIterator<T>(children);
             }
 
-            virtual T* addChild()
+            T* addChild()
             {
                 T* child = new T();
                 static_cast<Node<T>*>(child)->parent = self();
@@ -148,32 +148,32 @@ namespace Domain
                 return child;
             }
 
-            virtual std::string getName() const 
+            std::string getName() const 
             {
                 return name;
             }
 
-            virtual void setName(const std::string& n)
+            void setName(const std::string& n)
             {
                 name = n;
             }
 
-            virtual std::string getLocation() const
+            std::string getLocation() const
             {
                 return location;
             }
 
-            virtual void setLocation(const std::string& n)
+            void setLocation(const std::string& n)
             {
                 location = n;
             }
 
-            virtual float getBranchLength() const
+            float getBranchLength() const
             {
                 return branchLength;
             }
 
-            virtual void setBranchLength(const float n)
+            void setBranchLength(const float n)
             {
                 branchLength = n;
             }
