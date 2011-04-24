@@ -10,6 +10,7 @@
 #include "../Domain/ListIterator.h"
 #include "../PhyloGUI/GuiAspect.h"
 #include "../Domain/INode.h"
+#include "../Domain/ITreeCollection.h"
 #include "../Domain/ITree.h"
 #include "../Phylopp/Traversal/INodeVisitor.h"
 #include "../Phylopp/Traversal/Traverser.h"
@@ -33,6 +34,10 @@ public:
 
 int main()
 {
+
+    ITreeCollection<GuiAspect> col = ITreeCollection<GuiAspect>();
+
+    FillTree(col);
 
     printf("GUI ASPECT\n");
 
@@ -70,4 +75,12 @@ int main()
     printf("Hello World");
     getchar();
     return 0;
+}
+
+
+void FillTree(ITreeCollection<GuiNode>& col)
+{
+    ITree<GuiNode>* t = col.addTree();
+    GuiNode* = t->getRoot();
+    
 }

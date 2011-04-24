@@ -19,7 +19,7 @@ namespace Domain
     template <class T>
     class ITreeCollection
     {
-        list<ITree<T>*> trees;
+        std::list<ITree<T>*> trees;
 
         /*
         * Method: addTree
@@ -29,7 +29,7 @@ namespace Domain
         */
         virtual ITree<T>* addTree()
         {
-            ITree<T>* const tree = new ITree<T>;
+            ITree<T>* const tree = new ITree<T>();
             trees.push_back(tree);
             return tree;
         }
@@ -43,7 +43,7 @@ namespace Domain
         * trees of the collection.
         * @return trees iterator 
         */
-        ListIterator<ITree<T>>* getIterator()
+        ListIterator<ITree<T> >* getIterator()
         {
             return new ListIterator<ITree<T>>(trees);
         }
