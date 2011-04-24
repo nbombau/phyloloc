@@ -7,7 +7,6 @@
 
 namespace Domain
 {
-    using namespace std;
 
     /**
     * Interface: ListIterator
@@ -46,13 +45,9 @@ namespace Domain
 
         virtual const T& get() const { return **it; }
 
-        //TODO: revisar si es correcto que haya uno no const 
-        //tambien revisar el tema de punteros, y la doble dereferencia
         virtual T& get() { return **it; }
 
-        virtual size_t count() { return iterableList.size(); }       
-
-    protected:
+        virtual size_t count() { return iterableList.size(); }
 
         ~ListIterator() { }
 
