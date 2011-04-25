@@ -37,13 +37,6 @@ namespace Domain
         virtual void next() = 0;
 
         /**
-        * Method: endOfUse
-        * ----------------
-        * Description: Disposes the resources used by the iterator
-        */
-        virtual void endOfUse() = 0;
-
-        /**
         * Method: get
         * -----------
         * Description: Gets the current item

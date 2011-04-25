@@ -11,6 +11,10 @@
 
 #include "ListIterator.h"
 
+typedef float BranchLength;
+typedef std::string Location;
+typedef std::string NodeName;
+
 namespace Domain
 {
 
@@ -52,7 +56,7 @@ namespace Domain
             */
             T* getParent() const 
             {
-                return parent->self();
+                return parent;
             }
 
 
@@ -78,7 +82,7 @@ namespace Domain
             T* addChild()
             {
                 T* child = new T();
-                static_cast<Node<T>*>(child)->parent = self();
+                child->parent = this;
                 children.push_back(child);
                 return child;
             }
@@ -89,7 +93,7 @@ namespace Domain
             * Description: Gets the name associated to the node
             * @return the node's name
             */
-            std::string getName() const 
+            NodeName getName() const 
             {
                 return name;
             }
@@ -99,7 +103,7 @@ namespace Domain
             * ---------------
             * Description: Sets the name associated to the node
             */
-            void setName(const std::string& n)
+            void setName(const NodeName& n)
             {
                 name = n;
             }
@@ -110,7 +114,7 @@ namespace Domain
             * Description: Gets the location associated to the node
             * @return the node's location
             */
-            std::string getLocation() const
+            Location getLocation() const
             {
                 return location;
             }
@@ -120,7 +124,7 @@ namespace Domain
             * ---------------
             * Description: Sets the name associated to the node
             */
-            void setLocation(const std::string& n)
+            void setLocation(const Location& n)
             {
                 location = n;
             }
@@ -131,7 +135,7 @@ namespace Domain
             * Description: Gets the branch length associated to the node
             * @return the node's branch length
             */
-            float getBranchLength() const
+            BranchLength getBranchLength() const
             {
                 return branchLength;
             }
@@ -141,7 +145,7 @@ namespace Domain
             * ---------------
             * Description: Sets the name associated to the node
             */
-            void setBranchLength(const float n)
+            void setBranchLength(const BranchLength n)
             {
                 branchLength = n;
             }
@@ -151,24 +155,16 @@ namespace Domain
 
         protected:
 
-            T* parent;
+            Node<T>* parent;
             std::list<T*> children;
-            std::string name;
-            std::string location;
-            float branchLength;
+            NodeName name;
+            Location location;
+            BranchLength branchLength;
 
-            /**
-            * Method: self
-            * ------------
-            * Description: Obtain the underlying node implementation (CRTP)
-            */
-            T* self() { return static_cast<T*>(this); }
-            const T* self() const { return static_cast<const T*>(this); }
-
-           // ~Node()
-           // {
+            ~Node()
+            {
                 //TODO: free resources
-           // }
+            }
     };
 
     /**
