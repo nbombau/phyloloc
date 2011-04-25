@@ -1,9 +1,8 @@
-OBJS_COMMON = main.o Parser/newick_file.cc Parser/newick.cc Parser/tree.cc
+OBJS_COMMON = main.o Parser/newick.o Parser/tree.o
 OBJS_TEST1  = $(OBJS_COMMON)
 
 CC = g++
-FLAGS = -g 
-#-Winit-self -Wswitch-enum -Wextra -Wfloat-equal -Wundef -Wno-invalid-offsetof -pthread -I/usr/local/include -g -O2 -g -O2
+FLAGS = -Winit-self -Wswitch-enum -Wextra -Wfloat-equal -Wundef -Wno-invalid-offsetof -pthread -I/usr/local/include -g -O2 -g -O2
 
 test1 : $(OBJS_TEST1)
 	$(CC) $(FLAGS) -o test1  $(OBJS_TEST1)

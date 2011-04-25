@@ -23,8 +23,7 @@ int main(void)
 {
     IDataSourceStrategy<GuiNode,FilesInfo> *fileDataSource = new FileDataSource<GuiNode>();
     
-    FilesInfo info = FilesInfo();
-    info.setTreesFilePath("tmp.nwk");
+    FilesInfo info = FilesInfo("tmp.nwk","");
     
     ITreeCollection<GuiNode> treeCollection = ITreeCollection<GuiNode>();
     fileDataSource->load(info,treeCollection);

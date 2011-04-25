@@ -42,6 +42,7 @@ namespace Domain
         * trees of the collection.
         * @return trees iterator 
         */
+
         ListIterator<ITree<T> >* getIterator()
         {
             return new ListIterator<ITree<T> >(trees);

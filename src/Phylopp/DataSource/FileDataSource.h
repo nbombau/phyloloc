@@ -3,22 +3,23 @@
 
 #include "IDataSourceStrategy.h"
 #include "FilesInfo.h"
-#include "Parser/newick_file.hh"
+#include "../../Domain/ITreeCollection.h"
+#include "Parser/newick_file.h"
 
 namespace DataSource
 {
-    using namespace Parser;
-    
+
     template <class T>        
     class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
     {
     public:
-        void load(FilesInfo& info,ITreeCollection<T>& trees)
+        void load(FilesInfo& info,Domain::ITreeCollection<T>& trees)
         { 
-            parse_newick_file(info.getTreesFilePath().c_str(),trees.addTree());
+            BiRC::treelib::NewickParser<T> newick = BiRC::treelib::NewickParser<T>();
+            newick.parse_newick_file(info.getTreesFilePath().c_str(),((Domain::ITree<T>*)trees.addTree()));
         }
         
-        void save(ITreeCollection<T>* trees, FilesInfo& info)
+        void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
         {
             
         }
