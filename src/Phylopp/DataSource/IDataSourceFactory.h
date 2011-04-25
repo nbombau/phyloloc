@@ -27,13 +27,6 @@ namespace DataSource
         */
         virtual IDataSourceStrategy<T,K>* createDataSource() = 0;
 
-        /**
-        * Method: createDataSourceInfo
-        * ----------------------------
-        * Description: Creates a dataSourceInfo instance
-        * @return datasourceInfo object
-        */
-        virtual IDataSourceInfo<K>* createDataSourceInfo(K* info) = 0;
     };
 }
 

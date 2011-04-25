@@ -26,22 +26,12 @@ namespace Domain
 		    iterableList = l;
             it = iterableList.begin();
 	    }
-    
-        /*
-        * Method: restart
-        * ---------------
-        * Description: Restarts the iterator
-        */
-        virtual void restart()
-        {
-            it = iterableList.begin();
-        }
+
+        virtual void restart() { it = iterableList.begin(); }
 
         virtual bool end() const { return it == iterableList.end(); }
 
         virtual void next() { ++it; }
-
-        virtual void endOfUse() { delete this; }
 
         virtual const T& get() const { return **it; }
 

@@ -35,35 +35,32 @@ public:
 void FillTree(ITreeCollection<GuiNode>& col)
 {
     ITree<GuiNode>* t = col.addTree();
-    GuiNode* n= t->getRoot();
-    n->setName("nodo!");
-
+    t->getRoot()->setName("nodo!");
 }
 
 int main()
 {
 
-    ITreeCollection<GuiNode> col = ITreeCollection<GuiNode>();
+    ITreeCollection<GuiNode> col;
 
     FillTree(col);
 
-    ITree<GuiNode>* tree = col.addTree();
-    GuiNode* n= tree->getRoot();
-    n->setName("nodo!");
+    ListIterator<ITree<GuiNode> >* it = col.getIterator();
+    ITree<GuiNode> t2 = it->get();
 
-     printf("%s\n", n->getName().c_str());
+    printf("%s\n", t2.getRoot()->getName().c_str());
 
-    GuiNode n2 = GuiNode();
+    GuiNode n2;
     GuiNode* c2 = n2.addChild();
-    c2->setName("a2"); 
+    c2->setName("a2");
     c2 = n2.addChild();
-    c2->setName("a3"); 
+    c2->setName("a3");
     c2 = n2.addChild();
-    c2->setName("a4"); 
+    c2->setName("a4");
     c2 = n2.addChild();
-    c2->setName("a5"); 
+    c2->setName("a5");
     c2 = n2.addChild();
-    c2->setName("a6"); 
+    c2->setName("a6");
 
     printf("ITERATOR\n");
 
