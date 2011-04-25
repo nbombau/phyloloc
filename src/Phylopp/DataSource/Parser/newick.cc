@@ -1,6 +1,6 @@
 #include "newick.hh"
 #include "tree.hh"
-using namespace BiRC::treelib;
+using namespace Parser;
 
 #include <boost/spirit/core.hpp>
 #include <stack>
@@ -213,14 +213,14 @@ namespace {
     
 
 std::auto_ptr<Tree>
-BiRC::treelib::parse_newick(const std::string &str)
+Parser::parse_newick(const std::string &str)
 {
     return ::parse(str.begin(), str.end());
 }
 
 
 std::auto_ptr<Tree>
-BiRC::treelib::parse_newick(const char *beg, const char *end)
+Parser::parse_newick(const char *beg, const char *end)
 {
     return ::parse(beg, end);
 }

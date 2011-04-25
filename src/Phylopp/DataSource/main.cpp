@@ -37,6 +37,11 @@ int main(void)
     }
     delete iter;
 
+    info = FilesInfo("tmp2.nwk","");
+    fileDataSource->save(treeCollection,info);
+       
+    delete fileDataSource;
+    
     return 0;
 }
 

@@ -6,7 +6,7 @@
 #include <iosfwd>
 #include <cassert>
 
-namespace BiRC { namespace treelib {
+namespace Parser {
     /**
      * \brief Data structure for binary trees.
      *
@@ -174,7 +174,7 @@ namespace BiRC { namespace treelib {
 	tree.print(os);
 	return os;
     }
-}}
+}
 
 
 
