@@ -43,6 +43,7 @@ int main(void)
 void printTree(ITree<GuiNode> tree)
 {
     printNode(tree.getRoot());
+    cout << '\n';
 }
 
 void printNode(GuiNode *node)
@@ -59,8 +60,13 @@ void printNode(GuiNode *node)
         while (!iter->end())
         {
             printNode(&iter->get());
-	    cout << ',';            
+	               
             iter->next();
+            
+            if (!iter->end())
+            {
+                cout << ',';
+            }
         }
         delete iter;
         cout << ')';
