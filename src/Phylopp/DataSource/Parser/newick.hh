@@ -5,7 +5,7 @@
 #include <memory>
 
 
-namespace BiRC { namespace treelib {
+namespace Parser {
 
     // forward decl.
     class Tree;
@@ -26,6 +26,6 @@ namespace BiRC { namespace treelib {
      * \returns	A tree corresponding to the string, or 0 in case of errors.
      */
     std::auto_ptr<Tree> parse_newick(const char *beg, const char *end);
-}}
+}
 
 #endif

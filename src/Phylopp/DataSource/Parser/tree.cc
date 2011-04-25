@@ -3,8 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-int
-BiRC::treelib::Tree::add_node(const std::string &node_label, 
+int Parser::Tree::add_node(const std::string &node_label, 
 			      int node_left_child, 
 			      int node_right_child,
 			      double left_length,
@@ -35,8 +34,7 @@ BiRC::treelib::Tree::add_node(const std::string &node_label,
 }
 
 
-void 
-BiRC::treelib::Tree::dfs_print(std::ostream &os, int node) const
+void Parser::Tree::dfs_print(std::ostream &os, int node) const
 {
     assert(node >= 0);
     
@@ -63,8 +61,7 @@ BiRC::treelib::Tree::dfs_print(std::ostream &os, int node) const
 
 }
 
-void
-BiRC::treelib::Tree::print(std::ostream &os) const
+void Parser::Tree::print(std::ostream &os) const
 {
     dfs_print(os, root_);
     os << ';';

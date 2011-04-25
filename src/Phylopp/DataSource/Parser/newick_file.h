@@ -4,23 +4,25 @@
 #include <string>
 #include <memory>
 #include "../../../Domain/ITree.h"
+#include "../../../Domain/ListIterator.h"
 #include "newick.hh"
 #include "tree.hh"
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <iostream>
+#include <fstream>
 #include <fcntl.h>
 
-
-namespace BiRC { namespace treelib{
+namespace Parser{
 
     template <class T> 
     class NewickParser
     {
     public:
         
-        void parse_newick_file(const char *fname,Domain::ITree<T>*phyloTree)
+        void loadNewickFile(const std::string fname,Domain::ITree<T>*phyloTree)
         {	
-            const int filedes = open(fname, 0, 0); // FIXME: not exception safe
+            const int filedes = open(fname.c_str(), 0, 0); // FIXME: not exception safe
             struct stat file_stat;
             fstat(filedes, &file_stat);
             const size_t len = file_stat.st_size;
@@ -34,20 +36,52 @@ namespace BiRC { namespace treelib{
 
             std::auto_ptr<Tree> tree(parse_newick(beg, end));
 
-                convertTree(tree.get(),tree.get()->root(),phyloTree->getRoot());
+            convertTree(tree.get(),tree.get()->root(),phyloTree->getRoot());
                 
             munmap(beg, len);
             close(filedes);
 
         }
+        
+        void saveNewickFile(const std::string fname,Domain::ITree<T>*phyloTree)
+        {
+            std::ofstream os(fname.c_str());
+            saveTree(phyloTree->getRoot(), os);
+            os.close();
+        }
 
-        //std::auto_ptr<Tree>
-        //BiRC::treelib::parse_newick_file(const std::string &fname)
-        //{
-         //   return parse_newick_file(fname.c_str());
-        //}
+    private:
+        
+        void saveTree(T *node,std::ostream& os)
+        {
+                    
+            if (node->isLeaf())
+            {
+                os << node->getName();
+            }
+            else
+            {
+                os << '(';
+                Domain::ListIterator<T>* iter = node->getChildrenIterator();
+                                
+                while (!iter->end())
+                {
+                    saveTree(&iter->get(),os);
+                               
+                    iter->next();
+                    
+                    if (!iter->end())
+                    {
+                        os << ',';
+                    }
+                }
+                delete iter;
+                os << ')';
 
-
+            }
+            os << ':' << node->getBranchLength();
+        }
+        
         void convertTree(Tree *tree,int node, T *phyloNode)
         {
             
@@ -61,20 +95,19 @@ namespace BiRC { namespace treelib{
             {
                     // inner node
                 T*phyloLeft = phyloNode->addChild();
-                        convertTree(tree,left, phyloLeft);
+                convertTree(tree,left, phyloLeft);
                     
                 T*phyloRight = phyloNode->addChild();
                 convertTree(tree,right, phyloRight);
                         
             }
             else
-                        assert(!"Inconsistent tree!");
+                assert(!"Inconsistent tree!");
                 
             phyloNode->setBranchLength(tree->length_to_parent(node));
         }
 
     };
-    
-}}
+}
 
 #endif
