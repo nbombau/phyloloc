@@ -8,8 +8,6 @@
 
 namespace DataSource
 {
-    using namespace Domain;
-
     /**
     * Interface: IDataSourceStrategy
     * ----------------------
@@ -28,7 +26,7 @@ namespace DataSource
         * @param info information to access the datasource
         * @return loaded tree collection
         */
-        virtual void load(K& info,ITreeCollection<T>& trees) = 0;
+        virtual void load(K& info,Domain::ITreeCollection<T>& trees) = 0;
 
         /**
         * Method: load
@@ -37,7 +35,7 @@ namespace DataSource
         * @param trees treeCollection to be saved
         * @param info information to access the datasource
         */
-        virtual void save(ITreeCollection<T>* trees, K& info) = 0;
+        virtual void save(Domain::ITreeCollection<T>& trees, K& info) = 0;
     };
 }
 
