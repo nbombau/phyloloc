@@ -5,8 +5,8 @@
 #include <memory>
 #include "../../../Domain/ITree.h"
 #include "../../../Domain/ListIterator.h"
-#include "newick.hh"
-#include "tree.hh"
+#include "newick.h"
+#include "tree.h"
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <iostream>

@@ -1,4 +1,4 @@
-#include "tree.hh"
+#include "tree.h"
 #include <ostream>
 #include <algorithm>
 #include <cassert>

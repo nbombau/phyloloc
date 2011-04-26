@@ -80,19 +80,19 @@ namespace DataSource
     public:
         void load(FilesInfo& info,Domain::ITreeCollection<T>& trees)
         {
-            Parser::NewickParser<T> newick = Parser::NewickParser<T>();
+            Parser::NewickParser<T> newick;
             newick.loadNewickFile(info.getTreesFilePath(),trees.addTree());
         }
 
         void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
         {
-            Parser::NewickParser<T> newick = Parser::NewickParser<T>();
+            Parser::NewickParser<T> newick;
 
             Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
 
             while (!iter->end())
             {
-                Domain::ITree<T> tree = iter->get();
+                Domain::ITree<T>& tree = iter->get();
                 newick.saveNewickFile(info.getTreesFilePath(),&tree);
                 iter->next();
             }
