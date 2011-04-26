@@ -1,5 +1,5 @@
-#include "newick.hh"
-#include "tree.hh"
+#include "newick.h"
+#include "tree.h"
 using namespace Parser;
 
 #include <boost/spirit/core.hpp>
