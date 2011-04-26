@@ -10,18 +10,17 @@ TARGET = phyloloc
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    graphwidget.cpp \
-    edge.cpp \
-    node.cpp \
-    optionsdialog.cpp
+SOURCES += src/main.cpp\
+        src/mainwindow.cpp \
+    src/graphwidget.cpp \
+    src/edge.cpp \
+    src/node.cpp
 
-HEADERS  += mainwindow.h \
-    graphwidget.h \
-    edge.h \
-    node.h \
-    optionsdialog.h
+HEADERS  += inc/mainwindow.h \
+    inc/graphwidget.h \
+    inc/edge.h \
+    inc/node.h \
+    GuiAspect.h \
+    ../Domain/INode.h
 
-FORMS    += mainwindow.ui \
-    optionsdialog.ui
+FORMS    += forms/mainwindow.ui
