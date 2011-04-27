@@ -1,4 +1,4 @@
-OBJS_COMMON = main.o Parser/newick.o Parser/tree.o
+OBJS_COMMON = main.o
 OBJS_TEST1  = $(OBJS_COMMON)
 
 CC = g++

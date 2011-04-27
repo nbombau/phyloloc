@@ -53,21 +53,17 @@ void printTree(ITree<GuiNode> tree)
 
 void printNode(GuiNode *node)
 {
-    if (node->isLeaf())
-    {
-        cout << node->getName();
-    }
-    else
+    if (!node->isLeaf())
     {
         cout << '(';
         ListIterator<GuiNode>* iter = node->getChildrenIterator();
-        
+
         while (!iter->end())
         {
             printNode(&iter->get());
-	               
+
             iter->next();
-            
+
             if (!iter->end())
             {
                 cout << ',';
@@ -77,5 +73,5 @@ void printNode(GuiNode *node)
         cout << ')';
 
     }
-    cout << ':' << node->getBranchLength();
+    cout << node->getName() << ':' << node->getBranchLength();
 }
