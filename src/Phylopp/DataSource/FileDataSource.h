@@ -6,12 +6,14 @@
 #include "../../Domain/ITreeCollection.h"
 #include "../../Domain/ITree.h"
 #include "../../Domain/ListIterator.h"
-#include "Parser/newick_file.h"
+
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <string>
 #include <map>
+
+#include "Parser2/newick_file.h"
 
 #define FILE_LOCATION_PARSER_MAX_LINE 256
 
@@ -21,7 +23,7 @@ namespace DataSource
 {
 	typedef string NodeName;
 	typedef map<NodeName, string> DataBag;
-	
+
     template <class T>
     class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
     {
@@ -39,16 +41,16 @@ namespace DataSource
 		{
 			ifstream f(file.c_str());
 			bool ret(true);
-			
+
 			if (f)
 			{
 				stringstream* ss;
 				NodeName name;
-				
+
 				char line[FILE_LOCATION_PARSER_MAX_LINE];
 				char *token1;
 				char *token2;		
-				
+
 				// Read each line in order to get the information associated to
 				// the node. Assumes that each line represents a node.
 				while (f.getline(line, FILE_LOCATION_PARSER_MAX_LINE) && ret)
@@ -62,7 +64,7 @@ namespace DataSource
 					}
 					else 
 					{
-						name = token1;									
+						name = token1;
 						string value(token2);
 						bag[name] = value;
 					}
@@ -73,15 +75,15 @@ namespace DataSource
 				ret = false;
 				cerr << "Data file " << file << " not found\n";
 			}
-			
+
 			return ret;
-		}	
-				
+		}
+
     public:
         void load(FilesInfo& info,Domain::ITreeCollection<T>& trees)
         {
             Parser::NewickParser<T> newick;
-            newick.loadNewickFile(info.getTreesFilePath(),trees.addTree());
+            newick.loadNewickFile(info.getTreesFilePath(),trees);
         }
 
         void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
