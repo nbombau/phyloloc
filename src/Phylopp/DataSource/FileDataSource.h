@@ -13,7 +13,7 @@
 #include <string>
 #include <map>
 
-#include "Parser2/newick_file.h"
+#include "Parser/newick_file.h"
 
 #define FILE_LOCATION_PARSER_MAX_LINE 256
 
