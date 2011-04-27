@@ -2,17 +2,17 @@
 #define GUIASPECT_H
 
 #include <string>
-#include <QGraphicsScene>
-#include <QGraphicsSceneMouseEvent>
-#include <QPainter>
-#include <QStyleOption>
-#include <QTimer>
-#include <Qt>
-#include <QRectF>
+//#include <QGraphicsScene>
+//#include <QGraphicsSceneMouseEvent>
+//#include <QPainter>
+//#include <QStyleOption>
+//#include <QTimer>
+//#include <Qt>
+//#include <QRectF>
 #include <stdio.h>
 #include "../Domain/INode.h"
-#include "inc/graphwidget.h"
-#include "inc/edge.h"
+//#include "inc/graphwidget.h"
+//#include "inc/edge.h"
 
 namespace PhyloGui
 {
