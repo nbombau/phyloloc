@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <list>
+#include <mili/mili.h>
 
 #include "ListIterator.h"
 
@@ -163,7 +164,7 @@ namespace Domain
 
             ~Node()
             {
-                //TODO: free resources
+                delete_container(children);
             }
     };
 

@@ -2,6 +2,7 @@
 #define ITREE_COLLECTION_H
 
 #include <list>
+#include <mili/mili.h>
 
 #include "ListIterator.h"
 #include "INode.h"
@@ -50,8 +51,7 @@ namespace Domain
         //Destructor
         ~ITreeCollection()
         {
-			//TODO: Free resources
-            //delete_container(trees);
+            delete_container(trees);
         }
 
     private:
