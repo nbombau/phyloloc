@@ -34,17 +34,22 @@ public:
 
 int main()
 {
-
-    GuiNode n2;
-    GuiNode* c2 = n2.addChild("locationA", "A", 0.1);
-    c2 = n2.addChild("locationB", "B", 0.1);
-    c2 = n2.addChild("locationC", "C", 0.2);
-    c2 = n2.addChild("locationA", "A", 0.4);
-    c2 = n2.addChild("locationD", "D", 0.1);
+    ITreeCollection<GuiNode> col;
+    col.addTree("locationX", "X", 0.6);
+    ListIterator<ITree<GuiNode> >* tIt = col.getIterator();
+    
+    GuiNode* n2 = tIt->get().getRoot();
+    
+    //GuiNode n2;
+    GuiNode* c2 = n2->addChild("locationA", "A", 0.1);
+    c2 = n2->addChild("locationB", "B", 0.1);
+    c2 = n2->addChild("locationC", "C", 0.2);
+    c2 = n2->addChild("locationA", "A", 0.4);
+    c2 = n2->addChild("locationD", "D", 0.1);
 
     printf("ITERATOR\n");
 
-    ListIterator<GuiNode>* iter2 = n2.getChildrenIterator();
+    ListIterator<GuiNode>* iter2 = n2->getChildrenIterator();
     int i = 2;
     while(!iter2->end())
     {
@@ -59,7 +64,7 @@ int main()
 
     Traverser<GuiNode, PrintfVisitor> t = Traverser<GuiNode, PrintfVisitor>();
     PrintfVisitor v = PrintfVisitor();
-    t.traverseDown(n2, v);
+    t.traverseDown(*n2, v);
 
     printf("Hello World");
     getchar();
