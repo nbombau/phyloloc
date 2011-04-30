@@ -8,7 +8,8 @@
 //shall specify which concrete class the factory method shall create.
 #include "../../Phylopp/DataSource/FileDataSource.h"
 #include "../../Phylopp/DataSource/FilesInfo.h"
-#include "../../Phylopp/DataSource/ITreeCollection.h"
+#include "../../Phylopp/Traversal/Traverser.h"
+#include "../../Phylopp/Traversal/INodeVisitor.h"
 
 
 namespace PhylolocFacade
@@ -16,37 +17,42 @@ namespace PhylolocFacade
     template <class T, class V, class K>
     class Facade
     {
-    public:
-
-        void load(const K& info,Domain::ITreeCollection<T>& trees) const
+    public:        
+        void load(const K& info,Domain::ITreeCollection<T>& trees) 
         {
             dataSource.load(info, trees);
         }
 
-        void save(Domain::ITreeCollection<T>& trees, const K& info) const
+        void save(Domain::ITreeCollection<T>& trees, const K& info) 
         {
             dataSource.save(trees, info);
         }
 
-        void traverseDown(Domain::ITree<T>& t, V& v) const
+        void traverseDown(Domain::ITree<T>& t, V& v) 
         {
             traverser.traverseDown(t, v);
         }
 
-        void traverseDown(T& t, V& v) const
+        void traverseDown(T& t, V& v) 
         { 
             traverser.traverseDown(t, v);
         }
 
-        void traverseUp(T& t, V& v) const
+        void traverseUp(T& t, V& v) 
         {
             traverser.traverseDown(t, v);
         }
 
+       // Facade() { }
+        
+        Facade(Traversal::Traverser<T,V>& t, DataSource::FileDataSource<T>& d) 
+            : traverser(t), dataSource(d) { }
+        
     private:
         Traversal::Traverser<T,V> traverser;
         //TODO: temporary. the datasource shall be created by IDataSourceFactory
-        FileDataSource<T,K> dataSource;
+        DataSource::FileDataSource<T> dataSource;
+
     };
 }
 
