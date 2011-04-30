@@ -1,17 +1,17 @@
 #ifndef FILEDATASOURCE_H
 #define FILEDATASOURCE_H
 
-#include "IDataSourceStrategy.h"
-#include "FilesInfo.h"
-#include "../../Domain/ITreeCollection.h"
-#include "../../Domain/ITree.h"
-#include "../../Domain/ListIterator.h"
-
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
 #include <string>
 #include <map>
+
+#include "IDataSourceStrategy.h"
+#include "FilesInfo.h"
+#include "../../Domain/ITreeCollection.h"
+#include "../../Domain/ITree.h"
+#include "../../Domain/ListIterator.h"
 
 #include "Parser/newick_file.h"
 
@@ -21,8 +21,6 @@ using namespace std;
 
 namespace DataSource
 {
-    typedef string NodeName;
-    typedef map<NodeName, string> DataBag;
     
     template <class T>
     class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
@@ -85,15 +83,15 @@ namespace DataSource
 			DataBag bag;
 			if (loadData(info.getLocationsFilePath(),bag))
             {
-                Parser::NewickParser<T> newick;
-                newick.loadNewickFile(info.getTreesFilePath(),trees,&bag);
+                NewickParser<T> newick;
+                newick.loadNewickFile(info.getTreesFilePath(),trees,bag);
             }    
             
         }
         
         void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
         {
-            Parser::NewickParser<T> newick;
+            NewickParser<T> newick;
             
             Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
             
