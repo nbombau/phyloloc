@@ -150,7 +150,7 @@ namespace Domain
                 branchLength = n;
             }
 
-            Node() { }
+            Node() : parent (NULL){ }
 
 
         protected:

@@ -32,25 +32,14 @@ public:
     }
 };
 
-void FillTree(ITreeCollection<GuiNode>& col)
-{
-    ITree<GuiNode>* t = col.addTree();
-    t->getRoot()->setName("nodo!");
-}
 
 int main()
-{
-
-    ITreeCollection<GuiNode> col;
-
-    FillTree(col);
-
-    ListIterator<ITree<GuiNode> >* it = col.getIterator();
-    ITree<GuiNode> t2 = it->get();
-
-    printf("%s\n", t2.getRoot()->getName().c_str());
-
+{    
     GuiNode n2;
+    
+    printf("es raiz %d \n", (n2.getParent() == NULL ? 1: 0));
+    printf("es raiz %d \n", (n2.getParent() == NULL ? 1: 0));
+    
     GuiNode* c2 = n2.addChild();
     c2->setName("a2");
     c2 = n2.addChild();
@@ -77,8 +66,8 @@ int main()
 
     printf("TRAVERSER\n");
 
-    Traverser<GuiNode, PrintfVisitor> t = Traverser<GuiNode, PrintfVisitor>();
-    PrintfVisitor v = PrintfVisitor();
+    Traverser<GuiNode, PrintfVisitor> t;
+    PrintfVisitor v;
     t.traverseDown(n2, v);
 
     printf("Hello World");
