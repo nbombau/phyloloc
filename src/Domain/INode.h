@@ -56,7 +56,7 @@ namespace Domain
             */
             T* getParent() const 
             {
-                return parent;
+                return static_cast<T*>(parent);
             }
 
 
@@ -79,9 +79,9 @@ namespace Domain
             * already topologically binded to the tree.
             * @return Node already binded to the current node.
             */
-            T* addChild(const Location l, const NodeName n, const BranchLength b)
+            T* addChild()
             {
-                T* child = new T(l, n, b);
+                T* child = new T();
                 child->parent = this;
                 children.push_back(child);
                 return child;
@@ -99,6 +99,16 @@ namespace Domain
             }
 
             /**
+            * Method: setName
+            * ---------------
+            * Description: Sets the name associated to the node
+            */
+            void setName(const NodeName& n)
+            {
+                name = n;
+            }
+
+            /**
             * Method: getLocation
             * ---------------
             * Description: Gets the location associated to the node
@@ -107,6 +117,16 @@ namespace Domain
             Location getLocation() const
             {
                 return location;
+            }
+
+            /**
+            * Method: setLocation
+            * ---------------
+            * Description: Sets the name associated to the node
+            */
+            void setLocation(const Location& n)
+            {
+                location = n;
             }
 
             /**
@@ -121,14 +141,16 @@ namespace Domain
             }
 
             /**
-            * Cttor for the root
+            * Method: setBranchLength
+            * ---------------
+            * Description: Sets the name associated to the node
             */
-            Node(const Location l, const NodeName n, const BranchLength b) 
-            { 
-                location = l;
-                name = n;
-                branchLength = b;
+            void setBranchLength(const BranchLength n)
+            {
+                branchLength = n;
             }
+
+            Node() { }
 
 
         protected:

@@ -20,16 +20,15 @@ namespace PhyloGui
     class GuiAspect : public Domain::Node<GuiAspect<T> >//,public QGraphicsItem
     {
     public:
-        //TODO: Deprecate ths cttor
-        /*GuiAspect() : selected(false), expanded(true){}, graph(graphWidget)
-        {
+        GuiAspect() : selected(false), expanded(true){}//, graph(graphWidget)
+        /*{
             setCacheMode(DeviceCoordinateCache);
             setZValue(-1);
             selected=false;
         }*/
         
-        GuiAspect(const Location l, const NodeName n, const BranchLength b)
-        : Domain::Node<GuiAspect<T> > (l, n, b) {}
+        /*GuiAspect(const Location l, const NodeName n, const BranchLength b)
+        : Domain::Node<GuiAspect<T> > (l, n, b) {}*/
 
         ~GuiAspect() {}
 

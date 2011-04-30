@@ -28,11 +28,9 @@ namespace Domain
         * Description: Adds a tree to the collection.
         * @return the recently added tree
         */
-        virtual ITree<T>* addTree(const Location rootLocation, 
-                                  const NodeName rootName, 
-                                  const BranchLength rootBranchLength)
+        virtual ITree<T>* addTree()
         {
-            ITree<T>* const tree = new ITree<T>(rootLocation, rootName, rootBranchLength);
+            ITree<T>* const tree = new ITree<T>();
             trees.push_back(tree);
             return tree;
         }
