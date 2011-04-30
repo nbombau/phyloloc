@@ -81,10 +81,7 @@ namespace Domain
             */
             T* addChild(const Location l, const NodeName n, const BranchLength b)
             {
-                T* child = new T();
-                child->location = l;
-                child->name = n;
-                child->branchLength = b;
+                T* child = new T(l, n, b);
                 child->parent = this;
                 children.push_back(child);
                 return child;
@@ -123,7 +120,15 @@ namespace Domain
                 return branchLength;
             }
 
-            Node() { }
+            /**
+            * Cttor for the root
+            */
+            Node(const Location l, const NodeName n, const BranchLength b) 
+            { 
+                location = l;
+                name = n;
+                branchLength = b;
+            }
 
 
         protected:

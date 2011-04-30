@@ -22,7 +22,11 @@ namespace Domain
     public:
 
         //Constructor
-        ITree() : root() { }
+        ITree(const Location rootLocation, 
+              const NodeName rootName, 
+              const BranchLength rootBranchLength) 
+            : root(rootLocation, rootName, rootBranchLength) 
+        { }
 
         /*
         * Method: getRoot
