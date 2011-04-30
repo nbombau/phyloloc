@@ -2,71 +2,14 @@
 #define NEWICK_FILE_H
 
 #include <string>
-
-#include "../../../Domain/ITree.h"
-#include "../../../Domain/ListIterator.h"
-#include "../FileDataSource.h"
 #include <iostream>
 #include <fstream>
-//#include "../mili/mili.h"
 #include <mili/mili.h>
+#include "../../../Domain/ITree.h"
+#include "../../../Domain/ListIterator.h"
 
-
-namespace Parser{
-    
-    static inline bool is_namechar(char c)
-    {
-        return in_range(c, '0', '9') ||
-              in_range(c, 'a', 'z') ||
-              in_range(c, 'A', 'Z') ||
-              c == '_' ||
-              c == '-';
-    }
-
-    static inline bool is_branchlen_char(char c)
-    {
-        return in_range(c, '0', '9') ||
-              c == '.';
-    }
-
-    static std::string consume_name(const char*& character)
-    {
-        std::string ret;
-        while(is_namechar(*character))
-        {
-            ret += *character;
-            ++character;
-        }
-
-        return ret;
-    }
-
-    static void consume_whitespace(const char*& character)
-    {
-        while(*character == ' ' || *character == '\t')
-            ++character;
-    }
-
-    static float consume_branch_length(const char*& character)
-    {
-        consume_whitespace(character);
-        float ret=0.0f;
-        if (*character == ':')
-        {
-            ++character;
-            std::string branchLenStr;
-            while(is_branchlen_char(*character))
-            {
-                branchLenStr += *character;
-                ++character;
-            }
-			
-			if(!from_string(branchLenStr,&ret))
-				ret=0.0f;
-			
-        }
-        return ret;
-    }
+    typedef std::string NodeName;
+    typedef std::map<NodeName, std::string> DataBag;
 
     template <class T> 
     class NewickParser
@@ -90,7 +33,7 @@ namespace Parser{
                 do
                 {
                     Domain::ITree<T>* tree = trees.addTree();
-                    ret = load_node(ptr, tree->getRoot());
+                    ret = load_node(ptr, tree->getRoot(),bag);
 
                     if (ret)
                     {
@@ -120,7 +63,7 @@ namespace Parser{
 
     private:
 
-        bool load_node(const char*& character, T* node,DataBag& bag)
+        static bool load_node(const char*& character, T* node,DataBag& bag)
         {
             bool ret = true;
             std::string name;
@@ -134,7 +77,7 @@ namespace Parser{
             {
                 case '(':
                     // we are nonleaf. Load new child.
-                    ret = load_children(++character, node); // leaves in a parent
+                    ret = load_children(++character, node,bag); // leaves in a parent
                     character++;
                     if (ret) //consume nonleaf name and branchlength, if present
                     {
@@ -171,7 +114,7 @@ namespace Parser{
             return ret;
         }
 
-        bool load_children(const char*& character, T* parent)
+        static bool load_children(const char*& character, T* parent,DataBag& bag)
         {
             T* child;
             bool keep_reading;
@@ -183,7 +126,7 @@ namespace Parser{
             do
             {
                 child = parent->addChild();
-                ret = load_node(character, child);
+                ret = load_node(character, child,bag);
 
                 if (ret)
                 {
@@ -208,9 +151,63 @@ namespace Parser{
             return ret;
         }
 
+        static inline bool is_namechar(char c)
+        {
+            return in_range(c, '0', '9') ||
+                  in_range(c, 'a', 'z') ||
+                  in_range(c, 'A', 'Z') ||
+                  c == '_' ||
+                  c == '-';
+        }
+
+        static inline bool is_branchlen_char(char c)
+        {
+            return in_range(c, '0', '9') ||
+                  c == '.';
+        }
+
+        static std::string consume_name(const char*& character)
+        {
+            std::string ret;
+            while(is_namechar(*character))
+            {
+                ret += *character;
+                ++character;
+            }
+
+            return ret;
+        }
+
+        static void consume_whitespace(const char*& character)
+        {
+            while(*character == ' ' || *character == '\t')
+                ++character;
+        }
+
+        static float consume_branch_length(const char*& character)
+        {
+            consume_whitespace(character);
+            float ret=0.0f;
+            if (*character == ':')
+            {
+                ++character;
+                std::string branchLenStr;
+                while(is_branchlen_char(*character))
+                {
+                    branchLenStr += *character;
+                    ++character;
+                }
+                
+                if(!from_string(branchLenStr,ret))
+                    ret=0.0f;
+                
+            }
+            return ret;
+        }
 
 
-        void saveTree(T *node,std::ostream& os)
+
+        static void saveTree(T *node,std::ostream& os)
         {
             if (node->isLeaf())
             {
@@ -239,6 +236,5 @@ namespace Parser{
             os << ':' << node->getBranchLength();
         }
     };
-}
 
 #endif
