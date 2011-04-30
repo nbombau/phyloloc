@@ -1,11 +1,6 @@
 #ifndef TRAVERSER_H
 #define TRAVERSER_H
 
-#include "INodeVisitor.h"
-#include "../../Domain/ITree.h"
-#include "../../Domain/INode.h"
-#include "../../Domain/ListIterator.h"
-
 #include <list>
 #include <stdlib.h>
 #include <string>
@@ -14,6 +9,11 @@
 #include <iostream>
 #include <fstream>
 #include <queue>
+
+#include "INodeVisitor.h"
+#include "../../Domain/ITree.h"
+#include "../../Domain/INode.h"
+#include "../../Domain/ListIterator.h"
 
 namespace Traversal
 {
@@ -39,9 +39,9 @@ namespace Traversal
         * @param t a phylogenetic tree
         * @param v a visitor to be applied on the tree's nodes
         */
-        void traverseDown(Domain::ITree<T>& t, V& v)
+        static void traverseDown(Domain::ITree<T>& t, V& v)
         {
-            traverseDown(t.getRoot(), v);
+            traverseDown(*(t.getRoot()), v);
         }
 
         /**
@@ -53,33 +53,33 @@ namespace Traversal
         * @param v a visitor to be applied on the starting node's 
         * descendants
         */
-        void traverseDown(T& t, V& v)
+        static void traverseDown(T& t, V& v)
         {
             //A queue shall be used to avoid recursion
-            std::queue<T, std::list<T> > queue;
-
+            std::queue<T*, std::list<T*> > queue;
+            
             //Push the root
-            queue.push(t);
-
+            queue.push(&t);
+            
             while (!queue.empty())
             {
-                T n = queue.front();
-                T& node = n;
+                T* node = queue.front();
+                
                 queue.pop();
-
+                
                 //Visit the node that is on top of the queue
-                v.visit(node);
-
-                Domain::ListIterator<T>* it = node.getChildrenIterator();
-
+                v.visit(*node);
+                
+                Domain::ListIterator<T>* it = node->getChildrenIterator();
+                
                 //And add the node's children to the queue
                 while(!it->end())
                 {
-                    node = it->get();
+                    node = &it->get();
                     queue.push(node);
                     it->next();
                 }
-
+                
                 delete it;
             }
         }
@@ -93,13 +93,20 @@ namespace Traversal
         * @param v a visitor to be applied on each ancestor of the 
         * starting node
         */
-        void traverseUp(T& t, V& v)
+        static void traverseUp(T& t, V& v)
         {
-            T& node = t;
-            while(!node.isRoot())
+            bool done = false;
+            T* node = &t;
+            
+            //go up the tree
+            while(!done)
             {
-                v->visit(node);
-                node = node.parent();
+                v.visit(*node);
+                //get the parent
+                if(!node->isRoot())
+                    node = node->getParent();
+                else
+                    done = true;                
             }
         }
     };
