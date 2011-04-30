@@ -18,32 +18,32 @@ namespace PhylolocFacade
     class Facade
     {
     public:        
-        void load(const K& info,Domain::ITreeCollection<T>& trees) 
+        void load(const K& info,Domain::ITreeCollection<T>& trees) const
         {
             dataSource.load(info, trees);
         }
 
-        void save(Domain::ITreeCollection<T>& trees, const K& info) 
+        void save(Domain::ITreeCollection<T>& trees, const K& info) const
         {
             dataSource.save(trees, info);
         }
 
-        void traverseDown(Domain::ITree<T>& t, V& v) 
+        void traverseDown(Domain::ITree<T>& t, V& v) const
         {
             traverser.traverseDown(t, v);
         }
 
-        void traverseDown(T& t, V& v) 
+        void traverseDown(T& t, V& v) const
         { 
             traverser.traverseDown(t, v);
         }
 
-        void traverseUp(T& t, V& v) 
+        void traverseUp(T& t, V& v) const
         {
             traverser.traverseDown(t, v);
         }
 
-       // Facade() { }
+        Facade() { }
         
         Facade(Traversal::Traverser<T,V>& t, DataSource::FileDataSource<T>& d) 
             : traverser(t), dataSource(d) { }
