@@ -79,9 +79,12 @@ namespace Domain
             * already topologically binded to the tree.
             * @return Node already binded to the current node.
             */
-            T* addChild()
+            T* addChild(const Location l, const NodeName n, const BranchLength b)
             {
                 T* child = new T();
+                child->location = l;
+                child->name = n;
+                child->branchLength = b;
                 child->parent = this;
                 children.push_back(child);
                 return child;
@@ -99,16 +102,6 @@ namespace Domain
             }
 
             /**
-            * Method: setName
-            * ---------------
-            * Description: Sets the name associated to the node
-            */
-            void setName(const NodeName& n)
-            {
-                name = n;
-            }
-
-            /**
             * Method: getLocation
             * ---------------
             * Description: Gets the location associated to the node
@@ -120,16 +113,6 @@ namespace Domain
             }
 
             /**
-            * Method: setLocation
-            * ---------------
-            * Description: Sets the name associated to the node
-            */
-            void setLocation(const Location& n)
-            {
-                location = n;
-            }
-
-            /**
             * Method: getBranchLength
             * ---------------
             * Description: Gets the branch length associated to the node
@@ -138,16 +121,6 @@ namespace Domain
             BranchLength getBranchLength() const
             {
                 return branchLength;
-            }
-
-            /**
-            * Method: setBranchLength
-            * ---------------
-            * Description: Sets the name associated to the node
-            */
-            void setBranchLength(const BranchLength n)
-            {
-                branchLength = n;
             }
 
             Node() { }

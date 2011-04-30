@@ -12,7 +12,7 @@
 
 
 namespace Parser{
-
+    
     static inline bool is_namechar(char c)
     {
         return in_range(c, '0', '9') ||
