@@ -82,8 +82,13 @@ namespace DataSource
     public:
         void load(FilesInfo& info,Domain::ITreeCollection<T>& trees)
         {
-            Parser::NewickParser<T> newick;
-            newick.loadNewickFile(info.getTreesFilePath(),trees);
+			DataBag bag;
+			if (loadData(info.getLocationsFilePath(),bag))
+            {
+                Parser::NewickParser<T> newick;
+                newick.loadNewickFile(info.getTreesFilePath(),trees,&bag);
+            }    
+            
         }
         
         void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)

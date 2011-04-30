@@ -73,5 +73,5 @@ void printNode(GuiNode *node)
         cout << ')';
 
     }
-    cout << node->getName() << ':' << node->getBranchLength();
+    cout << node->getName() << ':' << node->getBranchLength() << "|" << node->getLocation();
 }
