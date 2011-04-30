@@ -43,9 +43,35 @@ namespace Domain
         * trees of the collection.
         * @return trees iterator 
         */
-        ListIterator<ITree<T> >* getIterator()
+        ListIterator<ITree<T> >* getIterator() const
         {
             return new ListIterator<ITree<T> >(trees);
+        }
+        
+        /*
+         * Method: elementAt
+         * -------------------
+         * Description: Returns the element at certain index
+         * @return element at certain index, null otherwise 
+         */
+        ITree<T>* elementAt(int index) const
+        {
+            int i = 0;
+            ITree<T>* ret = NULL;
+            ListIterator<ITree<T> >* it = new ListIterator<ITree<T> >;
+            
+            while (i < index && !it.end())
+            {
+                it.next();
+                i++;
+            }
+            
+            if(i == index)
+            {
+                ret = it.get();
+            }
+            
+            return ret;
         }
 
         //Destructor
