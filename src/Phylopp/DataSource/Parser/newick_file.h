@@ -5,6 +5,7 @@
 
 #include "../../../Domain/ITree.h"
 #include "../../../Domain/ListIterator.h"
+#include "../FileDataSource.h"
 #include <iostream>
 #include <fstream>
 //#include "../mili/mili.h"
@@ -49,7 +50,7 @@ namespace Parser{
     static float consume_branch_length(const char*& character)
     {
         consume_whitespace(character);
-        float ret=0.0;
+        float ret=0.0f;
         if (*character == ':')
         {
             ++character;
@@ -59,8 +60,10 @@ namespace Parser{
                 branchLenStr += *character;
                 ++character;
             }
-            ret=atof(branchLenStr.c_str()); 
-            //if its an invalid number, branchlength will be 0.0
+			
+			if(!from_string(branchLenStr,&ret))
+				ret=0.0f;
+			
         }
         return ret;
     }
@@ -70,7 +73,7 @@ namespace Parser{
     {
     public:
 
-        bool loadNewickFile(const std::string fname,Domain::ITreeCollection<T>& trees)
+        bool loadNewickFile(const std::string& fname,Domain::ITreeCollection<T>& trees,DataBag& bag)
         {
             std::ifstream f(fname.c_str());
 
@@ -113,12 +116,11 @@ namespace Parser{
         {
             std::ofstream os(fname.c_str());
             saveTree(phyloTree->getRoot(), os);
-            os.close();
         }
 
     private:
 
-        bool load_node(const char*& character, T* node)
+        bool load_node(const char*& character, T* node,DataBag& bag)
         {
             bool ret = true;
             std::string name;
@@ -140,6 +142,8 @@ namespace Parser{
                         node->setName(name);
                         branchLength = consume_branch_length(character);
                         node->setBranchLength(branchLength);
+						node->setLocation(bag[name]);
+						
                     }
                     break;
 
@@ -160,6 +164,7 @@ namespace Parser{
                     node->setName(name);
                     branchLength = consume_branch_length(character);
                     node->setBranchLength(branchLength);
+					node->setLocation(bag[name]);
 
             }
 
