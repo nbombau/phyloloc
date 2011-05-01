@@ -58,17 +58,17 @@ namespace Domain
         {
             int i = 0;
             ITree<T>* ret = NULL;
-            ListIterator<ITree<T> >* it = new ListIterator<ITree<T> >;
-            
-            while (i < index && !it.end())
+            ListIterator<ITree<T> >* it = this->getIterator();
+
+            while (i < index && !it->end())
             {
-                it.next();
+                it->next();
                 i++;
             }
             
             if(i == index)
             {
-                ret = it.get();
+                ret = &it->get();
             }
             
             return ret;
