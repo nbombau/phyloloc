@@ -3,7 +3,7 @@
 #include "PhyloGUI/inc/edge.h"
 
 Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
-    : arrowSize(10),color(Qt::black)
+    : color(Qt::black)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -63,12 +63,15 @@ QRectF Edge::boundingRect() const
     }
     else
     {
-        qreal penWidth = 1;
-        qreal extra = (penWidth + arrowSize) / 2.0;
+        //qreal penWidth = 1;
+        rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
+                                          destPoint.y() - sourcePoint.y()))
+               .normalized();
+        /*qreal extra = (penWidth + arrowSize) / 2.0;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
                .normalized()
-               .adjusted(-extra, -extra, extra, extra);
+               .adjusted(-extra, -extra, extra, extra);*/
     }
     return rect;
 }
