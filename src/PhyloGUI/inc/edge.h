@@ -43,7 +43,6 @@ private:
     QColor color;
     QPointF sourcePoint;
     QPointF destPoint;
-    qreal arrowSize;
 };
 
 #endif

@@ -41,7 +41,6 @@ private slots:
     void on_actionSelect_all_nodes_triggered();
     void on_actionClear_selection_triggered();
     void on_actionColor_nodes_triggered();
-    void on_listWidget_itemDoubleClicked(QListWidgetItem* item);
     void on_actionOptions_triggered();
     void on_actionSave_As_triggered();
     void on_actionOpen_triggered();

@@ -170,11 +170,10 @@ void MainWindow::on_actionSave_As_triggered()
     dialog.setFileMode(QFileDialog::ExistingFiles);
     if (dialog.exec())
     {
-        printf(dialog.directory().absolutePath().toAscii().data());
         filePaths = dialog.selectedFiles();
         foreach(path, filePaths)
         {
-            printf(path.toAscii().data());
+            ;
         }
     }
 }
@@ -182,13 +181,6 @@ void MainWindow::on_actionSave_As_triggered()
 void MainWindow::on_actionOptions_triggered()
 {
 
-}
-
-void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem* item)
-{
-    //get item select in list
-    printf(item->text().toAscii().data());
-    //TODO look for tree and redraw
 }
 
 void MainWindow::on_actionColor_nodes_triggered()

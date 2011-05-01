@@ -42,7 +42,6 @@ namespace DataSource
             
             if (f)
             {
-                stringstream* ss;
                 NodeName name;
                 
                 char line[FILE_LOCATION_PARSER_MAX_LINE];

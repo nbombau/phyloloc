@@ -158,7 +158,7 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
 }
 
 
-void GraphWidget::resizeEvent(QResizeEvent* event)
+void GraphWidget::resizeEvent(QResizeEvent* )
 {
     resize(parentWidget()->width(), parentWidget()->height());
 }
@@ -312,12 +312,12 @@ void GraphWidget::unSelectAllNodes(ITree<GuiNode>* tree)
     traverseDown(startNode, v);
 }
 
-void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
+void GraphWidget::selectNodeDescendants(ITree<GuiNode>* )
 {
     printf("Seleccionar descendientes");
 }
 
-void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
+void GraphWidget::selectNodeAncestors(ITree<GuiNode>* )
 {
     printf("Seleccionar descendientes");
 }
