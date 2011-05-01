@@ -30,34 +30,34 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionOpen;
-    QAction *actionSave_As;
-    QAction *actionQuit;
-    QAction *actionProcess_tree;
-    QAction *actionConcense_trees;
-    QAction *actionParameters;
-    QAction *actionOptions;
-    QAction *actionClear_selection;
-    QAction *actionSelect_descendants;
-    QAction *actionSelect_Ancestors;
-    QAction *actionExpand;
-    QAction *actionCollapse;
-    QAction *actionColor_nodes;
-    QAction *actionNode_details;
-    QAction *actionSelect_all_nodes;
-    QWidget *centralWidget;
-    QHBoxLayout *horizontalLayout;
-    QListWidget *listWidget;
-    QMdiArea *frame;
-    QMenuBar *menuBar;
-    QMenu *menuFile;
-    QMenu *menuNode;
-    QMenu *menuTools;
-    QMenu *menuConfiguration;
-    QToolBar *mainToolBar;
-    QStatusBar *statusBar;
+    QAction* actionOpen;
+    QAction* actionSave_As;
+    QAction* actionQuit;
+    QAction* actionProcess_tree;
+    QAction* actionConcense_trees;
+    QAction* actionParameters;
+    QAction* actionOptions;
+    QAction* actionClear_selection;
+    QAction* actionSelect_descendants;
+    QAction* actionSelect_Ancestors;
+    QAction* actionExpand;
+    QAction* actionCollapse;
+    QAction* actionColor_nodes;
+    QAction* actionNode_details;
+    QAction* actionSelect_all_nodes;
+    QWidget* centralWidget;
+    QHBoxLayout* horizontalLayout;
+    QListWidget* listWidget;
+    QMdiArea* frame;
+    QMenuBar* menuBar;
+    QMenu* menuFile;
+    QMenu* menuNode;
+    QMenu* menuTools;
+    QMenu* menuConfiguration;
+    QToolBar* mainToolBar;
+    QStatusBar* statusBar;
 
-    void setupUi(QMainWindow *MainWindow)
+    void setupUi(QMainWindow* MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
@@ -155,7 +155,7 @@ public:
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow *MainWindow)
+    void retranslateUi(QMainWindow* MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
         actionOpen->setText(QApplication::translate("MainWindow", "Open...", 0, QApplication::UnicodeUTF8));
@@ -191,8 +191,9 @@ public:
 
 };
 
-namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
+namespace Ui
+{
+class MainWindow: public Ui_MainWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE

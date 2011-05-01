@@ -34,7 +34,7 @@ private:
     ITreeCollection<GuiNode> trees;
 
 private slots:
-  //  void on_listWidget_doubleClicked(QModelIndex index);
+    //  void on_listWidget_doubleClicked(QModelIndex index);
     void drawTree();
     void on_actionSelect_Ancestors_triggered();
     void on_actionSelect_descendants_triggered();

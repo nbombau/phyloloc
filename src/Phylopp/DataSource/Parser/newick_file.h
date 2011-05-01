@@ -8,233 +8,235 @@
 #include "../../../Domain/ITree.h"
 #include "../../../Domain/ListIterator.h"
 
-    typedef std::string NodeName;
-    typedef std::map<NodeName, std::string> DataBag;
+typedef std::string NodeName;
+typedef std::map<NodeName, std::string> DataBag;
 
-    template <class T> 
-    class NewickParser
+template <class T>
+class NewickParser
+{
+public:
+
+    bool loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees, DataBag& bag)
     {
-    public:
+        std::ifstream f(fname.c_str());
 
-        bool loadNewickFile(const std::string& fname,Domain::ITreeCollection<T>& trees,DataBag& bag)
+        if (f)
         {
-            std::ifstream f(fname.c_str());
+            const char* ptr;
+            std::string tree_str, line;
+            bool ret(true);
 
-            if (f)
+            while (getline(f, line))
+                tree_str += line;
+
+            ptr  = tree_str.c_str();
+            do
             {
-                const char* ptr;
-                std::string tree_str, line;
-                bool ret(true);
+                Domain::ITree<T>* tree = trees.addTree();
+                ret = load_node(ptr, tree->getRoot(), bag);
 
-                while(getline(f, line))
-                    tree_str += line;
-
-                ptr  = tree_str.c_str();
-                do
+                if (ret)
                 {
-                    Domain::ITree<T>* tree = trees.addTree();
-                    ret = load_node(ptr, tree->getRoot(),bag);
-
-                    if (ret)
-                    {
-                        consume_whitespace(ptr);
-                        ret = (*ptr == ';');
-                        if (!ret)
-                            std::cerr << "Missing tree separator (;)." << std::endl;
-                        else
-                            ++ptr;
-                    }
-                }while(ret && *ptr != 0);
-
-                return ret;
+                    consume_whitespace(ptr);
+                    ret = (*ptr == ';');
+                    if (!ret)
+                        std::cerr << "Missing tree separator (;)." << std::endl;
+                    else
+                        ++ptr;
+                }
             }
-            else
-            {
-                std::cerr << "Tree file " << fname << " not found\n";
-                return false;
-            }
+            while (ret && *ptr != 0);
+
+            return ret;
         }
-
-        void saveNewickFile(const std::string fname,Domain::ITree<T>*phyloTree)
+        else
         {
-            std::ofstream os(fname.c_str());
-            saveTree(phyloTree->getRoot(), os);
+            std::cerr << "Tree file " << fname << " not found\n";
+            return false;
         }
+    }
 
-    private:
+    void saveNewickFile(const std::string fname, Domain::ITree<T>*phyloTree)
+    {
+        std::ofstream os(fname.c_str());
+        saveTree(phyloTree->getRoot(), os);
+    }
 
-        static bool load_node(const char*& character, T* node,DataBag& bag)
+private:
+
+    static bool load_node(const char*& character, T* node, DataBag& bag)
+    {
+        bool ret = true;
+        std::string name;
+        float branchLength = 0.0;
+
+        // output: either ',' or ')' (depending on the node type)
+
+        consume_whitespace(character);
+
+        switch (*character)
         {
-            bool ret = true;
-            std::string name;
-            float branchLength=0.0;
-
-            // output: either ',' or ')' (depending on the node type)
-
-            consume_whitespace(character);
-
-            switch (*character)
-            {
-                case '(':
-                    // we are nonleaf. Load new child.
-                    ret = load_children(++character, node,bag); // leaves in a parent
-                    character++;
-                    if (ret) //consume nonleaf name and branchlength, if present
-                    {
-                        name = consume_name(character);
-                        node->setName(name);
-                        branchLength = consume_branch_length(character);
-                        node->setBranchLength(branchLength);
-						node->setLocation(bag[name]);
-						
-                    }
-                    break;
-
-                case ',':
-                case ')':
-                    //allow nameless nodes: dont consume character.
-                    node->setName("");
-                    node->setBranchLength(0.0);
-                    break;
-                case 0:
-                    ret = false;
-                    std::cerr << "Malformed expression\n";
-                    break;
-
-                default:
-                    // we are leaf.
+            case '(':
+                // we are nonleaf. Load new child.
+                ret = load_children(++character, node, bag); // leaves in a parent
+                character++;
+                if (ret) //consume nonleaf name and branchlength, if present
+                {
                     name = consume_name(character);
                     node->setName(name);
                     branchLength = consume_branch_length(character);
                     node->setBranchLength(branchLength);
-					node->setLocation(bag[name]);
+                    node->setLocation(bag[name]);
 
-            }
-
-            return ret;
-        }
-
-        static bool load_children(const char*& character, T* parent,DataBag& bag)
-        {
-            T* child;
-            bool keep_reading;
-            bool ret;
-
-            // input: first char of first child.
-            // output: ')'
-
-            do
-            {
-                child = parent->addChild();
-                ret = load_node(character, child,bag);
-
-                if (ret)
-                {
-                    consume_whitespace(character);
-
-                    switch (*character)
-                    {
-                        case ',':
-                            keep_reading = true;
-                            ++character;
-                            break;
-                        case ')':
-                            keep_reading = false;
-                            break;
-                        default:
-                            ret = false;
-                            std::cerr << "Malformed expression: expected ')' or ',', read '" << *character << "'\n";
-                    }
                 }
-            }while(keep_reading && ret);
+                break;
 
-            return ret;
+            case ',':
+            case ')':
+                //allow nameless nodes: dont consume character.
+                node->setName("");
+                node->setBranchLength(0.0);
+                break;
+            case 0:
+                ret = false;
+                std::cerr << "Malformed expression\n";
+                break;
+
+            default:
+                // we are leaf.
+                name = consume_name(character);
+                node->setName(name);
+                branchLength = consume_branch_length(character);
+                node->setBranchLength(branchLength);
+                node->setLocation(bag[name]);
+
         }
 
-        static inline bool is_namechar(char c)
-        {
-            return in_range(c, '0', '9') ||
-                  in_range(c, 'a', 'z') ||
-                  in_range(c, 'A', 'Z') ||
-                  c == '_' ||
-                  c == '-';
-        }
+        return ret;
+    }
 
-        static inline bool is_branchlen_char(char c)
-        {
-            return in_range(c, '0', '9') ||
-                  c == '.';
-        }
+    static bool load_children(const char*& character, T* parent, DataBag& bag)
+    {
+        T* child;
+        bool keep_reading;
+        bool ret;
 
-        static std::string consume_name(const char*& character)
+        // input: first char of first child.
+        // output: ')'
+
+        do
         {
-            std::string ret;
-            while(is_namechar(*character))
+            child = parent->addChild();
+            ret = load_node(character, child, bag);
+
+            if (ret)
             {
-                ret += *character;
+                consume_whitespace(character);
+
+                switch (*character)
+                {
+                    case ',':
+                        keep_reading = true;
+                        ++character;
+                        break;
+                    case ')':
+                        keep_reading = false;
+                        break;
+                    default:
+                        ret = false;
+                        std::cerr << "Malformed expression: expected ')' or ',', read '" << *character << "'\n";
+                }
+            }
+        }
+        while (keep_reading && ret);
+
+        return ret;
+    }
+
+    static inline bool is_namechar(char c)
+    {
+        return in_range(c, '0', '9') ||
+               in_range(c, 'a', 'z') ||
+               in_range(c, 'A', 'Z') ||
+               c == '_' ||
+               c == '-';
+    }
+
+    static inline bool is_branchlen_char(char c)
+    {
+        return in_range(c, '0', '9') ||
+               c == '.';
+    }
+
+    static std::string consume_name(const char*& character)
+    {
+        std::string ret;
+        while (is_namechar(*character))
+        {
+            ret += *character;
+            ++character;
+        }
+
+        return ret;
+    }
+
+    static void consume_whitespace(const char*& character)
+    {
+        while (*character == ' ' || *character == '\t')
+            ++character;
+    }
+
+    static float consume_branch_length(const char*& character)
+    {
+        consume_whitespace(character);
+        float ret = 0.0f;
+        if (*character == ':')
+        {
+            ++character;
+            std::string branchLenStr;
+            while (is_branchlen_char(*character))
+            {
+                branchLenStr += *character;
                 ++character;
             }
 
-            return ret;
-        }
+            if (!from_string(branchLenStr, ret))
+                ret = 0.0f;
 
-        static void consume_whitespace(const char*& character)
-        {
-            while(*character == ' ' || *character == '\t')
-                ++character;
         }
+        return ret;
+    }
 
-        static float consume_branch_length(const char*& character)
+
+
+    static void saveTree(T* node, std::ostream& os)
+    {
+        if (node->isLeaf())
         {
-            consume_whitespace(character);
-            float ret=0.0f;
-            if (*character == ':')
+            os << node->getName();
+        }
+        else
+        {
+            os << '(';
+            Domain::ListIterator<T>* iter = node->getChildrenIterator();
+
+            while (!iter->end())
             {
-                ++character;
-                std::string branchLenStr;
-                while(is_branchlen_char(*character))
+                saveTree(&iter->get(), os);
+
+                iter->next();
+
+                if (!iter->end())
                 {
-                    branchLenStr += *character;
-                    ++character;
+                    os << ',';
                 }
-                
-                if(!from_string(branchLenStr,ret))
-                    ret=0.0f;
-                
             }
-            return ret;
+            delete iter;
+            os << ')';
+
         }
-
-
-
-        static void saveTree(T *node,std::ostream& os)
-        {
-            if (node->isLeaf())
-            {
-                os << node->getName();
-            }
-            else
-            {
-                os << '(';
-                Domain::ListIterator<T>* iter = node->getChildrenIterator();
-
-                while (!iter->end())
-                {
-                    saveTree(&iter->get(),os);
-
-                    iter->next();
-
-                    if (!iter->end())
-                    {
-                        os << ',';
-                    }
-                }
-                delete iter;
-                os << ')';
-
-            }
-            os << ':' << node->getBranchLength();
-        }
-    };
+        os << ':' << node->getBranchLength();
+    }
+};
 
 #endif

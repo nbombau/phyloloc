@@ -5,30 +5,30 @@
 
 namespace DataSource
 {
-    class FilesInfo
+class FilesInfo
+{
+public:
+
+    FilesInfo(const std::string treesFilePath, const std::string locationsFilePath)
     {
-    public:
+        this->treesFilePath = treesFilePath;
+        this->locationsFilePath = locationsFilePath;
+    }
 
-        FilesInfo(const std::string treesFilePath, const std::string locationsFilePath)
-        {
-            this->treesFilePath=treesFilePath;
-            this->locationsFilePath=locationsFilePath;
-        }
+    std::string getTreesFilePath() const
+    {
+        return treesFilePath;
+    }
 
-        std::string getTreesFilePath() const
-        {
-            return treesFilePath;
-        }
+    std::string getLocationsFilePath() const
+    {
+        return locationsFilePath;
+    }
 
-        std::string getLocationsFilePath() const
-        {
-            return locationsFilePath;
-        }
-
-    private:
-        std::string treesFilePath;
-        std::string locationsFilePath;
-    };
+private:
+    std::string treesFilePath;
+    std::string locationsFilePath;
+};
 }
 
 #endif

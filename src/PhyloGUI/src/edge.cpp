@@ -29,7 +29,7 @@ QColor Edge::getColor() const
 }
 void Edge::setColor(const QColor c)
 {
-    color=c;
+    color = c;
 }
 
 void Edge::adjust()

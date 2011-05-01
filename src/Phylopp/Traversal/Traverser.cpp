@@ -6,7 +6,7 @@
 //    void Traverser::traverseDown(T* t, V* v)
 //    {
 //        std::queue<T*, list<T*>> queue;
-//        
+//
 //        queue.push(t);
 //
 //        while (!queue.empty())
@@ -17,11 +17,11 @@
 //            v->visit(node);
 //
 //            ListIterator<T>* it = node->getChildrenIterator();
-//            
+//
 //            while(!it->end())
 //            {
 //                node = &(it->get());
-//                        
+//
 //                queue.push(node);
 //                it->next();
 //            }

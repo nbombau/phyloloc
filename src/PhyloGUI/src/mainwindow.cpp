@@ -16,82 +16,10 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     graph = new GraphWidget(ui->frame);
-
-    //loadTree("/home/eteisair/tmp");
-
-    QObject::connect(ui->listWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(drawTree()),Qt::QueuedConnection);
-
-
-   // actualTree = trees.elementAt(0);
-
-   // graph->draw(actualTree);
-    /*
-    GuiNode* root = actualTree.getRoot();
-    root->setName("root");
-
-    GuiNode* node = root->addChild();
-    node->setBranchLength(12);
-    node->setName("A");
-
-    GuiNode* node1 = node->addChild();
-    node1->setBranchLength(1);
-    node1->setName("B");
-    node1 = node->addChild();
-    node1->setBranchLength(1);
-    node1->setName("C");
-
-    GuiNode* node2 = node1->addChild();
-    node2->setBranchLength(3);
-    node2->setName("B");
-    node2 = node1->addChild();
-    node2->setBranchLength(3);
-    node2->setName("C");
-
-    node = root->addChild();
-    node->setBranchLength(5);
-    node->setName("D");
-
-    node1 = node->addChild();
-    node1->setBranchLength(1);
-    node1->setName("E");
-    node1 = node->addChild();
-    node1->setBranchLength(4);
-    node1->setName("F");
-    node1 = node->addChild();
-    node1->setBranchLength(5);
-    node1->setName("G");
-
-    node = root->addChild();
-    node->setBranchLength(3);
-    node->setName("H");
-
-    node1 = node->addChild();
-    node1->setBranchLength(2);
-    node1->setName("I");
-    node1 = node->addChild();
-    node1->setBranchLength(2);
-    node1->setName("J");
-
-    node = root->addChild();
-    node->setBranchLength(8);
-    node->setName("K");
-
-    node1 = node->addChild();
-    node1->setBranchLength(3);
-    node1->setName("L");
-    node1 = node->addChild();
-    node1->setBranchLength(1);
-    node1->setName("M");
-    node1 = node->addChild();
-    node1->setBranchLength(4);
-    node1->setName("N");
-    node1 = node->addChild();
-    node1->setBranchLength(6);
-    node1->setName("O");
-
-    */
-    //graph->draw(actualTree);
-
+    ui->actionClear_selection->setEnabled(false);
+    ui->actionColor_nodes->setEnabled(false);
+    ui->actionSelect_all_nodes->setEnabled(false);
+    QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -121,10 +49,10 @@ void MainWindow::on_actionOpen_triggered()
         {
             dir = QFileInfo(path);
 
-            string basePath= dir.canonicalPath().toStdString()+"/"+dir.completeBaseName().toStdString();
+            string basePath = dir.canonicalPath().toStdString() + "/" + dir.completeBaseName().toStdString();
 
-            dat=QFileInfo(QString( (basePath+".dat").c_str()));
-            if(dat.exists())
+            dat = QFileInfo(QString((basePath + ".dat").c_str()));
+            if (dat.exists())
                 loadTree(basePath);
             else
             {
@@ -139,17 +67,17 @@ void MainWindow::on_actionOpen_triggered()
 void MainWindow::loadTree(std::string treePath)
 {
 
-    FilesInfo info(treePath+".nwk",treePath+".dat");
+    FilesInfo info(treePath + ".nwk", treePath + ".dat");
 
     FileDataSource<GuiNode>fileDataSource;
 
-    fileDataSource.load(info,trees);
+    fileDataSource.load(info, trees);
 
     ListIterator< ITree<GuiNode> > *iter = trees.getIterator();
 
-    unsigned int i=0;
+    unsigned int i = 0;
 
-    while(!iter->end())
+    while (!iter->end())
     {
         QListWidgetItem* newItem = new QListWidgetItem;
         newItem->setText(QString(treePath.c_str()));
@@ -188,7 +116,7 @@ void MainWindow::on_actionColor_nodes_triggered()
     QColor color = QColorDialog::getColor();
     if (color.isValid())
     {
-        graph->paintNode(color,actualTree);
+        graph->paintNode(color, actualTree);
     }
 }
 
@@ -216,13 +144,9 @@ void MainWindow::on_actionSelect_Ancestors_triggered()
 
 void MainWindow::drawTree()
 {
-    std::cout << "\nCURRENT-ROW: "<< ui->listWidget->currentRow()<<"\n";
-
-    actualTree=trees.elementAt(ui->listWidget->currentRow());
-
-    std::cout << actualTree->getRoot()->getName();
-
-    std::cout.flush();
-
+    ui->actionClear_selection->setEnabled(true);
+    ui->actionColor_nodes->setEnabled(true);
+    ui->actionSelect_all_nodes->setEnabled(true);
+    actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
