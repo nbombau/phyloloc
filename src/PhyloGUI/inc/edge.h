@@ -2,33 +2,45 @@
 #define EDGE_H
 
 #include <QGraphicsItem>
+#include "graphwidget.h"
 
-namespace Ui {
-    class Edge;
+#include "../../Domain/INode.h"
+#include "PhyloGUI/GuiAspect.h"
+using namespace Domain;
+typedef GuiAspect< BaseAspect> GuiNode;
+
+namespace Ui
+{
+class Edge;
 }
 
-class Node;
+//class Node;
+
 
 class Edge : public QGraphicsItem
 {
 public:
-    Edge(Node *sourceNode, Node *destNode);
+    Edge(GuiNode* sourceNode, GuiNode* destNode);
 
-    Node *sourceNode() const;
-    Node *destNode() const;
-
+    GuiNode* sourceNode() const;
+    GuiNode* destNode() const;
+    QColor getColor() const;
+    void setColor(const QColor c);
     void adjust();
 
     enum { Type = UserType + 2 };
-    int type() const { return Type; }
+    int type() const
+    {
+        return Type;
+    }
 
 protected:
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
 private:
-    Node *source, *dest;
-
+    GuiNode* source, *dest;
+    QColor color;
     QPointF sourcePoint;
     QPointF destPoint;
     qreal arrowSize;

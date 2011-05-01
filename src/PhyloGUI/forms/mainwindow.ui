@@ -51,7 +51,6 @@
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_As"/>
-    <addaction name="actionExport_to_PNG"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -65,7 +64,7 @@
     <addaction name="actionExpand"/>
     <addaction name="actionCollapse"/>
     <addaction name="actionColor_nodes"/>
-    <addaction name="actionNode_details"/>
+    <addaction name="actionSelect_all_nodes"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -160,17 +159,17 @@
   </action>
   <action name="actionSelect_Ancestors">
    <property name="text">
-    <string>Select Ancestors</string>
+    <string>Select ancestors</string>
    </property>
   </action>
   <action name="actionExpand">
    <property name="text">
-    <string>Expand</string>
+    <string>Expand (not working)</string>
    </property>
   </action>
   <action name="actionCollapse">
    <property name="text">
-    <string>Collapse</string>
+    <string>Collapse (not working)</string>
    </property>
   </action>
   <action name="actionColor_nodes">
@@ -183,9 +182,9 @@
     <string>Node details...</string>
    </property>
   </action>
-  <action name="actionExport_to_PNG">
+  <action name="actionSelect_all_nodes">
    <property name="text">
-    <string>Export to PNG</string>
+    <string>Select all nodes</string>
    </property>
   </action>
  </widget>

@@ -9,9 +9,9 @@
 
 #include "IDataSourceStrategy.h"
 #include "FilesInfo.h"
-#include "../../Domain/ITreeCollection.h"
-#include "../../Domain/ITree.h"
-#include "../../Domain/ListIterator.h"
+#include "Domain/ITreeCollection.h"
+#include "Domain/ITree.h"
+#include "Domain/ListIterator.h"
 
 #include "Parser/newick_file.h"
 

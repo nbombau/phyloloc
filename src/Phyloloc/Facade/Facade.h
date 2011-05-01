@@ -1,15 +1,15 @@
 #ifndef FACADE_H
 #define FACADE_H
 
-#include "../../Domain/INode.h"
-#include "../../Domain/ITree.h"
-#include "../../Domain/ITreeCollection.h"
+#include "Domain/INode.h"
+#include "Domain/ITree.h"
+#include "Domain/ITreeCollection.h"
 //TODO: This references shall be replaced by the interface. The client
 //shall specify which concrete class the factory method shall create.
-#include "../../Phylopp/DataSource/FileDataSource.h"
-#include "../../Phylopp/DataSource/FilesInfo.h"
-#include "../../Phylopp/Traversal/Traverser.h"
-#include "../../Phylopp/Traversal/INodeVisitor.h"
+#include "Phylopp/DataSource/FileDataSource.h"
+#include "Phylopp/DataSource/FilesInfo.h"
+#include "Phylopp/Traversal/Traverser.h"
+#include "Phylopp/Traversal/INodeVisitor.h"
 
 
 namespace PhylolocFacade

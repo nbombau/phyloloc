@@ -1,9 +1,9 @@
 #ifndef IDATASOURCESTRATEGY_H
 #define IDATASOURCESTRATEGY_H
 
-#include "../../Domain/ITree.h"
-#include "../../Domain/ITreeCollection.h"
-#include "../../Domain/INode.h"
+#include "Domain/ITree.h"
+#include "Domain/ITreeCollection.h"
+#include "Domain/INode.h"
 #include "IDataSourceInfo.h"
 
 namespace DataSource

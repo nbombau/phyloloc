@@ -1,32 +1,35 @@
 #include <QPainter>
 
-#include "../inc/edge.h"
-#include "../inc/node.h"
+#include "PhyloGUI/inc/edge.h"
 
-#include <math.h>
-
-static const double Pi = 3.14159265358979323846264338327950288419717;
-static double TwoPi = 2.0 * Pi;
-
-Edge::Edge(Node *sourceNode, Node *destNode)
-    : arrowSize(10)
+Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
+    : arrowSize(10),color(Qt::black)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
     dest = destNode;
-    source->addEdge(this);
-    dest->addEdge(this);
+    //source->addEdge(this);
+    //dest->addEdge(this);
     adjust();
 }
 
-Node *Edge::sourceNode() const
+GuiNode* Edge::sourceNode() const
 {
     return source;
 }
 
-Node *Edge::destNode() const
+GuiNode* Edge::destNode() const
 {
     return dest;
+}
+
+QColor Edge::getColor() const
+{
+    return color;
+}
+void Edge::setColor(const QColor c)
+{
+    color=c;
 }
 
 void Edge::adjust()
@@ -39,45 +42,53 @@ void Edge::adjust()
 
     prepareGeometryChange();
 
-    if (length > qreal(20.)) {
+    if (length > qreal(20.))
+    {
         QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
         sourcePoint = line.p1() + edgeOffset;
         destPoint = line.p2() - edgeOffset;
-    } else {
+    }
+    else
+    {
         sourcePoint = destPoint = line.p1();
     }
 }
 
 QRectF Edge::boundingRect() const
 {
+    QRectF rect;
     if (!source || !dest)
-        return QRectF();
-
-    qreal penWidth = 1;
-    qreal extra = (penWidth + arrowSize) / 2.0;
-
-    return QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-                                      destPoint.y() - sourcePoint.y()))
-        .normalized()
-        .adjusted(-extra, -extra, extra, extra);
+    {
+        rect = QRectF();
+    }
+    else
+    {
+        qreal penWidth = 1;
+        qreal extra = (penWidth + arrowSize) / 2.0;
+        rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
+                                          destPoint.y() - sourcePoint.y()))
+               .normalized()
+               .adjusted(-extra, -extra, extra, extra);
+    }
+    return rect;
 }
 
-void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (!source || !dest)
         return;
 
-    QLineF line(sourcePoint, destPoint);
-    if (qFuzzyCompare(line.length(), qreal(0.)))
-        return;
+    //Union between the two parts of the line
+    QPointF point(destPoint.x(), sourcePoint.y());
 
-    // Draw the line itself
-    painter->setPen(QPen(Qt::black, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    // Draw the horizontal part of the line
+    QLineF line(sourcePoint, point);
+    painter->setPen(QPen(color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 
-    // Draw the arrows
-    double angle = ::acos(line.dx() / line.length());
-    if (line.dy() >= 0)
-        angle = TwoPi - angle;
+    // Draw the vertical part of the line
+    line.setPoints(point, destPoint);
+    painter->setPen(QPen(color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->drawLine(line);
 }
 

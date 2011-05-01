@@ -1,8 +1,8 @@
 #include <QtGui/QApplication>
-#include "../inc/mainwindow.h"
+#include "PhyloGUI/inc/mainwindow.h"
 
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
