@@ -13,13 +13,9 @@
 #include "Domain/INode.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/GuiAspect.h"
+
 using namespace Domain;
 typedef GuiAspect< BaseAspect> GuiNode;
-
-
-
-
-
 
 namespace Ui
 {

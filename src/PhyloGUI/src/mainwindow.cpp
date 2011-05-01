@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 MainWindow::~MainWindow()
 {
+    //delete graph;
     delete ui;
 }
 
@@ -133,12 +134,12 @@ void MainWindow::on_actionSelect_all_nodes_triggered()
 
 void MainWindow::on_actionSelect_descendants_triggered()
 {
-    printf("Seleccionar descendientes\n");
+    graph->selectNodeDescendants(actualTree);
 }
 
 void MainWindow::on_actionSelect_Ancestors_triggered()
 {
-    printf("Seleccionar ancestros\n");
+    graph->selectNodeAncestors(actualTree);
 }
 
 
