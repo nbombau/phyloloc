@@ -13,8 +13,6 @@
 #include <QRectF>
 #include <stdio.h>
 #include "../Domain/INode.h"
-//#include "inc/graphwidget.h"
-//#include "inc/edge.h"
 #include "inc/graphwidget.h"
 #include <QObject>
 #include <QList>
@@ -133,7 +131,6 @@ public:
         else if (!isSelected())
         {
             gradient.setColorAt(0, color);
-            //gradient.setColorAt(1, Qt::darkYellow);
         }
         painter->setBrush(gradient);
         painter->setPen(QPen(Qt::black, 0));

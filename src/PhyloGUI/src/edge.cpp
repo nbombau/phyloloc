@@ -3,7 +3,7 @@
 #include "PhyloGUI/inc/edge.h"
 
 Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
-    : color(Qt::black)
+    : color(Qt::black),selected(false)
 {
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -31,7 +31,14 @@ void Edge::setColor(const QColor c)
 {
     color = c;
 }
-
+void Edge::setSelected(const bool s)
+{
+	selected = s;
+}
+bool Edge::isSelected() const
+{
+    return selected;
+}
 void Edge::adjust()
 {
     if (!source || !dest)
@@ -86,12 +93,12 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 
     // Draw the horizontal part of the line
     QLineF line(sourcePoint, point);
-    painter->setPen(QPen(color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(selected?Qt::red:color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 
     // Draw the vertical part of the line
     line.setPoints(point, destPoint);
-    painter->setPen(QPen(color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    painter->setPen(QPen(selected?Qt::red:color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter->drawLine(line);
 }
 
