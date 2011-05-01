@@ -7,25 +7,25 @@
 #include <QRectF>
 #include <stdio.h>
 
-#include "../inc/edge.h"
-#include "../inc/node.h"
-#include "../inc/graphwidget.h"
+#include "PhyloGUI/inc/edge.h"
+#include "PhyloGUI/inc/node.h"
+#include "PhyloGUI/inc/graphwidget.h"
 
-Node::Node(GraphWidget *graphWidget)
+Node::Node(GraphWidget* graphWidget)
     : graph(graphWidget)
 {
     setCacheMode(DeviceCoordinateCache);
     setZValue(-1);
-    selected=false;
+    selected = false;
 }
 
-void Node::addEdge(Edge *edge)
+void Node::addEdge(Edge* edge)
 {
     edgeList << edge;
     edge->adjust();
 }
 
-QList<Edge *> Node::edges() const
+QList<Edge*> Node::edges() const
 {
     return edgeList;
 }
@@ -44,7 +44,7 @@ QPainterPath Node::shape() const
     return path;
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *)
+void Node::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget*)
 {
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::darkGray);
@@ -52,23 +52,28 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     QRadialGradient gradient(-3, -3, 10);
 
-    if(selected==true){
+    if (selected == true)
+    {
         gradient.setColorAt(0, Qt::red);
-    } else if(!selected) {
+    }
+    else if (!selected)
+    {
         gradient.setColorAt(0, Qt::yellow);
         gradient.setColorAt(1, Qt::darkYellow);
     }
     painter->setBrush(gradient);
     painter->setPen(QPen(Qt::black, 0));
     painter->drawEllipse(-10, -10, 20, 20);
-    this->y()+20;
+    this->y() + 20;
 }
 
-void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void Node::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-    if(event->modifiers()==Qt::SHIFT){
-        if(this->isUnderMouse()){
-            this->selected=!this->selected;
+    if (event->modifiers() == Qt::SHIFT)
+    {
+        if (this->isUnderMouse())
+        {
+            this->selected = !this->selected;
             this->update();
         }
     }

@@ -11,9 +11,9 @@
 #include <queue>
 
 #include "INodeVisitor.h"
-#include "../../Domain/ITree.h"
-#include "../../Domain/INode.h"
-#include "../../Domain/ListIterator.h"
+#include "Domain/ITree.h"
+#include "Domain/INode.h"
+#include "Domain/ListIterator.h"
 
 namespace Traversal
 {
