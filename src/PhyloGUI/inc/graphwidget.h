@@ -10,7 +10,6 @@
 
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/edge.h"
-#include "PhyloGUI/inc/node.h"
 #include "Domain/INode.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/GuiAspect.h"
