@@ -18,98 +18,98 @@
 namespace Traversal
 {
 
-    /**
-    * Class: Traverser
-    * ----------------
-    * Description: Allows the client to easily traverse a phylogenetic tree
-    * Type Parameter T: T is the node type. Hence, T should implement INode
-    * Type Parameter V: V is the visitor type. The visitor shall visit each node
-    * during the traversal of the tree.
-    */
-    template <class T, class V>
-    class Traverser
-    {
+/**
+* Class: Traverser
+* ----------------
+* Description: Allows the client to easily traverse a phylogenetic tree
+* Type Parameter T: T is the node type. Hence, T should implement INode
+* Type Parameter V: V is the visitor type. The visitor shall visit each node
+* during the traversal of the tree.
+*/
+template <class T, class V>
+class Traverser
+{
     //TODO: Method implementation should be in traverser.cpp.
-    public:
-        /**
-        * Method: traverseDown
-        * --------------------
-        * Description: Traverses all nodes from the root to the
-        * tips, applying the supplied visitor v to each node.
-        * @param t a phylogenetic tree
-        * @param v a visitor to be applied on the tree's nodes
-        */
-        static void traverseDown(Domain::ITree<T>& t, V& v)
-        {
-            traverseDown(*(t.getRoot()), v);
-        }
+public:
+    /**
+    * Method: traverseDown
+    * --------------------
+    * Description: Traverses all nodes from the root to the
+    * tips, applying the supplied visitor v to each node.
+    * @param t a phylogenetic tree
+    * @param v a visitor to be applied on the tree's nodes
+    */
+    static void traverseDown(Domain::ITree<T>& t, V& v)
+    {
+        traverseDown(*(t.getRoot()), v);
+    }
 
-        /**
-        * Method: traverseDown
-        * --------------------
-        * Description: Traverses all nodes from the passed node to the 
-        * tips, applying the supplied visitor v to each node.
-        * @param t a starting node
-        * @param v a visitor to be applied on the starting node's 
-        * descendants
-        */
-        static void traverseDown(T& t, V& v)
-        {
-            //A queue shall be used to avoid recursion
-            std::queue<T*, std::list<T*> > queue;
-            
-            //Push the root
-            queue.push(&t);
-            
-            while (!queue.empty())
-            {
-                T* node = queue.front();
-                
-                queue.pop();
-                
-                //Visit the node that is on top of the queue
-                v.visit(*node);
-                
-                Domain::ListIterator<T>* it = node->getChildrenIterator();
-                
-                //And add the node's children to the queue
-                while(!it->end())
-                {
-                    node = &it->get();
-                    queue.push(node);
-                    it->next();
-                }
-                
-                delete it;
-            }
-        }
+    /**
+    * Method: traverseDown
+    * --------------------
+    * Description: Traverses all nodes from the passed node to the
+    * tips, applying the supplied visitor v to each node.
+    * @param t a starting node
+    * @param v a visitor to be applied on the starting node's
+    * descendants
+    */
+    static void traverseDown(T& t, V& v)
+    {
+        //A queue shall be used to avoid recursion
+        std::queue<T*, std::list<T*> > queue;
 
-        /**
-        * Method: traverseUp
-        * ------------------
-        * Description: Traverses all nodes from the passed node tothe root,
-        * applying the supplied visitor v to each node in the way.
-        * @param t a starting node
-        * @param v a visitor to be applied on each ancestor of the 
-        * starting node
-        */
-        static void traverseUp(T& t, V& v)
+        //Push the root
+        queue.push(&t);
+
+        while (!queue.empty())
         {
-            bool done = false;
-            T* node = &t;
-            
-            //go up the tree
-            while(!done)
+            T* node = queue.front();
+
+            queue.pop();
+
+            //Visit the node that is on top of the queue
+            v.visit(*node);
+
+            Domain::ListIterator<T>* it = node->getChildrenIterator();
+
+            //And add the node's children to the queue
+            while (!it->end())
             {
-                v.visit(*node);
-                //get the parent
-                if(!node->isRoot())
-                    node = node->getParent();
-                else
-                    done = true;                
+                node = &it->get();
+                queue.push(node);
+                it->next();
             }
+
+            delete it;
         }
-    };
+    }
+
+    /**
+    * Method: traverseUp
+    * ------------------
+    * Description: Traverses all nodes from the passed node tothe root,
+    * applying the supplied visitor v to each node in the way.
+    * @param t a starting node
+    * @param v a visitor to be applied on each ancestor of the
+    * starting node
+    */
+    static void traverseUp(T& t, V& v)
+    {
+        bool done = false;
+        T* node = &t;
+
+        //go up the tree
+        while (!done)
+        {
+            v.visit(*node);
+            //get the parent
+            if (!node->isRoot())
+                node = node->getParent();
+            else
+                done = true;
+        }
+    }
+};
 }
 
 #endif

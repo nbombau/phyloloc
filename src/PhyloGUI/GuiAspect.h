@@ -39,7 +39,7 @@ public:
     /*enum { Type = UserType + 1 };
     int type() const { return Type; }*/
 
-    GuiAspect() : selected(false), expanded(true),color(Qt::yellow)
+    GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
         setCacheMode(DeviceCoordinateCache);
         setZValue(-1);
@@ -47,9 +47,9 @@ public:
 
     ~GuiAspect() {}
 
-        
-        /*GuiAspect(const Location l, const NodeName n, const BranchLength b)
-        : Domain::Node<GuiAspect<T> > (l, n, b) {}*/
+
+    /*GuiAspect(const Location l, const NodeName n, const BranchLength b)
+    : Domain::Node<GuiAspect<T> > (l, n, b) {}*/
 
     bool isSelected() const
     {
@@ -81,31 +81,31 @@ public:
         color = c;
     }
 
-    void addEdgeFrom(Edge *edge)
-     {
-         edgeListFrom.push_back(edge);
-     }
+    void addEdgeFrom(Edge* edge)
+    {
+        edgeListFrom.push_back(edge);
+    }
 
-     QList<Edge *> edgesFrom() const
-     {
-         return edgeListFrom;
-     }
+    QList<Edge*> edgesFrom() const
+    {
+        return edgeListFrom;
+    }
 
-     void addEdgeTo(Edge *edge)
-      {
-          edgeListTo.push_front(edge);
-      }
+    void addEdgeTo(Edge* edge)
+    {
+        edgeListTo.push_front(edge);
+    }
 
-      QList<Edge *> edgesTo() const
-      {
-          return edgeListTo;
-      }
+    QList<Edge*> edgesTo() const
+    {
+        return edgeListTo;
+    }
 
     QRectF boundingRect() const
     {
         qreal adjust = 2;
         QRectF rect(-10 - adjust, -10 - adjust,
-                      23 + adjust, 23 + adjust);
+                    23 + adjust, 23 + adjust);
         return rect;
     }
 
@@ -167,8 +167,8 @@ private:
     bool selected;
     bool expanded;
     QColor color;
-    QList<Edge *> edgeListFrom;
-    QList<Edge *> edgeListTo;
+    QList<Edge*> edgeListFrom;
+    QList<Edge*> edgeListTo;
     //QPointF newPos;
     //GraphWidget *graph;
 };

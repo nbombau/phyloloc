@@ -11,79 +11,79 @@
 namespace Domain
 {
 
-    /**
-    * Class: ITreeCollection
-    * ----------------------
-    * Description: Class that defines a collection of phylogenetic trees
-    * Type Parameter T: T is the underlying node class 
+/**
+* Class: ITreeCollection
+* ----------------------
+* Description: Class that defines a collection of phylogenetic trees
+* Type Parameter T: T is the underlying node class
+*/
+template <class T>
+class ITreeCollection
+{
+
+public:
+
+    /*
+    * Method: addTree
+    * ---------------
+    * Description: Adds a tree to the collection.
+    * @return the recently added tree
     */
-    template <class T>
-    class ITreeCollection
+    virtual ITree<T>* addTree()
     {
+        ITree<T>* const tree = new ITree<T>();
+        trees.push_back(tree);
+        return tree;
+    }
 
-    public:
+    /*
+    * Method: getIterator
+    * -------------------
+    * Description: Provides the user a way to iterate through the
+    * trees of the collection.
+    * @return trees iterator
+    */
+    ListIterator<ITree<T> >* getIterator() const
+    {
+        return new ListIterator<ITree<T> >(trees);
+    }
 
-        /*
-        * Method: addTree
-        * ---------------
-        * Description: Adds a tree to the collection.
-        * @return the recently added tree
-        */
-        virtual ITree<T>* addTree()
+    /*
+     * Method: elementAt
+     * -------------------
+     * Description: Returns the element at certain index
+     * @return element at certain index, null otherwise
+     */
+    ITree<T>* elementAt(int index) const
+    {
+        int i = 0;
+        ITree<T>* ret = NULL;
+        ListIterator<ITree<T> >* it = this->getIterator();
+
+        while (i < index && !it->end())
         {
-            ITree<T>* const tree = new ITree<T>();
-            trees.push_back(tree);
-            return tree;
+            it->next();
+            i++;
         }
 
-        /*
-        * Method: getIterator
-        * -------------------
-        * Description: Provides the user a way to iterate through the 
-        * trees of the collection.
-        * @return trees iterator 
-        */
-        ListIterator<ITree<T> >* getIterator() const
+        if (i == index)
         {
-            return new ListIterator<ITree<T> >(trees);
-        }
-        
-        /*
-         * Method: elementAt
-         * -------------------
-         * Description: Returns the element at certain index
-         * @return element at certain index, null otherwise 
-         */
-        ITree<T>* elementAt(int index) const
-        {
-            int i = 0;
-            ITree<T>* ret = NULL;
-            ListIterator<ITree<T> >* it = this->getIterator();
-
-            while (i < index && !it->end())
-            {
-                it->next();
-                i++;
-            }
-            
-            if(i == index)
-            {
-                ret = &it->get();
-            }
-            
-            return ret;
+            ret = &it->get();
         }
 
-        //Destructor
-        ~ITreeCollection()
-        {
-            delete_container(trees);
-        }
+        return ret;
+    }
 
-    private:
+    //Destructor
+    ~ITreeCollection()
+    {
+        delete_container(trees);
+    }
 
-        std::list<ITree<T>*> trees;
-    };
+private:
+
+    std::list<ITree<T>*> trees;
+};
 }
 
 #endif

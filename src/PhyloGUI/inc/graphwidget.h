@@ -34,7 +34,7 @@ public:
     GraphWidget(QWidget* parent = 0);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
-    void paintNode(QColor color,ITree<GuiNode>* tree);
+    void paintNode(QColor color, ITree<GuiNode>* tree);
     void draw(ITree<GuiNode>* tree);
     void unSelectAllNodes(ITree<GuiNode>* tree);
     void selectAllNodes(ITree<GuiNode>* tree);
