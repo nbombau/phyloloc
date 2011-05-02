@@ -266,7 +266,9 @@ namespace {
         {
             
             bool ret = node1->getName().compare(node2->getName()) == 0 &&
-                       node1->getBranchLength()-node2->getBranchLength() < epsilon;
+                       node1->getBranchLength()-node2->getBranchLength() < epsilon &&
+                       node1->getLocation().compare(node2->getLocation()) == 0;
+                       
                        
             EXPECT_TRUE(ret) << "n1: " << node1->getName()<< ":" << node1->getBranchLength() << " - n2: " << node2->getName()<< ":" << node2->getBranchLength();
             if (ret)
