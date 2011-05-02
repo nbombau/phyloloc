@@ -1,7 +1,8 @@
-
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
 
 namespace {
     void produce_random_tree_rec(std::vector<int>::const_iterator beg,
