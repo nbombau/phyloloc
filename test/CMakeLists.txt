@@ -6,6 +6,7 @@ set(test_src TestMain.cpp
              Domain/ITreeTest.cpp
              Domain/ITreeCollectionTest.cpp
              Traverser/TraverserTest.cpp
+             DataSource/FileDataSourceTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)
