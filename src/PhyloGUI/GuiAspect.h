@@ -118,9 +118,10 @@ public:
     {
         Q_UNUSED(option);
         Q_UNUSED(widget);
+        QRect rect(-7, -7, 20, 20);
         painter->setPen(Qt::NoPen);
         painter->setBrush(Qt::darkGray);
-        painter->drawEllipse(-7, -7, 20, 20);
+        painter->drawEllipse(rect);
 
         QRadialGradient gradient(-3, -3, 10);
 
@@ -134,6 +135,7 @@ public:
         }
         painter->setBrush(gradient);
         painter->setPen(QPen(Qt::black, 0));
+        rect=QRect(-7, -7, 20, 20);
         painter->drawEllipse(-10, -10, 20, 20);
     }
 

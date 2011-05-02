@@ -7,6 +7,7 @@
 #include <queue>
 #include <list>
 #include <QSizePolicy>
+#include <QGraphicsTextItem>
 
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/edge.h"

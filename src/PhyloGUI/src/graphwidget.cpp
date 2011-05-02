@@ -6,7 +6,7 @@ using namespace Traversal;
 using namespace Domain;
 using namespace std;
 
-class ColorVisitor : public INodeVisitor< GuiNode>
+class ColorVisitor
 {
 public:
     ColorVisitor(QColor c)
@@ -29,7 +29,7 @@ private:
 };
 
 
-class SelectVisitor : public INodeVisitor< GuiNode>
+class SelectVisitor
 {
 public:
     void visit(GuiNode& n)
@@ -39,7 +39,26 @@ public:
     }
 };
 
-class UnSelectVisitor : public INodeVisitor< GuiNode>
+class SelectCollectorVisitor
+{
+public:
+	queue<GuiNode*, list< GuiNode*> > getNodes()
+	{
+		return nodes;
+	}
+
+    void visit(GuiNode& n)
+    {
+        if(n.isSelected())
+        {
+        	nodes.push(&n);
+        }
+    }
+private:
+    queue<GuiNode*, list< GuiNode*> > nodes;
+};
+
+class UnSelectVisitor
 {
 public:
     void visit(GuiNode& n)
@@ -60,7 +79,7 @@ public:
     }
 };
 
-class SelectDescendantsVisitor : public INodeVisitor< GuiNode>
+class SelectDescendantsVisitor
 {
 public:
     void visit(GuiNode& n)
@@ -87,31 +106,11 @@ public:
 };
 
 
-class SelectAncestorsVisitor : public INodeVisitor< GuiNode>
+class SelectAncestorsVisitor
 {
 public:
     void visit(GuiNode& n)
     {
-    	/*QList<Edge *> edgesTo;
-    	edgesTo=n.edgesTo();
-    	Edge * edge=edgesTo.at(0);
-        if(n.isSelected() || (edge!=NULL && edge->isSelected()))
-        {
-        	printf("ACA");
-			unsigned int i=0;
-			unsigned int size;
-        	n.setSelected(true);
-        	n.update();
-        	QList<Edge *> edgesFrom = n.edgesFrom();
-			size=edgesFrom.count();
-			for(;i<size;i++)
-        	{
-				edge=edgesFrom.at(i);
-				edge->setSelected(true);
-				edge->update();
-        	}
-        }*/
-    	printf("ACAACACACACA\n");
     	QList<Edge *> edgesTo;
     	QList<Edge *> edgesFrom;
     	edgesTo=n.edgesTo();
@@ -120,27 +119,20 @@ public:
 		Edge * edge;
 		for(;i<size;i++)
 		{
-			printf("ACA1\n");
 			edge=edgesTo.at(i);
 			if(edge->isSelected())
 			{
-				printf("ACA2\n");
 				n.setSelected(true);
 				n.update();
 			}
 
 		}
-		printf("ACA5\n");
-		std::cout << n.isSelected() << "\n";
-		std::cout << n.getName() << "\n";
 		if(n.isSelected())
 		{
-			printf("ACA3\n");
 			edgesFrom=n.edgesFrom();
 			Edge * edge=edgesFrom.at(0);
 			if(edge!=NULL)
 			{
-				printf("ACA4\n");
 				edge->setSelected(true);
 				edge->update();
 			}
@@ -199,6 +191,7 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         nodeCoord.setX((*leafNumber) * 100);
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
         ++(*leafNumber);
+        //QGraphicsTextItem text* =scene->addText("hola");
     }
     else
     {
@@ -217,8 +210,6 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
 
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
     scene->addItem(node);
-
-    std::cout << node->getName() << "\n";
 
     it->restart();
     while (!it->end())
@@ -245,7 +236,6 @@ void GraphWidget::drawTree(QGraphicsScene* scene, GuiNode* node)
 void GraphWidget::draw(ITree<GuiNode>* tree)
 {
     QGraphicsScene* scene = new QGraphicsScene(this);
-    //scene->setItemIndexMethod(QGraphicsScene::NoIndex);
     this->setScene(scene);
 
     drawTree(scene, tree->getRoot());
@@ -291,7 +281,7 @@ void GraphWidget::reScaleScene()
 
 void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 {
-    Traverser<GuiNode, ColorVisitor> t = Traverser<GuiNode, ColorVisitor>();
+    Traverser<GuiNode, ColorVisitor> t;
     ColorVisitor v = ColorVisitor(color);
     GuiNode& startNode = *tree->getRoot();
     t.traverseDown(startNode, v);
@@ -299,34 +289,44 @@ void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 
 void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
 {
-    Traverser<GuiNode, SelectVisitor> t = Traverser<GuiNode, SelectVisitor>();
-    SelectVisitor v = SelectVisitor();
+    Traverser<GuiNode, SelectVisitor> t;
+    SelectVisitor v;
     GuiNode& startNode = *tree->getRoot();
     t.traverseDown(startNode, v);
 }
 
 void GraphWidget::unSelectAllNodes(ITree<GuiNode>* tree)
 {
-    Traverser<GuiNode, UnSelectVisitor> t = Traverser<GuiNode, UnSelectVisitor>();
-    UnSelectVisitor v = UnSelectVisitor();
+    Traverser<GuiNode, UnSelectVisitor> t;
+    UnSelectVisitor v;
     GuiNode& startNode = *tree->getRoot();
     t.traverseDown(startNode, v);
 }
 
 void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
 {
-    Traverser<GuiNode, SelectDescendantsVisitor> t = Traverser<GuiNode, SelectDescendantsVisitor>();
-    SelectDescendantsVisitor v = SelectDescendantsVisitor();
+    Traverser<GuiNode, SelectDescendantsVisitor> t;
+    SelectDescendantsVisitor v;
     GuiNode& startNode = *tree->getRoot();
     t.traverseDown(startNode, v);
 }
 
 void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 {
-	printf("Llegue al ancestors");
-	Traverser<GuiNode, SelectAncestorsVisitor> t = Traverser<GuiNode, SelectAncestorsVisitor>();
-	SelectAncestorsVisitor v = SelectAncestorsVisitor();
+	Traverser<GuiNode, SelectCollectorVisitor> t;
+	SelectCollectorVisitor v;
 	GuiNode& startNode = *tree->getRoot();
-	t.traverseUp(startNode, v);
+	t.traverseDown(startNode, v);
+	queue<GuiNode*, list< GuiNode*> > nodes =v.getNodes();
+	std::cout << nodes.size();
+
+	Traverser<GuiNode, SelectAncestorsVisitor> tAncestor;
+	SelectAncestorsVisitor vAnvestor;
+	while(!nodes.empty())
+	{
+		GuiNode & startNode = *nodes.front();
+		tAncestor.traverseUp(startNode, vAnvestor);
+		nodes.pop();
+	}
 }
 

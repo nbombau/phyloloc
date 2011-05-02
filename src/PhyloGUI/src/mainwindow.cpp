@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);
     ui->actionSelect_all_nodes->setEnabled(false);
+    ui->actionSelect_descendants->setEnabled(false);
+    ui->actionSelect_Ancestors->setEnabled(false);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -148,6 +150,8 @@ void MainWindow::drawTree()
     ui->actionClear_selection->setEnabled(true);
     ui->actionColor_nodes->setEnabled(true);
     ui->actionSelect_all_nodes->setEnabled(true);
+    ui->actionSelect_descendants->setEnabled(true);
+	ui->actionSelect_Ancestors->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
