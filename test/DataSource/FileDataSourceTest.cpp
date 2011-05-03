@@ -265,9 +265,9 @@ namespace {
         static bool compareNodes (const TestNode* node1,const TestNode* node2)
         {
             
-            bool ret = node1->getName().compare(node2->getName()) == 0 &&
+            bool ret = node1->getName()==node2->getName() &&
                        node1->getBranchLength()-node2->getBranchLength() < epsilon &&
-                       node1->getLocation().compare(node2->getLocation()) == 0;
+                       node1->getLocation()==node2->getLocation();
                        
                        
             EXPECT_TRUE(ret) << "n1: " << node1->getName()<< ":" << node1->getBranchLength() << " - n2: " << node2->getName()<< ":" << node2->getBranchLength();
