@@ -15,6 +15,7 @@ namespace {
     using namespace DataSource;
     using namespace Domain;
     using ::testing::Test;  
+    using namespace std;
     
     typedef MockNode<Domain::BaseAspect> TestNode;
 
@@ -48,6 +49,17 @@ namespace {
             node->setLocation(location);
         }
         
+        void loadTreeFromFile(std::string treesFile,std::string placesFile,ITreeCollection<TestNode>& trees)
+        {
+            FilesInfo info(treesFile,placesFile);
+            fileDataSource.load(info,trees);
+        }
+        
+        void saveTreeToFile(std::string treesFile,ITreeCollection<TestNode>& trees)
+        {
+            FilesInfo info(treesFile,"");
+            fileDataSource.save(trees,info);
+        }
     
         // (,,(,));    no nodes are named
         static void loadTree1(ITree< TestNode >* tree)
@@ -313,9 +325,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree1(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree1.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree1.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -325,9 +336,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree2(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree2.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree2.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -337,9 +347,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree3(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree3.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree3.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -349,9 +358,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree4(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree4.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree4.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -361,9 +369,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree5(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree5.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree5.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -373,9 +380,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree6(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree6.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree6.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -385,9 +391,8 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree7(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree7.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree7.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -397,10 +402,83 @@ namespace {
         ITreeCollection<TestNode> myTrees;
         loadTree8(myTrees.addTree());
         
-        FilesInfo info("TestTrees/tree8.nwk","TestTrees/trees.dat");
         ITreeCollection<TestNode> trees;
-        fileDataSource.load(info,trees);
+        loadTreeFromFile("TestTrees/tree8.nwk","TestTrees/trees.dat",trees);
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
+    
+
+    TEST_F(FileDataSourceTest, loadTest9) 
+    {
+        ITreeCollection<TestNode> myTrees;
+        loadTree1(myTrees.addTree());
+        loadTree2(myTrees.addTree());
+        loadTree3(myTrees.addTree());
+        loadTree4(myTrees.addTree());
+        loadTree5(myTrees.addTree());
+        loadTree6(myTrees.addTree());
+        loadTree7(myTrees.addTree());
+        loadTree8(myTrees.addTree());
+      
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/tree1.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree2.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree3.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree4.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree5.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree6.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree7.nwk","TestTrees/trees.dat",trees);
+        loadTreeFromFile("TestTrees/tree8.nwk","TestTrees/trees.dat",trees);
+      
+        EXPECT_TRUE(compareTreeCollections(myTrees,trees));
+    } 
+  
+    TEST_F(FileDataSourceTest, saveTest1) 
+    {
+        ITreeCollection<TestNode> trees;
+        loadTree1(trees.addTree());
+        
+        saveTreeToFile("TestTrees/outTree.nwk",trees);
+        
+        std::ifstream f("TestTrees/outTree.nwk");
+        std::string line;
+        getline(f, line);
+                
+        EXPECT_EQ("(:0,:0,(:0,:0):0):0;",line);
+    }      
+   
+    TEST_F(FileDataSourceTest, saveTest2) 
+    {
+        ITreeCollection<TestNode> trees;
+        loadTree1(trees.addTree());
+        loadTree2(trees.addTree());
+        loadTree3(trees.addTree());
+        loadTree4(trees.addTree());
+        loadTree5(trees.addTree());
+        loadTree6(trees.addTree());
+        loadTree7(trees.addTree());
+        loadTree8(trees.addTree());
+        
+        saveTreeToFile("TestTrees/outTree.nwk",trees);
+        
+        std::ifstream f("TestTrees/outTree.nwk");
+        std::string line,tree_str;
+       
+        while (getline(f, line))
+            tree_str += line;
+            
+        std::string expected_str;
+        
+        expected_str.append("(:0,:0,(:0,:0):0):0;");
+        expected_str.append("(A:0,B:0,(C:0,D:0):0):0;");
+        expected_str.append("(A:0,B:0,(C:0,D:0)E:0)F:0;");
+        expected_str.append("(:0.1,:0.2,(:0.3,:0.4):0.5):0;");
+        expected_str.append("(:0.1,:0.2,(:0.3,:0.4):0.5):0;");
+        expected_str.append("(A:0.1,B:0.2,(C:0.3,D:0.4):0.5):0;");
+        expected_str.append("(A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F:0;");
+        expected_str.append("((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A:0;");
+                                      
+        EXPECT_EQ(expected_str,tree_str);
+    }   
 }

@@ -54,9 +54,9 @@ public:
      * Description: Returns the element at certain index
      * @return element at certain index, null otherwise
      */
-    ITree<T>* elementAt(int index) const
+    ITree<T>* elementAt(unsigned int index) const
     {
-        int i = 0;
+        unsigned int i = 0;
         ITree<T>* ret = NULL;
         ListIterator<ITree<T> >* it = this->getIterator();
 
