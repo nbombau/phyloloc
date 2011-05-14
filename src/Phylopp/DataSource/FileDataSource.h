@@ -15,7 +15,7 @@
 
 #include "Parser/newick_file.h"
 
-#define FILE_LOCATION_PARSER_MAX_LINE 256
+
 
 using namespace std;
 
@@ -26,6 +26,8 @@ template <class T>
 class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
 {
 private:
+
+    static const unsigned int locationMaxLine = 256;
     /**
      * Method: loadData
      * --------------------
@@ -44,13 +46,13 @@ private:
         {
             NodeName name;
 
-            char line[FILE_LOCATION_PARSER_MAX_LINE];
+            char line[locationMaxLine];
             char* token1;
             char* token2;
 
             // Read each line in order to get the information associated to
             // the node. Assumes that each line represents a node.
-            while (f.getline(line, FILE_LOCATION_PARSER_MAX_LINE) && ret)
+            while (f.getline(line, locationMaxLine) && ret)
             {
                 token1 = strtok(line, ",");
                 token2 = strtok(NULL, ",");
@@ -92,15 +94,7 @@ public:
     {
         NewickParser<T> newick;
 
-        Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
-
-        while (!iter->end())
-        {
-            Domain::ITree<T>& tree = iter->get();
-            newick.saveNewickFile(info.getTreesFilePath(), &tree);
-            iter->next();
-        }
-        delete iter;
+        newick.saveNewickFile(info.getTreesFilePath(), trees);
     }
 };
 }

@@ -5,8 +5,8 @@
 #include <iostream>
 #include <fstream>
 #include <mili/mili.h>
-#include "../../../Domain/ITree.h"
-#include "../../../Domain/ListIterator.h"
+#include "Domain/ITree.h"
+#include "Domain/ListIterator.h"
 
 typedef std::string NodeName;
 typedef std::map<NodeName, std::string> DataBag;
@@ -20,6 +20,8 @@ public:
     {
         std::ifstream f(fname.c_str());
 
+        this->bag = bag;
+        
         if (f)
         {
             const char* ptr;
@@ -33,7 +35,7 @@ public:
             do
             {
                 Domain::ITree<T>* tree = trees.addTree();
-                ret = load_node(ptr, tree->getRoot(), bag);
+                ret = load_node(ptr, tree->getRoot());
 
                 if (ret)
                 {
@@ -56,15 +58,28 @@ public:
         }
     }
 
-    void saveNewickFile(const std::string fname, Domain::ITree<T>*phyloTree)
+    void saveNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
     {
+        Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
+
         std::ofstream os(fname.c_str());
-        saveTree(phyloTree->getRoot(), os);
+        
+        while (!iter->end())
+        {
+            Domain::ITree<T>& tree = iter->get();
+            saveTree(tree.getRoot(), os);
+            os << ";\n";
+            iter->next();
+        }
+        delete iter;
     }
 
 private:
 
-    static bool load_node(const char*& character, T* node, DataBag& bag)
+    DataBag bag;
+    
+    
+    bool load_node(const char*& character, T* node)
     {
         bool ret = true;
         std::string name;
@@ -78,7 +93,7 @@ private:
         {
             case '(':
                 // we are nonleaf. Load new child.
-                ret = load_children(++character, node, bag); // leaves in a parent
+                ret = load_children(++character, node); // leaves in a parent
                 character++;
                 if (ret) //consume nonleaf name and branchlength, if present
                 {
@@ -115,7 +130,7 @@ private:
         return ret;
     }
 
-    static bool load_children(const char*& character, T* parent, DataBag& bag)
+    bool load_children(const char*& character, T* parent)
     {
         T* child;
         bool keep_reading;
@@ -127,7 +142,7 @@ private:
         do
         {
             child = parent->addChild();
-            ret = load_node(character, child, bag);
+            ret = load_node(character, child);
 
             if (ret)
             {
@@ -211,11 +226,8 @@ private:
 
     static void saveTree(T* node, std::ostream& os)
     {
-        if (node->isLeaf())
-        {
-            os << node->getName();
-        }
-        else
+       
+        if (!node->isLeaf())
         {
             os << '(';
             Domain::ListIterator<T>* iter = node->getChildrenIterator();
@@ -235,7 +247,7 @@ private:
             os << ')';
 
         }
-        os << ':' << node->getBranchLength();
+        os << node->getName() << ':' << node->getBranchLength();
     }
 };
 
