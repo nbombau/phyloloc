@@ -6,6 +6,22 @@ using namespace Traversal;
 using namespace Domain;
 using namespace std;
 
+struct AlwaysTruePredicate
+{
+    bool operator()(GuiNode* node) const
+    {
+        return true;
+    }
+};
+
+struct IsSelectedPredicate
+{
+    bool operator()(GuiNode* node) const
+    {
+        return node->isSelected();
+    }
+};
+
 class ColorAction
 {
 public:
@@ -16,13 +32,11 @@ public:
 
     VisitAction visitNode(GuiNode* n)
     {
-        if (n->isSelected())
-        {
-            n->setColor(color);
-            n->setSelected(false);
-            n->update();
-        }
-        return continueTraversing;
+        n->setColor(color);
+        n->setSelected(false);
+        n->update();
+        
+        return ContinueTraversing;
     }
 
 private:
@@ -38,29 +52,8 @@ public:
         n->setSelected(true);
         n->update();
         
-        return continueTraversing;
+        return ContinueTraversing;
     }
-};
-
-class SelectCollectorAction
-{
-public:
-	queue<GuiNode*, list< GuiNode*> > getNodes()
-	{
-		return nodes;
-	}
-
-    VisitAction visitNode(GuiNode* n)
-    {
-        if(n->isSelected())
-        {
-        	nodes.push(n);
-        }
-        
-        return continueTraversing;
-    }
-private:
-    queue<GuiNode*, list< GuiNode*> > nodes;
 };
 
 class UnSelectAction
@@ -82,7 +75,7 @@ public:
 			edge->update();
 		}
 		
-		return continueTraversing;
+		return ContinueTraversing;
     }
 };
 
@@ -109,7 +102,7 @@ public:
 				edge->update();
         	}
         }
-        return continueTraversing;
+        return ContinueTraversing;
     }
 };
 
@@ -145,15 +138,21 @@ public:
 				edge->update();
 			}
 		}
-		return continueTraversing;
+		return ContinueTraversing;
     }
 };
 
-struct AlwaysTruePredicate
+class SelectCollectorAction
 {
-    bool operator()(GuiNode* node) const
+public:
+    
+    VisitAction visitNode(GuiNode* n)
     {
-        return true;
+        Traverser<GuiNode, SelectAncestorsAction, AlwaysTruePredicate> tAncestor;
+        SelectAncestorsAction aAncestor;
+        tAncestor.traverseUp(n, aAncestor);
+        
+        return ContinueTraversing;
     }
 };
 
@@ -230,7 +229,7 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     it->restart();
     while (!it->end())
     {
-        GuiNode* auxNode = it->get();
+        GuiNode* const auxNode = it->get();
         edge = new Edge(node, auxNode);
 
         scene->addItem(edge);
@@ -297,10 +296,10 @@ void GraphWidget::reScaleScene()
 
 void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 {
-    Traverser<GuiNode, ColorAction, AlwaysTruePredicate> t;
+    Traverser<GuiNode, ColorAction, IsSelectedPredicate> t;
     ColorAction v = ColorAction(color);
 
-    GuiNode* startNode = tree->getRoot();
+    GuiNode* const startNode = tree->getRoot();
     t.traverseDown(startNode, v);
 }
 
@@ -309,7 +308,7 @@ void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
     Traverser<GuiNode, SelectAction, AlwaysTruePredicate> t;
     SelectAction a;
     
-    GuiNode* startNode = tree->getRoot();
+    GuiNode* const startNode = tree->getRoot();
     t.traverseDown(startNode, a);
 }
 
@@ -317,7 +316,7 @@ void GraphWidget::unSelectAllNodes(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, UnSelectAction, AlwaysTruePredicate> t;
     UnSelectAction a;
-    GuiNode* startNode = tree->getRoot();
+    GuiNode* const startNode = tree->getRoot();
     t.traverseDown(startNode, a);
 }
 
@@ -326,30 +325,18 @@ void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
     Traverser<GuiNode, SelectDescendantsAction, AlwaysTruePredicate> t;
     SelectDescendantsAction a;
     
-    GuiNode* startNode = tree->getRoot();
+    GuiNode* const startNode = tree->getRoot();
     t.traverseDown(startNode, a);
 }
 
 void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 {
-	Traverser<GuiNode, SelectCollectorAction, AlwaysTruePredicate> t;
+    Traverser<GuiNode, SelectCollectorAction, IsSelectedPredicate> t;
 	SelectCollectorAction a;
 
-	GuiNode* startNode = tree->getRoot();
+	GuiNode* const startNode = tree->getRoot();
     
 	t.traverseDown(startNode, a);
-	queue<GuiNode*, list< GuiNode*> > nodes = a.getNodes();
-	std::cout << nodes.size();
 
-	Traverser<GuiNode, SelectAncestorsAction, AlwaysTruePredicate> tAncestor;
-	SelectAncestorsAction aAncestor;
-    
-   
-	while(!nodes.empty())
-	{
-		GuiNode* startNode = nodes.front();
-        tAncestor.traverseUp(startNode, aAncestor);
-		nodes.pop();
-	}
 }
 

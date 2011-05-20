@@ -58,14 +58,14 @@ public:
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
         
-        VisitAction act = continueTraversing;
+        VisitAction act = ContinueTraversing;
         //A queue shall be used to avoid recursion
         std::queue<T*, std::list<T*> > queue;
 
         //Push the root
         queue.push(t);
 
-        while (!queue.empty() && act == continueTraversing)
+        while (!queue.empty() && act == ContinueTraversing)
         {
             T* node = queue.front();
 
@@ -74,7 +74,7 @@ public:
             //Visit the node that is on top of the queue
             act = v.visit(node);
 
-            if(act == continueTraversing)
+            if(act == ContinueTraversing)
             {
                 Domain::ListIterator<T>* it = node->getChildrenIterator();
                 
@@ -104,21 +104,21 @@ public:
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
         
-        VisitAction act = continueTraversing;
+        VisitAction act = ContinueTraversing;
         T* node = t;
 
         //go up the tree
-        while (act == continueTraversing)
+        while (act == ContinueTraversing)
         {
             act = v.visit(node);
             
-            if(act == continueTraversing)
+            if(act == ContinueTraversing)
             {
                 //get the parent
                 if (!node->isRoot())
                     node = node->getParent();
                 else
-                    act = stopTraversing;    
+                    act = StopTraversing;    
             }            
         }
     }

@@ -177,7 +177,6 @@ moc_mainwindow.cpp: PhyloGUI/inc/graphwidget.h \
 		Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
 		Domain/ITreeCollection.h \
@@ -192,7 +191,6 @@ moc_mainwindow.cpp: PhyloGUI/inc/graphwidget.h \
 moc_graphwidget.cpp: Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/inc/graphwidget.h \
 		PhyloGUI/GuiAspect.h \
@@ -227,7 +225,6 @@ main.o: PhyloGUI/src/main.cpp PhyloGUI/inc/mainwindow.h \
 		Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
 		Domain/ITreeCollection.h \
@@ -243,7 +240,6 @@ mainwindow.o: PhyloGUI/src/mainwindow.cpp PhyloGUI/inc/mainwindow.h \
 		Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
 		Domain/ITreeCollection.h \
@@ -259,10 +255,8 @@ graphwidget.o: PhyloGUI/src/graphwidget.cpp PhyloGUI/inc/graphwidget.h \
 		Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
-		Phylopp/Traversal/INodeVisitor.h \
 		Phylopp/Traversal/Traverser.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o graphwidget.o PhyloGUI/src/graphwidget.cpp
 
@@ -271,7 +265,6 @@ edge.o: PhyloGUI/src/edge.cpp PhyloGUI/inc/edge.h \
 		Domain/ITree.h \
 		Domain/INode.h \
 		Domain/ListIterator.h \
-		Domain/IIterator.h \
 		PhyloGUI/GuiAspect.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o edge.o PhyloGUI/src/edge.cpp
 
