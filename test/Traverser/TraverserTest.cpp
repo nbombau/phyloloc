@@ -4,7 +4,7 @@
 
 #include "../../src/Domain/INode.h"
 #include "../../src/Phylopp/Traversal/Traverser.h"
-#include "../../src/Phylopp/Traversal/INodeVisitor.h"
+#include "../../src/Phylopp/Traversal/NodeVisitor.h"
 #include "../../src/Domain/ITreeCollection.h"
 #include "../../src/Domain/ITree.h"
 #include "../Domain/MockNode.h"
@@ -40,12 +40,21 @@ namespace {
         }        
     };
     
-    class TagVisitor : public INodeVisitor<TestNode>
+    class TagAction
     {
     public:
-        void visit(TestNode& n)
+        VisitAction visitNode(TestNode* n)
         {
-            n.visited = true;
+            n->visited = true;
+            return ContinueTraversing;
+        }
+    };
+    
+    struct AlwaysTruePredicate
+    {
+        bool operator()(TestNode* node) const
+        {
+            return true;
         }
     };
     
@@ -60,9 +69,9 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseDown(t, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseDown(t, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -90,9 +99,9 @@ namespace {
         TestNode* c2c1 = c1->addChild();
         TestNode* c2c2 = c1->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseDown(t, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseDown(t, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -132,9 +141,9 @@ namespace {
         TestNode* c2c1 = c1->addChild();
         TestNode* c2c2 = c1->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseDown(*n, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseDown(n, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -174,9 +183,9 @@ namespace {
         TestNode* c2c1 = c2->addChild();
         TestNode* c2c2 = c2->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseDown(*c2, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseDown(c2, a);
         
         ASSERT_FALSE(n->visited);
         ASSERT_FALSE(c1->visited);
@@ -215,9 +224,9 @@ namespace {
         TestNode* c2c1 = c2->addChild();
         TestNode* c2c2 = c2->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseDown(*c1c2, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseDown(c1c2, a);
         
         ASSERT_FALSE(n->visited);
         ASSERT_FALSE(c1->visited);
@@ -260,10 +269,10 @@ namespace {
         TestNode* c2c1 = c2->addChild();
         TestNode* c2c2 = c2->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseUp(*c1c2, v);
-        
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseUp(c1c2, a);
+
         ASSERT_TRUE(n->visited);
         ASSERT_TRUE(c1->visited);
         ASSERT_FALSE(c2->visited);
@@ -301,9 +310,10 @@ namespace {
         TestNode* c2c1 = c2->addChild();
         TestNode* c2c2 = c2->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseUp(*c1, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseUp(c1, a);
+        
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -343,9 +353,10 @@ namespace {
         TestNode* c2c1 = c2->addChild();
         TestNode* c2c2 = c2->addChild();
         
-        Traverser<TestNode, TagVisitor> traverser;
-        TagVisitor v;
-        traverser.traverseUp(*n, v);
+        Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
+        TagAction a;
+        traverser.traverseUp(n, a);
+        
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);

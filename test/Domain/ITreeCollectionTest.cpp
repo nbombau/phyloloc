@@ -10,8 +10,6 @@ namespace {
     using namespace Domain;
     using ::testing::Test;
     
-    typedef MockNode<Domain::BaseAspect> TestNode;
-    
     
     class ITreeCollectionTest : public Test 
     {
@@ -45,11 +43,11 @@ namespace {
         
         ListIterator<ITree<TestNode> >* it = col.getIterator();
         
-        ITree<TestNode>& tAux = it-> get();
+        ITree<TestNode>* tAux = it-> get();
         
         //if we iterate through the trees of the collection, there it shouldn
         //be only one, and particularly the one added previously
-        EXPECT_EQ(t1, &tAux);
+        EXPECT_EQ(t1, tAux);
         EXPECT_EQ(it->count(), 1);
         
         delete it;

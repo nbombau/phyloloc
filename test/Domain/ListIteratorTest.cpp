@@ -27,6 +27,11 @@ using ::testing::Test;
     {
     protected:
 
+        DummyClass* dummy1;
+        DummyClass* dummy2;
+        DummyClass* dummy3;
+        DummyClass* dummy4;
+        DummyClass* dummy5;
         
         ListIteratorTest() { }
 
@@ -38,11 +43,11 @@ using ::testing::Test;
         {
             
             
-            DummyClass* dummy1 = new DummyClass(1);
-            DummyClass* dummy2 = new DummyClass(2);
-            DummyClass* dummy3 = new DummyClass(3);
-            DummyClass* dummy4 = new DummyClass(4);
-            DummyClass* dummy5 = new DummyClass(5);
+            dummy1 = new DummyClass(1);
+            dummy2 = new DummyClass(2);
+            dummy3 = new DummyClass(3);
+            dummy4 = new DummyClass(4);
+            dummy5 = new DummyClass(5);
             
             list.push_back(dummy1);
             list.push_back(dummy2);
@@ -53,7 +58,11 @@ using ::testing::Test;
 
         virtual void TearDown() 
         {
-        
+            delete dummy1;
+            delete dummy2;
+            delete dummy3;
+            delete dummy4;
+            delete dummy5;          
         }        
     };
     
@@ -67,8 +76,8 @@ using ::testing::Test;
         int i = 1;
         while(!it.end())
         {
-            DummyClass c = it.get();
-            EXPECT_EQ(i, c.getNum());
+            DummyClass* c = it.get();
+            EXPECT_EQ(i, c->getNum());
             i++;
             it.next();
         }        
