@@ -26,9 +26,9 @@ typedef GuiAspect<BaseAspect> GuiNode;
 class PrintfVisitor : public INodeVisitor<GuiNode>
 {
 public:
-    void visit(GuiNode& n)
+    void visit(GuiNode* n)
     {
-        printf("%s\n", n.getName().c_str());
+        printf("%s\n", n->getName().c_str());
     }
 };
 
@@ -68,7 +68,7 @@ int main()
 
     Traverser<GuiNode, PrintfVisitor> t;
     PrintfVisitor v;
-    t.traverseDown(n2, v);
+    t.traverseDown(&n2, v);
 
     printf("Hello World");
     getchar();

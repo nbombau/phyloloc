@@ -9,7 +9,7 @@ class FilesInfo
 {
 public:
 
-    FilesInfo(const std::string treesFilePath, const std::string locationsFilePath)
+    FilesInfo(const std::string& treesFilePath, const std::string& locationsFilePath)
     {
         this->treesFilePath = treesFilePath;
         this->locationsFilePath = locationsFilePath;

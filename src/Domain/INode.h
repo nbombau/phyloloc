@@ -2,8 +2,6 @@
 #define INODE_H
 
 #include <stdlib.h>
-#include <map>
-#include <set>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -170,6 +168,7 @@ protected:
 
     ~Node()
     {
+        //Call to MiLi's delete_container
         delete_container(children);
     }
 };
