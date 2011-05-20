@@ -296,7 +296,7 @@ namespace {
                 {
                     while (ret && !iterNode1->end())
                     {
-                        ret = compareNodes(&iterNode1->get(),&iterNode2->get());
+                        ret = compareNodes(iterNode1->get(),iterNode2->get());
                         iterNode1->next();
                         iterNode2->next();
                     }
@@ -310,9 +310,9 @@ namespace {
             
         }
         
-        static bool compareTrees(ITree<TestNode>& tree1, ITree<TestNode>& tree2)
+        static bool compareTrees(ITree<TestNode>* tree1, ITree<TestNode>* tree2)
         {
-            bool ret = compareNodes(tree1.getRoot(),tree2.getRoot()); 
+            bool ret = compareNodes(tree1->getRoot(),tree2->getRoot()); 
             EXPECT_TRUE(ret);
             
             return ret;

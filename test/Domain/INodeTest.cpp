@@ -71,7 +71,7 @@ using ::testing::Test;
         ListIterator<TestNode>* it = n.getChildrenIterator();
         
         //check child1 is n's descendant
-        TestNode* aux = &(it->get());
+        TestNode* aux = it->get();
         ASSERT_FALSE(aux == NULL);
         EXPECT_EQ(aux, child1);
         
