@@ -10,13 +10,13 @@
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB -DQT_SHARED
+DEFINES       = -DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -O2 -pedantic -Wall -Wextra -ansi -W -D_REENTRANT $(DEFINES)
 INCPATH       = -I/usr/share/qt4/mkspecs/linux-g++ -I. -I/usr/include/qt4/QtCore -I/usr/include/qt4/QtGui -I/usr/include/qt4 -I. -I.
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS)  -L/usr/lib -lQtGui -lQtCore -lpthread
+LIBS          = $(SUBLIBS)  -L/usr/lib -lQtGui -lQtCore -lpthread 
 AR            = ar cqs
 RANLIB        = 
 QMAKE         = /usr/bin/qmake
@@ -26,11 +26,12 @@ COPY          = cp -f
 SED           = sed
 COPY_FILE     = $(COPY)
 COPY_DIR      = $(COPY) -r
+STRIP         = strip
 INSTALL_FILE  = install -m 644 -p
 INSTALL_DIR   = $(COPY_DIR)
 INSTALL_PROGRAM = install -m 755 -p
 DEL_FILE      = rm -f
-SYMLINK       = ln -sf
+SYMLINK       = ln -f -s
 DEL_DIR       = rmdir
 MOVE          = mv -f
 CHK_DIR_EXISTS= test -d
@@ -122,9 +123,7 @@ Makefile: phyloloc.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/q
 		/usr/share/qt4/mkspecs/features/uic.prf \
 		/usr/share/qt4/mkspecs/features/yacc.prf \
 		/usr/share/qt4/mkspecs/features/lex.prf \
-		/usr/share/qt4/mkspecs/features/include_source_dir.prf \
-		/usr/lib/libQtGui.prl \
-		/usr/lib/libQtCore.prl
+		/usr/share/qt4/mkspecs/features/include_source_dir.prf
 	$(QMAKE) -unix -o Makefile phyloloc.pro
 /usr/share/qt4/mkspecs/common/g++.conf:
 /usr/share/qt4/mkspecs/common/unix.conf:
@@ -145,8 +144,6 @@ Makefile: phyloloc.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/q
 /usr/share/qt4/mkspecs/features/yacc.prf:
 /usr/share/qt4/mkspecs/features/lex.prf:
 /usr/share/qt4/mkspecs/features/include_source_dir.prf:
-/usr/lib/libQtGui.prl:
-/usr/lib/libQtCore.prl:
 qmake:  FORCE
 	@$(QMAKE) -unix -o Makefile phyloloc.pro
 
@@ -166,6 +163,8 @@ distclean: clean
 	-$(DEL_FILE) $(TARGET) 
 	-$(DEL_FILE) Makefile
 
+
+check: first
 
 mocclean: compiler_moc_header_clean compiler_moc_source_clean
 

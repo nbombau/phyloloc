@@ -2,7 +2,6 @@
 #ifndef LISTITERATOR_H
 #define LISTITERATOR_H
 
-#include "IIterator.h"
 #include <list>
 
 namespace Domain
@@ -17,7 +16,7 @@ namespace Domain
 * to be iterated
 */
 template <class T>
-class ListIterator : public IIterator<T>
+class ListIterator
 {
 public:
     //Constructor
@@ -42,14 +41,14 @@ public:
         ++it;
     }
 
-    virtual const T& get() const
+    virtual const T* get() const
     {
-        return **it;
+        return *it;
     }
 
-    virtual T& get()
+    virtual T* get()
     {
-        return **it;
+        return *it;
     }
 
     virtual size_t count()

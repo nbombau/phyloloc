@@ -14,6 +14,9 @@ namespace DataSource
 * Description: Interface that allows the client to load or save
 * trees from and to a particular datasource
 * Type Parameter T: T is the underlying node class
+* Type Parameter K: K is the class that provides info about how
+* to access data from the datasouce, for instance if the datasource is
+* a database, K shall provide server address, credentials, etc.
 */
 template <class T, class K>
 class IDataSourceStrategy

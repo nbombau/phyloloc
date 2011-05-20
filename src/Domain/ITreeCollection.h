@@ -5,7 +5,6 @@
 #include <mili/mili.h>
 
 #include "ListIterator.h"
-#include "INode.h"
 #include "ITree.h"
 
 namespace Domain
@@ -68,8 +67,10 @@ public:
 
         if (i == index)
         {
-            ret = &it->get();
+            ret = it->get();
         }
+        
+        delete it;
 
         return ret;
     }
@@ -77,6 +78,7 @@ public:
     //Destructor
     ~ITreeCollection()
     {
+        //Call to MiLi's delete_container
         delete_container(trees);
     }
 

@@ -10,7 +10,7 @@
 #include <fstream>
 #include <queue>
 
-#include "INodeVisitor.h"
+#include "NodeVisitor.h"
 #include "Domain/ITree.h"
 #include "Domain/INode.h"
 #include "Domain/ListIterator.h"
@@ -22,11 +22,12 @@ namespace Traversal
 * Class: Traverser
 * ----------------
 * Description: Allows the client to easily traverse a phylogenetic tree
-* Type Parameter T: T is the node type. Hence, T should implement INode
-* Type Parameter V: V is the visitor type. The visitor shall visit each node
-* during the traversal of the tree.
+* Type Parameter T: T is the node type.
+* Type Parameter Action: action is the visitor action type. 
+* Type Parameter Predicate: Predicate that indicates whether to keep 
+* or stop Traversing
 */
-template <class T, class V>
+template <class T, class Action, class Predicate>
 class Traverser
 {
     //TODO: Method implementation should be in traverser.cpp.
@@ -37,11 +38,11 @@ public:
     * Description: Traverses all nodes from the root to the
     * tips, applying the supplied visitor v to each node.
     * @param t a phylogenetic tree
-    * @param v a visitor to be applied on the tree's nodes
+    * @param v a visitor action to be applied on the tree's nodes
     */
-    static void traverseDown(Domain::ITree<T>& t, V& v)
+    static void traverseDown(Domain::ITree<T>& t, Action& a)
     {
-        traverseDown(*(t.getRoot()), v);
+        traverseDown(t.getRoot(), a);
     }
 
     /**
@@ -50,37 +51,43 @@ public:
     * Description: Traverses all nodes from the passed node to the
     * tips, applying the supplied visitor v to each node.
     * @param t a starting node
-    * @param v a visitor to be applied on the starting node's
+    * @param v a visitor action to be applied on the starting node's
     * descendants
     */
-    static void traverseDown(T& t, V& v)
+    static void traverseDown(T* t, Action& a)
     {
+        NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
+        
+        VisitAction act = continueTraversing;
         //A queue shall be used to avoid recursion
         std::queue<T*, std::list<T*> > queue;
 
         //Push the root
-        queue.push(&t);
+        queue.push(t);
 
-        while (!queue.empty())
+        while (!queue.empty() && act == continueTraversing)
         {
             T* node = queue.front();
 
             queue.pop();
 
             //Visit the node that is on top of the queue
-            v.visit(*node);
+            act = v.visit(node);
 
-            Domain::ListIterator<T>* it = node->getChildrenIterator();
-
-            //And add the node's children to the queue
-            while (!it->end())
+            if(act == continueTraversing)
             {
-                node = &it->get();
-                queue.push(node);
-                it->next();
-            }
-
-            delete it;
+                Domain::ListIterator<T>* it = node->getChildrenIterator();
+                
+                //And add the node's children to the queue
+                while (!it->end())
+                {
+                    node = it->get();
+                    queue.push(node);
+                    it->next();
+                }
+                
+                delete it;    
+            }            
         }
     }
 
@@ -90,23 +97,29 @@ public:
     * Description: Traverses all nodes from the passed node tothe root,
     * applying the supplied visitor v to each node in the way.
     * @param t a starting node
-    * @param v a visitor to be applied on each ancestor of the
+    * @param v a visitor action to be applied on each ancestor of the
     * starting node
     */
-    static void traverseUp(T& t, V& v)
+    static void traverseUp(T* t, Action& a)
     {
-        bool done = false;
-        T* node = &t;
+        NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
+        
+        VisitAction act = continueTraversing;
+        T* node = t;
 
         //go up the tree
-        while (!done)
+        while (act == continueTraversing)
         {
-            v.visit(*node);
-            //get the parent
-            if (!node->isRoot())
-                node = node->getParent();
-            else
-                done = true;
+            act = v.visit(node);
+            
+            if(act == continueTraversing)
+            {
+                //get the parent
+                if (!node->isRoot())
+                    node = node->getParent();
+                else
+                    act = stopTraversing;    
+            }            
         }
     }
 };

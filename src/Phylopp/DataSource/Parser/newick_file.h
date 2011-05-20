@@ -66,8 +66,8 @@ public:
         
         while (!iter->end())
         {
-            Domain::ITree<T>& tree = iter->get();
-            saveTree(tree.getRoot(), os);
+            Domain::ITree<T>* tree = iter->get();
+            saveTree(tree->getRoot(), os);
             os << ";\n";
             iter->next();
         }
@@ -234,7 +234,7 @@ private:
 
             while (!iter->end())
             {
-                saveTree(&iter->get(), os);
+                saveTree(iter->get(), os);
 
                 iter->next();
 
