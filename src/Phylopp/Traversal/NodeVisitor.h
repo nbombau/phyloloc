@@ -3,8 +3,8 @@
 
 enum VisitAction
 {
-    continueTraversing,
-    stopTraversing
+    ContinueTraversing,
+    StopTraversing
 };
 
 template <class Action, class Predicate, class Node>
@@ -21,7 +21,7 @@ public:
         if(predicate(n))
             return action.visitNode(n);
         else
-            return continueTraversing;
+            return ContinueTraversing;
     }
 };
 
