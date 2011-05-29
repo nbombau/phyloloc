@@ -6,16 +6,14 @@
 #include <stdlib.h>
 #include <string>
 #include <map>
+#include <mili/mili.h>
 
 #include "IDataSourceStrategy.h"
 #include "FilesInfo.h"
 #include "Domain/ITreeCollection.h"
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
-
 #include "Parser/newick_file.h"
-
-
 
 using namespace std;
 
@@ -25,9 +23,61 @@ namespace DataSource
 template <class T>
 class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
 {
-private:
 
-    static const unsigned int locationMaxLine = 256;
+public:
+     /**
+     * Class: MalformedFile
+     * --------------------
+     * Description: Exception used when the file input its not correctly formed.
+     * Example: when a node has no locations associated.
+     */
+    class MalformedFile : public exception 
+    {
+        virtual const char* what() const throw()
+        {
+            return "Error when parsing the input data file";
+        }
+    };
+
+     /**
+     * Class: DataFileNotFound
+     * --------------------
+     * Description: Exception used when the input file is missing.
+     */   
+    class DataFileNotFound : public exception 
+    { 
+        virtual const char* what() const throw()
+        {
+            return "The input data file does not exists";
+        }
+    };  
+
+     /**
+     * Method: load
+     * --------------------
+     * Description: Load multiples tree structures from a text file 
+     * an associate each node with a location.
+     */
+    void load(FilesInfo& info, Domain::ITreeCollection<T>& trees)
+    {
+        VariantsSet set;
+        loadData(info.getLocationsFilePath(), set);
+        NewickParser<T> newick;
+        newick.loadNewickFile(info.getTreesFilePath(), trees, set);
+    }
+
+     /**
+     * Method: save
+     * --------------------
+     * Description: Saves multiples tree structures to the file system.
+     */
+    void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
+    {
+        NewickParser<T> newick;
+        newick.saveNewickFile(info.getTreesFilePath(), trees);
+    }
+
+private:
     /**
      * Method: loadData
      * --------------------
@@ -35,68 +85,46 @@ private:
      * nodes into a map from a file.
      * @param file the name of the file to parse
      * @param bag a map with node names as keys and string as values
-     * @returns false if the file is not properly formatted
      */
-    bool loadData(const string& file, DataBag& bag)
+    void loadData(const string& file, VariantsSet& set)
     {
         ifstream f(file.c_str());
-        bool ret(true);
+        vector<string> values;
 
         if (f)
         {
-            NodeName name;
+            stringstream* ss;
+            string name;
 
-            char line[locationMaxLine];
-            char* token1;
-            char* token2;
-
-            // Read each line in order to get the information associated to
-            // the node. Assumes that each line represents a node.
-            while (f.getline(line, locationMaxLine) && ret)
+            while (f >> Separator(values, ','))
             {
-                token1 = strtok(line, ",");
-                token2 = strtok(NULL, ",");
-                if (token1 == NULL || token2 == NULL)
+                if (values.size() == 1)
                 {
-                    ret = false;
-                    cerr << "Malformed data file: line has no data.\n";
+                    throw MalformedFile();
                 }
-                else
+                else if (values.size() > 1)
                 {
-                    name = token1;
-                    string value(token2);
-                    bag[name] = value;
+                    vector<string>::const_iterator it = values.begin();
+                    name = trim(*it);
+
+                    ss = new stringstream;
+                    for(++it; it != values.end(); ++it)
+                        (*ss) << *it;
+
+                    set.insert(name, ss->str());
+                    values.clear();
                 }
             }
         }
         else
         {
-            ret = false;
-            cerr << "Data file " << file << " not found\n";
+            throw DataFileNotFound();
         }
-
-        return ret;
+        return;
     }
 
-public:
-    void load(FilesInfo& info, Domain::ITreeCollection<T>& trees)
-    {
-        DataBag bag;
-        if (loadData(info.getLocationsFilePath(), bag))
-        {
-            NewickParser<T> newick;
-            newick.loadNewickFile(info.getTreesFilePath(), trees, bag);
-        }
+}; // End of class FileDataSource
 
-    }
-
-    void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
-    {
-        NewickParser<T> newick;
-
-        newick.saveNewickFile(info.getTreesFilePath(), trees);
-    }
-};
-}
+} // End of namespace DataSource
 
 #endif
