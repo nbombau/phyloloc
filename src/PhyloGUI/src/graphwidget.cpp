@@ -150,7 +150,7 @@ public:
     {
         Traverser<GuiNode, SelectAncestorsAction, AlwaysTruePredicate> tAncestor;
         SelectAncestorsAction aAncestor;
-        tAncestor.traverseUp(n, aAncestor);
+        tAncestor.traverseAncestors(n, aAncestor);
         
         return ContinueTraversing;
     }
@@ -300,7 +300,7 @@ void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
     ColorAction v = ColorAction(color);
 
     GuiNode* const startNode = tree->getRoot();
-    t.traverseDown(startNode, v);
+    t.traverseDescendants(startNode, v);
 }
 
 void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
@@ -309,7 +309,7 @@ void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
     SelectAction a;
     
     GuiNode* const startNode = tree->getRoot();
-    t.traverseDown(startNode, a);
+    t.traverseDescendants(startNode, a);
 }
 
 void GraphWidget::unSelectAllNodes(ITree<GuiNode>* tree)
@@ -317,7 +317,7 @@ void GraphWidget::unSelectAllNodes(ITree<GuiNode>* tree)
     Traverser<GuiNode, UnSelectAction, AlwaysTruePredicate> t;
     UnSelectAction a;
     GuiNode* const startNode = tree->getRoot();
-    t.traverseDown(startNode, a);
+    t.traverseDescendants(startNode, a);
 }
 
 void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
@@ -326,7 +326,7 @@ void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
     SelectDescendantsAction a;
     
     GuiNode* const startNode = tree->getRoot();
-    t.traverseDown(startNode, a);
+    t.traverseDescendants(startNode, a);
 }
 
 void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
@@ -336,7 +336,7 @@ void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 
 	GuiNode* const startNode = tree->getRoot();
     
-	t.traverseDown(startNode, a);
+	t.traverseDescendants(startNode, a);
 
 }
 

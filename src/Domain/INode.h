@@ -12,6 +12,7 @@
 
 typedef float BranchLength;
 typedef std::string Location;
+typedef unsigned int LocationId;
 typedef std::string NodeName;
 
 namespace Domain
@@ -135,6 +136,27 @@ public:
     }
 
     /**
+    * Method: getLocationId
+    * ---------------------
+    * Description: Gets the locationId associated to the node
+    * @return the node's location
+    */
+    LocationId getLocationId() const
+    {
+        return locationId;
+    }
+
+    /**
+    * Method: setLocationId
+    * ---------------------
+    * Description: Sets the LocationId associated to the node
+    */
+    void setLocationId(const LocationId id)
+    {
+        locationId = id;
+    }
+
+    /**
     * Method: getBranchLength
     * ---------------
     * Description: Gets the branch length associated to the node
@@ -164,6 +186,7 @@ protected:
     std::list<T*> children;
     NodeName name;
     Location location;
+    LocationId locationId;
     BranchLength branchLength;
 
     ~Node()

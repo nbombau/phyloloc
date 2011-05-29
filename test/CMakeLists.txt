@@ -7,6 +7,8 @@ set(test_src TestMain.cpp
              Domain/ITreeCollectionTest.cpp
              Traverser/TraverserTest.cpp
              DataSource/FileDataSourceTest.cpp
+             Propagator/VectorHelperTest.cpp
+             Propagator/PropagatorAspectTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

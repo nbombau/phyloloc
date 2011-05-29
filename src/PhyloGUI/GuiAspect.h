@@ -12,15 +12,15 @@
 #include <QAction>
 #include <QRectF>
 #include <stdio.h>
-#include "../Domain/INode.h"
-#include "inc/graphwidget.h"
+#include <mili/mili.h>
 #include <QObject>
 #include <QList>
 #include <list>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QContextMenuEvent>
 
-
+#include "../Domain/INode.h"
+#include "inc/graphwidget.h"
 
 namespace Ui
 {
@@ -34,8 +34,6 @@ template <class T>
 class GuiAspect : public Domain::Node<GuiAspect<T> >, public QGraphicsItem
 {
 public:
-    /*enum { Type = UserType + 1 };
-    int type() const { return Type; }*/
 
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
