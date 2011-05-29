@@ -9,18 +9,51 @@
 #include "Domain/ListIterator.h"
 
 typedef std::string NodeName;
-typedef std::map<NodeName, std::string> DataBag;
 
 template <class T>
 class NewickParser
 {
 public:
 
-    bool loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees, DataBag& bag)
+    class MissingTreeSeparator : public std::exception 
+    {
+        virtual const char* what() const throw()
+        {
+            return "Missing tree separator (;)";
+        } 
+    };
+
+     /**
+     * Class: TreeFileNotFound
+     * --------------------
+     * Description: Exception used when the input file is missing.
+     */   
+    class TreeFileNotFound : public std::exception 
+    { 
+        virtual const char* what() const throw()
+        {
+            return "The input tree file does not exists";
+        }
+    };  
+
+     /**
+     * Class: MalformedExpression
+     * --------------------
+     * Description: Exception used when the input file is missing.
+     */   
+    class MalformedExpression : public std::exception 
+    { 
+        virtual const char* what() const throw()
+        {
+            return "The input it not correctly formed";
+        }
+    };  
+
+    void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees, VariantsSet& set)
     {
         std::ifstream f(fname.c_str());
 
-        this->bag = bag;
+        this->set = set;
         
         if (f)
         {
@@ -35,27 +68,22 @@ public:
             do
             {
                 Domain::ITree<T>* tree = trees.addTree();
-                ret = load_node(ptr, tree->getRoot());
-
-                if (ret)
-                {
-                    consume_whitespace(ptr);
-                    ret = (*ptr == ';');
-                    if (!ret)
-                        std::cerr << "Missing tree separator (;)." << std::endl;
-                    else
-                        ++ptr;
-                }
+                load_node(ptr, tree->getRoot());
+                consume_whitespace(ptr);
+                ret = (*ptr == ';');
+                if (!ret)
+                    throw MissingTreeSeparator();
+                else
+                    ++ptr;
+                
             }
             while (ret && *ptr != 0);
-
-            return ret;
         }
         else
         {
-            std::cerr << "Tree file " << fname << " not found\n";
-            return false;
-        }
+            throw TreeFileNotFound();
+        }       
+        return;
     }
 
     void saveNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
@@ -75,59 +103,66 @@ public:
     }
 
 private:
-
-    DataBag bag;
+    VariantsSet set;
     
-    
-    bool load_node(const char*& character, T* node)
+    void load_node(const char*& character, T* node)
     {
         bool ret = true;
         std::string name;
         float branchLength = 0.0;
 
-        // output: either ',' or ')' (depending on the node type)
-
+        // Output: either ',' or ')' (depending on the node type)
         consume_whitespace(character);
-
+        
         switch (*character)
         {
             case '(':
-                // we are nonleaf. Load new child.
+                // We are nonleaf. Load new child.
                 ret = load_children(++character, node); // leaves in a parent
                 character++;
-                if (ret) //consume nonleaf name and branchlength, if present
+                if (ret) //Consume nonleaf name and branchlength, if present
                 {
                     name = consume_name(character);
                     node->setName(name);
                     branchLength = consume_branch_length(character);
-                    node->setBranchLength(branchLength);
-                    node->setLocation(bag[name]);
-
+                    node->setBranchLength(branchLength);                   
+                    // Set location, if exists, for the node
+                    set_location(name, set, node);
                 }
+                else
+                {
+                    throw MalformedExpression();
+                }    
                 break;
-
             case ',':
             case ')':
-                //allow nameless nodes: dont consume character.
+                //Allow nameless nodes: dont consume character.
                 node->setName("");
                 node->setBranchLength(0.0);
                 break;
             case 0:
-                ret = false;
-                std::cerr << "Malformed expression\n";
+                throw MalformedExpression();
                 break;
-
             default:
-                // we are leaf.
+                // We are leaf.
                 name = consume_name(character);
                 node->setName(name);
                 branchLength = consume_branch_length(character);
-                node->setBranchLength(branchLength);
-                node->setLocation(bag[name]);
-
+                node->setBranchLength(branchLength);             
+                // Set location, if exists, for the node
+                set_location(name, set, node);
         }
+    }
 
-        return ret;
+    void set_location(const NodeName name, const VariantsSet set, T* node)
+    {
+        std::string location;
+        try
+        {
+            set.get_element(name, location);
+            node->setLocation(location);
+        }
+        catch(const BadElementName&) { }         
     }
 
     bool load_children(const char*& character, T* parent)
@@ -136,32 +171,25 @@ private:
         bool keep_reading;
         bool ret;
 
-        // input: first char of first child.
+        // Input: first char of first child.
         // output: ')'
-
         do
         {
             child = parent->addChild();
-            ret = load_node(character, child);
-
-            if (ret)
+            load_node(character, child);
+            consume_whitespace(character);
+            switch (*character)
             {
-                consume_whitespace(character);
-
-                switch (*character)
-                {
-                    case ',':
-                        keep_reading = true;
-                        ++character;
-                        break;
-                    case ')':
-                        keep_reading = false;
-                        break;
-                    default:
-                        ret = false;
-                        std::cerr << "Malformed expression: expected ')' or ',', read '" << *character << "'\n";
+                case ',':
+                    keep_reading = true;
+                    ++character;
+                    break;
+                case ')':
+                    keep_reading = false;
+                    break;
+                default:
+                    ret = false;
                 }
-            }
         }
         while (keep_reading && ret);
 
@@ -221,8 +249,6 @@ private:
         }
         return ret;
     }
-
-
 
     static void saveTree(T* node, std::ostream& os)
     {

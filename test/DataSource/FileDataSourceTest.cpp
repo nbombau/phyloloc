@@ -282,7 +282,8 @@ namespace {
                        node1->getLocation()==node2->getLocation();
                        
                        
-            EXPECT_TRUE(ret) << "n1: " << node1->getName()<< ":" << node1->getBranchLength() << " - n2: " << node2->getName()<< ":" << node2->getBranchLength();
+            EXPECT_TRUE(ret) << "n1: " << node1->getName()<< ":" << node1->getBranchLength() 
+                << " - n2: " << node2->getName()<< ":" << node2->getBranchLength();
             if (ret)
             {
                 ListIterator<TestNode> *iterNode1 = node1->getChildrenIterator();
@@ -322,11 +323,14 @@ namespace {
                                 
     TEST_F(FileDataSourceTest, loadTest1) 
     {
+        cout << "HOLA1";
         ITreeCollection<TestNode> myTrees;
         loadTree1(myTrees.addTree());
-        
+        cout << "HOLA2";
+
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/tree1.nwk","TestTrees/trees.dat",trees);
+        cout << "HOLA3";
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -480,5 +484,71 @@ namespace {
         expected_str.append("((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A:0;");
                                       
         EXPECT_EQ(expected_str,tree_str);
-    }   
+    }
+
+    // Empty file. Three with no places loaded.
+    TEST_F(FileDataSourceTest, loadLocations1) 
+    {        
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations1.dat",trees);
+
+        //TODO: check locations for each node
+        EXPECT_TRUE(true);
+    } 
+
+    // Single location.
+    TEST_F(FileDataSourceTest, loadLocations2) 
+    {        
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations2.dat",trees);
+
+        //TODO: check locations for each node
+        EXPECT_TRUE(true);
+    }
+
+    // Correctly formed file, with a location per node
+    TEST_F(FileDataSourceTest, loadLocations3) 
+    {        
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations3.dat",trees);
+
+        //TODO: check locations for each node
+        EXPECT_TRUE(true);
+    }
+
+    // Multiple locations for a node
+    TEST_F(FileDataSourceTest, loadLocations4) 
+    {        
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations4.dat",trees);
+
+        //TODO: check locations for each node
+        EXPECT_TRUE(true);
+    } 
+
+    // More associations node/location than nodes in the tree
+    TEST_F(FileDataSourceTest, loadLocations5) 
+    {        
+        ITreeCollection<TestNode> trees;
+        loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations5.dat",trees);
+
+        //TODO: check locations for each node
+        EXPECT_TRUE(true);
+    } 
+
+    // Try to load a malformed file
+    TEST_F(FileDataSourceTest, loadLocations6) 
+    {        
+        ITreeCollection<TestNode> trees;
+
+        //TODO: Validate a MalformedFile exception when loading locations6.dat
+    } 
+
+    // Try to load non existent file
+    TEST_F(FileDataSourceTest, loadLocations7) 
+    {        
+        ITreeCollection<TestNode> trees;
+        
+        //TODO: Validate a FileNotFound exception when loading a non existent file
+    } 
 }
