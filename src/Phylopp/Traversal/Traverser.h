@@ -33,20 +33,20 @@ class Traverser
     //TODO: Method implementation should be in traverser.cpp.
 public:
     /**
-    * Method: traverseDown
+    * Method: traverseDescendants
     * --------------------
     * Description: Traverses all nodes from the root to the
     * tips, applying the supplied visitor v to each node.
     * @param t a phylogenetic tree
     * @param v a visitor action to be applied on the tree's nodes
     */
-    static void traverseDown(Domain::ITree<T>& t, Action& a)
+    static void traverseDescendants(Domain::ITree<T>* t, Action& a)
     {
-        traverseDown(t.getRoot(), a);
+        traverseDescendants(t->getRoot(), a);
     }
 
     /**
-    * Method: traverseDown
+    * Method: traverseDescendants
     * --------------------
     * Description: Traverses all nodes from the passed node to the
     * tips, applying the supplied visitor v to each node.
@@ -54,7 +54,7 @@ public:
     * @param v a visitor action to be applied on the starting node's
     * descendants
     */
-    static void traverseDown(T* t, Action& a)
+    static void traverseDescendants(T* t, Action& a)
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
         
@@ -92,7 +92,7 @@ public:
     }
 
     /**
-    * Method: traverseUp
+    * Method: traverseAncestors
     * ------------------
     * Description: Traverses all nodes from the passed node tothe root,
     * applying the supplied visitor v to each node in the way.
@@ -100,7 +100,7 @@ public:
     * @param v a visitor action to be applied on each ancestor of the
     * starting node
     */
-    static void traverseUp(T* t, Action& a)
+    static void traverseAncestors(T* t, Action& a)
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
         
@@ -121,6 +121,42 @@ public:
                     act = StopTraversing;    
             }            
         }
+    }
+    
+    /**
+     * Method: traversePostOrder
+     * ------------------------
+     * Description: Traverses all nodes from the passed node tothe root,
+     * applying the supplied visitor v to each node in the way.
+     * @param t a starting node
+     * @param v a visitor action to be applied on each ancestor of the
+     * starting node
+     */
+    static void traversePostOrder(Domain::ITree<T>* t, Action& a)
+    {
+        NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
+        traversePostOrderRecursive(t->getRoot(), v);
+    }
+    
+private:
+    //TODO: this traversal shall be iterative
+    static VisitAction traversePostOrderRecursive(T* node, NodeVisitor<Action, Predicate, T>& v)
+    {       
+        if(!node->isLeaf())
+        {
+            Domain::ListIterator<T>* it = node->getChildrenIterator();
+            
+            //And add the node's children to the queue
+            while (!it->end())
+            {
+                T* child = it->get();
+                traversePostOrderRecursive(child, v);
+                it->next();
+            }
+            
+            delete it;             
+        }
+        return v.visit(node);        
     }
 };
 }

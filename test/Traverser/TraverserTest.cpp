@@ -1,7 +1,7 @@
 
 #include <gtest/gtest.h>
 #include <gmock/gmock.h> 
-
+#include <vector>
 #include "../../src/Domain/INode.h"
 #include "../../src/Phylopp/Traversal/Traverser.h"
 #include "../../src/Phylopp/Traversal/NodeVisitor.h"
@@ -71,7 +71,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseDown(t, a);
+        traverser.traverseDescendants(&t, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -101,7 +101,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseDown(t, a);
+        traverser.traverseDescendants(&t, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -143,7 +143,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseDown(n, a);
+        traverser.traverseDescendants(n, a);
         
         //all nodes should have been visited
         ASSERT_TRUE(n->visited);
@@ -185,7 +185,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseDown(c2, a);
+        traverser.traverseDescendants(c2, a);
         
         ASSERT_FALSE(n->visited);
         ASSERT_FALSE(c1->visited);
@@ -226,7 +226,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseDown(c1c2, a);
+        traverser.traverseDescendants(c1c2, a);
         
         ASSERT_FALSE(n->visited);
         ASSERT_FALSE(c1->visited);
@@ -271,7 +271,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseUp(c1c2, a);
+        traverser.traverseAncestors(c1c2, a);
 
         ASSERT_TRUE(n->visited);
         ASSERT_TRUE(c1->visited);
@@ -312,7 +312,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseUp(c1, a);
+        traverser.traverseAncestors(c1, a);
         
         
         //all nodes should have been visited
@@ -355,7 +355,7 @@ namespace {
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
-        traverser.traverseUp(n, a);
+        traverser.traverseAncestors(n, a);
         
         
         //all nodes should have been visited
