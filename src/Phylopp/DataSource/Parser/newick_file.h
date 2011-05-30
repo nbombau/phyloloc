@@ -15,6 +15,11 @@ class NewickParser
 {
 public:
 
+     /**
+     * Class: TreeFileNotFound
+     * --------------------
+     * Description: Exception used when the nodes separator its not found
+     */  
     class MissingTreeSeparator : public std::exception 
     {
         virtual const char* what() const throw()
@@ -45,7 +50,7 @@ public:
     { 
         virtual const char* what() const throw()
         {
-            return "The input it not correctly formed";
+            return "The input is not correctly formed";
         }
     };  
 
