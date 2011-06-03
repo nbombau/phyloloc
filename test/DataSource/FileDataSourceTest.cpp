@@ -18,7 +18,9 @@ namespace {
     using namespace std;
     
     typedef MockNode<Domain::BaseAspect> TestNode;
+    typedef std::map<std::string, std::string> LocationsMap;
 
+    
     class FileDataSourceTest : public Test 
     {
     protected:
@@ -273,7 +275,49 @@ namespace {
             
         }
         
+        static bool compareLocations(ITreeCollection<TestNode>& trees, LocationsMap& map)
+        {
+            bool ret(true);
+            
+            ListIterator< ITree<TestNode> > *treesIterator = trees.getIterator();
+ 
+            while (ret && !treesIterator->end())
+            {
+                ITree<TestNode>* tree = treesIterator->get();
+                ret = compareNodeLocations(tree->getRoot(),map);
+                treesIterator->next();
+            }
+            
+            delete treesIterator;
+            
+            return ret;
+            
+        }
+        
     private:
+        
+        static bool compareNodeLocations (const TestNode* node1,LocationsMap& map)
+        {
+            bool ret = node1->getLocation()==map[node1->getName()];
+                       
+            EXPECT_TRUE(ret) << "Node location: " << node1->getLocation() << " - Expected: " << map[node1->getName()];
+          
+            if (ret)
+            {
+                ListIterator<TestNode> *iterNode = node1->getChildrenIterator();
+
+                while (ret && !iterNode->end())
+                {
+                    ret = compareNodeLocations(iterNode->get(),map);
+                    iterNode->next();
+                }
+                      
+                delete iterNode;
+            }
+        
+            return ret;
+               
+        }
         static bool compareNodes (const TestNode* node1,const TestNode* node2)
         {
             
@@ -323,14 +367,12 @@ namespace {
                                 
     TEST_F(FileDataSourceTest, loadTest1) 
     {
-        cout << "HOLA1";
+
         ITreeCollection<TestNode> myTrees;
         loadTree1(myTrees.addTree());
-        cout << "HOLA2";
 
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/tree1.nwk","TestTrees/trees.dat",trees);
-        cout << "HOLA3";
         
         EXPECT_TRUE(compareTreeCollections(myTrees,trees));
     }
@@ -491,9 +533,9 @@ namespace {
     {        
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations1.dat",trees);
-
-        //TODO: check locations for each node
-        EXPECT_TRUE(true);
+        LocationsMap map;
+        
+        EXPECT_TRUE(compareLocations(trees,map));
     } 
 
     // Single location.
@@ -502,8 +544,9 @@ namespace {
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations2.dat",trees);
 
-        //TODO: check locations for each node
-        EXPECT_TRUE(true);
+        LocationsMap map;
+        map["a"]="placeA";
+        EXPECT_TRUE(compareLocations(trees,map));
     }
 
     // Correctly formed file, with a location per node
@@ -512,8 +555,15 @@ namespace {
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations3.dat",trees);
 
-        //TODO: check locations for each node
-        EXPECT_TRUE(true);
+        LocationsMap map;
+        map["a"]="placeA";
+        map["b"]="placeB";
+        map["c"]="placeC";
+        map["d"]="placeD";
+        map["e"]="placeE";
+        map["f"]="placeF";
+    
+        EXPECT_TRUE(compareLocations(trees,map));
     }
 
     // Multiple locations for a node
@@ -522,8 +572,10 @@ namespace {
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations4.dat",trees);
 
-        //TODO: check locations for each node
-        EXPECT_TRUE(true);
+        LocationsMap map;
+        map["a"]="placeA2";
+        
+        EXPECT_TRUE(compareLocations(trees,map));
     } 
 
     // More associations node/location than nodes in the tree
@@ -532,8 +584,25 @@ namespace {
         ITreeCollection<TestNode> trees;
         loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations5.dat",trees);
 
-        //TODO: check locations for each node
-        EXPECT_TRUE(true);
+        LocationsMap map;
+        map["a"]="place";
+        map["b"]="place";
+        map["c"]="place";
+        map["d"]="place";
+        map["e"]="place";
+        map["f"]="place";
+        map["g"]="place";
+        map["h"]="place";
+        map["i"]="place";
+        map["j"]="place";
+        map["k"]="place";
+        map["l"]="place";
+        map["m"]="place";
+        map["n"]="place";
+        map["i"]="place";
+        map["j"]="place";
+
+        EXPECT_TRUE(compareLocations(trees,map));
     } 
 
     // Try to load a malformed file
