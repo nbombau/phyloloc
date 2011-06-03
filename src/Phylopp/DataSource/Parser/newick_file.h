@@ -112,7 +112,7 @@ private:
     
     void load_node(const char*& character, T* node)
     {
-        bool ret = true;
+        bool ret;
         std::string name;
         float branchLength = 0.0;
 
@@ -173,8 +173,8 @@ private:
     bool load_children(const char*& character, T* parent)
     {
         T* child;
-        bool keep_reading;
-        bool ret;
+        bool keep_reading=true;
+        bool ret=true;
 
         // Input: first char of first child.
         // output: ')'
