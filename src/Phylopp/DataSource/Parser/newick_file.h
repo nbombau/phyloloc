@@ -88,7 +88,6 @@ public:
         {
             throw TreeFileNotFound();
         }       
-        return;
     }
 
     void saveNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
