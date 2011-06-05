@@ -93,9 +93,6 @@ private:
 
         if (f)
         {
-            stringstream* ss;
-            string name;
-
             while (f >> Separator(values, ','))
             {
                 if (values.size() == 1)
@@ -105,13 +102,13 @@ private:
                 else if (values.size() > 1)
                 {
                     vector<string>::const_iterator it = values.begin();
-                    name = trim(*it);
+                    string name = trim(*it);
 
-                    ss = new stringstream;
+                    string ss;
                     for(++it; it != values.end(); ++it)
-                        (*ss) << *it;
+                        ss += *it;
 
-                    set.insert(name, ss->str());
+                    set.insert(name, ss);
                     values.clear();
                 }
             }
