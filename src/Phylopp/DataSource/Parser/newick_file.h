@@ -62,27 +62,27 @@ public:
         
         if (f)
         {
-            const char* ptr;
             std::string tree_str, line;
             bool ret(true);
 
             while (getline(f, line))
                 tree_str += line;
 
-            ptr  = tree_str.c_str();
+            character = tree_str.c_str();
+            
             do
             {
                 Domain::ITree<T>* tree = trees.addTree();
-                load_node(ptr, tree->getRoot());
-                consume_whitespace(ptr);
-                ret = (*ptr == ';');
+                load_node(tree->getRoot());
+                consume_whitespace();
+                ret = (*character == ';');
                 if (!ret)
                     throw MissingTreeSeparator();
                 else
-                    ++ptr;
+                    ++character;
                 
             }
-            while (ret && *ptr != 0);
+            while (ret && *character != 0);
         }
         else
         {
@@ -109,27 +109,29 @@ public:
 
 private:
     VariantsSet set;
+    const char *character;
     
-    void load_node(const char*& character, T* node)
+    void load_node(T* node)
     {
         bool ret;
         std::string name;
         float branchLength = 0.0;
 
         // Output: either ',' or ')' (depending on the node type)
-        consume_whitespace(character);
+        consume_whitespace();
         
         switch (*character)
         {
             case '(':
                 // We are nonleaf. Load new child.
-                ret = load_children(++character, node); // leaves in a parent
+                ++character;
+                ret = load_children(node); // leaves in a parent
                 character++;
                 if (ret) //Consume nonleaf name and branchlength, if present
                 {
-                    name = consume_name(character);
+                    name = consume_name();
                     node->setName(name);
-                    branchLength = consume_branch_length(character);
+                    branchLength = consume_branch_length();
                     node->setBranchLength(branchLength);                   
                     // Set location, if exists, for the node
                     set_location(name, set, node);
@@ -150,9 +152,9 @@ private:
                 break;
             default:
                 // We are leaf.
-                name = consume_name(character);
+                name = consume_name();
                 node->setName(name);
-                branchLength = consume_branch_length(character);
+                branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);             
                 // Set location, if exists, for the node
                 set_location(name, set, node);
@@ -170,7 +172,7 @@ private:
         catch(const BadElementName&) { }         
     }
 
-    bool load_children(const char*& character, T* parent)
+    bool load_children(T* parent)
     {
         T* child;
         bool keep_reading=true;
@@ -181,8 +183,8 @@ private:
         do
         {
             child = parent->addChild();
-            load_node(character, child);
-            consume_whitespace(character);
+            load_node(child);
+            consume_whitespace();
             switch (*character)
             {
                 case ',':
@@ -216,7 +218,7 @@ private:
                c == '.';
     }
 
-    static std::string consume_name(const char*& character)
+    std::string consume_name()
     {
         std::string ret;
         while (is_namechar(*character))
@@ -228,15 +230,15 @@ private:
         return ret;
     }
 
-    static void consume_whitespace(const char*& character)
+    void consume_whitespace()
     {
         while (*character == ' ' || *character == '\t')
             ++character;
     }
 
-    static float consume_branch_length(const char*& character)
+    float consume_branch_length()
     {
-        consume_whitespace(character);
+        consume_whitespace();
         float ret = 0.0f;
         if (*character == ':')
         {
