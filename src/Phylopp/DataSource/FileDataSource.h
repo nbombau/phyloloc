@@ -117,7 +117,6 @@ private:
         {
             throw DataFileNotFound();
         }
-        return;
     }
 
 }; // End of class FileDataSource
