@@ -1,10 +1,12 @@
 #include <QColorDialog>
 #include <QErrorMessage>
+#include <QMessageBox>
 
 #include "PhyloGUI/inc/mainwindow.h"
 #include "PhyloGUI/ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
 #include "Domain/ITree.h"
+#include "PhyloGUI/inc/filedialog.h"
 
 using namespace DataSource;
 
@@ -37,44 +39,29 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QStringList filePaths;
-    QString path;
-    QFileInfo dir;
-    QFileInfo dat;
+    FileDialog fileDialog(this);
 
-    QFileDialog dialog(this, "Open file(s)", QDir::homePath(), "");
-    dialog.setAcceptMode(QFileDialog::AcceptOpen);
-    dialog.setFileMode(QFileDialog::ExistingFiles);
-    if (dialog.exec())
+    if(fileDialog.exec())
     {
-        filePaths = dialog.selectedFiles();
-        foreach(path, filePaths)
-        {
-            dir = QFileInfo(path);
+        FilesInfo filesInfo(fileDialog.getTreesFile(),fileDialog.getLocationsFile(),fileDialog.getDistancesFile());
 
-            string basePath = dir.canonicalPath().toStdString() + "/" + dir.completeBaseName().toStdString();
-
-            dat = QFileInfo(QString((basePath + ".dat").c_str()));
-            if (dat.exists())
-                loadTree(basePath);
-            else
-            {
-                QErrorMessage msg(this);
-                msg.showMessage(basePath.append(".dat").append(" does not exist").c_str());
-                msg.exec();
-            }
-        }
+        loadTree(filesInfo);
     }
 }
 
-void MainWindow::loadTree(std::string treePath)
+void MainWindow::loadTree(FilesInfo& info)
 {
-
-    FilesInfo info(treePath + ".nwk", treePath + ".dat");
-
     FileDataSource<GuiNode>fileDataSource;
 
-    fileDataSource.load(info, trees);
+    try
+    {
+        fileDataSource.load(info, trees);
+    }
+    catch(std::exception& ex)
+    {
+        QMessageBox msg(QMessageBox::Information,"load error",ex.what(),QMessageBox::NoButton,this);
+        msg.exec();
+    }
 
     ListIterator< ITree<GuiNode> > *iter = trees.getIterator();
 
@@ -83,7 +70,7 @@ void MainWindow::loadTree(std::string treePath)
     while (!iter->end())
     {
         QListWidgetItem* newItem = new QListWidgetItem;
-        newItem->setText(QString(treePath.c_str()));
+        newItem->setText(QString(info.getTreesFilePath().c_str()));
         ui->listWidget->addItem(newItem);
 
         iter->next();
