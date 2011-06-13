@@ -51,15 +51,16 @@ namespace {
             node->setLocation(location);
         }
         
+        //TODO update tests to support distances file
         void loadTreeFromFile(std::string treesFile,std::string placesFile,ITreeCollection<TestNode>& trees)
         {
-            FilesInfo info(treesFile,placesFile);
+            FilesInfo info(treesFile,placesFile,"");
             fileDataSource.load(info,trees);
         }
         
         void saveTreeToFile(std::string treesFile,ITreeCollection<TestNode>& trees)
         {
-            FilesInfo info(treesFile,"");
+            FilesInfo info(treesFile,"","");
             fileDataSource.save(trees,info);
         }
     

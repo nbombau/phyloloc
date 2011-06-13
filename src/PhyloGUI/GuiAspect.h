@@ -133,7 +133,7 @@ public:
         }
         painter->setBrush(gradient);
         painter->setPen(QPen(Qt::black, 0));
-        rect=QRect(-7, -7, 20, 20);
+        rect = QRect(-7, -7, 20, 20);
         painter->drawEllipse(-10, -10, 20, 20);
     }
 

@@ -35,7 +35,7 @@ public:
         n->setColor(color);
         n->setSelected(false);
         n->update();
-        
+
         return ContinueTraversing;
     }
 
@@ -51,7 +51,7 @@ public:
     {
         n->setSelected(true);
         n->update();
-        
+
         return ContinueTraversing;
     }
 };
@@ -61,21 +61,21 @@ class UnSelectAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-    	unsigned int i=0;
-		unsigned int size;
+        unsigned int i = 0;
+        unsigned int size;
         n->setSelected(false);
         n->update();
-        Edge * edge;
-        QList<Edge *> edgesTo = n->edgesTo();
-		size=edgesTo.count();
-		for(;i<size;i++)
-		{
-			edge=edgesTo.at(i);
-			edge->setSelected(false);
-			edge->update();
-		}
-		
-		return ContinueTraversing;
+        Edge* edge;
+        QList<Edge*> edgesTo = n->edgesTo();
+        size = edgesTo.count();
+        for (; i < size; i++)
+        {
+            edge = edgesTo.at(i);
+            edge->setSelected(false);
+            edge->update();
+        }
+
+        return ContinueTraversing;
     }
 };
 
@@ -84,23 +84,23 @@ class SelectDescendantsAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-    	QList<Edge *> edgesFrom;
-        edgesFrom=n->edgesFrom();
-    	Edge * edge=edgesFrom.at(0);
-        if(n->isSelected() || (edge!=NULL && edge->isSelected()))
+        QList<Edge*> edgesFrom;
+        edgesFrom = n->edgesFrom();
+        Edge* edge = edgesFrom.at(0);
+        if (n->isSelected() || (edge != NULL && edge->isSelected()))
         {
-			unsigned int i=0;
-			unsigned int size;
+            unsigned int i = 0;
+            unsigned int size;
             n->setSelected(true);
             n->update();
-            QList<Edge *> edgesTo = n->edgesTo();
-			size=edgesTo.count();
-			for(;i<size;i++)
-        	{
-				edge=edgesTo.at(i);
-				edge->setSelected(true);
-				edge->update();
-        	}
+            QList<Edge*> edgesTo = n->edgesTo();
+            size = edgesTo.count();
+            for (; i < size; i++)
+            {
+                edge = edgesTo.at(i);
+                edge->setSelected(true);
+                edge->update();
+            }
         }
         return ContinueTraversing;
     }
@@ -112,46 +112,46 @@ class SelectAncestorsAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-    	QList<Edge *> edgesTo;
-    	QList<Edge *> edgesFrom;
-        edgesTo=n->edgesTo();
-		unsigned int i=0;
-		unsigned int size=edgesTo.count();
-		Edge * edge;
-		for(;i<size;i++)
-		{
-			edge=edgesTo.at(i);
-			if(edge->isSelected())
-			{
+        QList<Edge*> edgesTo;
+        QList<Edge*> edgesFrom;
+        edgesTo = n->edgesTo();
+        unsigned int i = 0;
+        unsigned int size = edgesTo.count();
+        Edge* edge;
+        for (; i < size; i++)
+        {
+            edge = edgesTo.at(i);
+            if (edge->isSelected())
+            {
                 n->setSelected(true);
                 n->update();
-			}
+            }
 
-		}
-		if(n->isSelected())
-		{
-            edgesFrom=n->edgesFrom();
-			Edge * edge=edgesFrom.at(0);
-			if(edge!=NULL)
-			{
-				edge->setSelected(true);
-				edge->update();
-			}
-		}
-		return ContinueTraversing;
+        }
+        if (n->isSelected())
+        {
+            edgesFrom = n->edgesFrom();
+            Edge* edge = edgesFrom.at(0);
+            if (edge != NULL)
+            {
+                edge->setSelected(true);
+                edge->update();
+            }
+        }
+        return ContinueTraversing;
     }
 };
 
 class SelectCollectorAction
 {
 public:
-    
+
     VisitAction visitNode(GuiNode* n)
     {
         Traverser<GuiNode, SelectAncestorsAction, AlwaysTruePredicate> tAncestor;
         SelectAncestorsAction aAncestor;
         tAncestor.traverseAncestors(n, aAncestor);
-        
+
         return ContinueTraversing;
     }
 };
@@ -307,7 +307,7 @@ void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectAction, AlwaysTruePredicate> t;
     SelectAction a;
-    
+
     GuiNode* const startNode = tree->getRoot();
     t.traverseDescendants(startNode, a);
 }
@@ -324,7 +324,7 @@ void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectDescendantsAction, AlwaysTruePredicate> t;
     SelectDescendantsAction a;
-    
+
     GuiNode* const startNode = tree->getRoot();
     t.traverseDescendants(startNode, a);
 }
@@ -332,11 +332,11 @@ void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
 void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectCollectorAction, IsSelectedPredicate> t;
-	SelectCollectorAction a;
+    SelectCollectorAction a;
 
-	GuiNode* const startNode = tree->getRoot();
-    
-	t.traverseDescendants(startNode, a);
+    GuiNode* const startNode = tree->getRoot();
+
+    t.traverseDescendants(startNode, a);
 
 }
 

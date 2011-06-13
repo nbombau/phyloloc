@@ -41,15 +41,16 @@ void MainWindow::on_actionOpen_triggered()
 {
     FileDialog fileDialog(this);
 
-    if(fileDialog.exec())
+    if (fileDialog.exec())
     {
-        FilesInfo filesInfo(fileDialog.getTreesFile(),fileDialog.getLocationsFile(),fileDialog.getDistancesFile());
+        FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
         loadTree(filesInfo);
     }
+    //else not needed: user closed or canceled the dialog
 }
 
-void MainWindow::loadTree(FilesInfo& info)
+void MainWindow::loadTree(const FilesInfo& info)
 {
     FileDataSource<GuiNode>fileDataSource;
 
@@ -57,9 +58,9 @@ void MainWindow::loadTree(FilesInfo& info)
     {
         fileDataSource.load(info, trees);
     }
-    catch(std::exception& ex)
+    catch (const std::exception& ex)
     {
-        QMessageBox msg(QMessageBox::Information,"load error",ex.what(),QMessageBox::NoButton,this);
+        QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
 
@@ -138,7 +139,7 @@ void MainWindow::drawTree()
     ui->actionColor_nodes->setEnabled(true);
     ui->actionSelect_all_nodes->setEnabled(true);
     ui->actionSelect_descendants->setEnabled(true);
-	ui->actionSelect_Ancestors->setEnabled(true);
+    ui->actionSelect_Ancestors->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
