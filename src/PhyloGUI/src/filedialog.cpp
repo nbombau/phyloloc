@@ -124,11 +124,10 @@ void FileDialog::locationsButtonAction()
     if (dialog.exec())
     {
         QStringList list = dialog.selectedFiles();
-        QStringList::Iterator it = list.begin();
-        while (it != list.end())
+
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
         {
             locationsLine->setText(*it);
-            ++it;
         }
     }
 }
@@ -143,11 +142,10 @@ void FileDialog::treesButtonAction()
     if (dialog.exec())
     {
         QStringList list = dialog.selectedFiles();
-        QStringList::Iterator it = list.begin();
-        while (it != list.end())
+
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
         {
             treesLine->setText(*it);
-            ++it;
         }
     }
 }
