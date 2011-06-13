@@ -37,7 +37,7 @@ public:
     { 
         virtual const char* what() const throw()
         {
-            return "The input tree file does not exists";
+            return "The input tree file does not exist";
         }
     };  
 

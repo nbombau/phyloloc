@@ -9,10 +9,11 @@ class FilesInfo
 {
 public:
 
-    FilesInfo(const std::string& treesFilePath, const std::string& locationsFilePath)
+    FilesInfo(const std::string& treesFilePath, const std::string& locationsFilePath, const std::string& distancesFilePath)
     {
         this->treesFilePath = treesFilePath;
         this->locationsFilePath = locationsFilePath;
+        this->distancesFilePath = distancesFilePath;
     }
 
     std::string getTreesFilePath() const
@@ -25,9 +26,16 @@ public:
         return locationsFilePath;
     }
 
+    std::string getDistancesFilePath() const
+    {
+        return distancesFilePath;
+    }
+
+
 private:
     std::string treesFilePath;
     std::string locationsFilePath;
+    std::string distancesFilePath;
 };
 }
 

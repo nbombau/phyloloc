@@ -48,7 +48,7 @@ public:
     { 
         virtual const char* what() const throw()
         {
-            return "The input data file does not exists";
+            return "The input data file does not exist";
         }
     };  
 
