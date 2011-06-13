@@ -89,13 +89,12 @@ public:
         Edge* edge = edgesFrom.at(0);
         if (n->isSelected() || (edge != NULL && edge->isSelected()))
         {
-            unsigned int i = 0;
-            unsigned int size;
             n->setSelected(true);
             n->update();
             QList<Edge*> edgesTo = n->edgesTo();
-            size = edgesTo.count();
-            for (; i < size; i++)
+
+            const unsigned int size = edgesTo.count();
+            for (unsigned int i = 0; i < size; i++)
             {
                 edge = edgesTo.at(i);
                 edge->setSelected(true);

@@ -43,6 +43,8 @@ void MainWindow::on_actionOpen_triggered()
 
     if (fileDialog.exec())
     {
+        ui->listWidget->clear();
+
         FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
         loadTree(filesInfo);
