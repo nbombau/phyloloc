@@ -25,13 +25,13 @@ class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
 {
 
 public:
-     /**
-     * Class: MalformedFile
-     * --------------------
-     * Description: Exception used when the file input its not correctly formed.
-     * Example: when a node has no locations associated.
-     */
-    class MalformedFile : public exception 
+    /**
+    * Class: MalformedFile
+    * --------------------
+    * Description: Exception used when the file input its not correctly formed.
+    * Example: when a node has no locations associated.
+    */
+    class MalformedFile : public exception
     {
         virtual const char* what() const throw()
         {
@@ -39,26 +39,26 @@ public:
         }
     };
 
-     /**
-     * Class: DataFileNotFound
-     * --------------------
-     * Description: Exception used when the input file is missing.
-     */   
-    class DataFileNotFound : public exception 
-    { 
+    /**
+    * Class: DataFileNotFound
+    * --------------------
+    * Description: Exception used when the input file is missing.
+    */
+    class DataFileNotFound : public exception
+    {
         virtual const char* what() const throw()
         {
             return "The input data file does not exist";
         }
-    };  
+    };
 
-     /**
-     * Method: load
-     * --------------------
-     * Description: Load multiples tree structures from a text file 
-     * an associate each node with a location.
-     */
-    void load(FilesInfo& info, Domain::ITreeCollection<T>& trees)
+    /**
+    * Method: load
+    * --------------------
+    * Description: Load multiples tree structures from a text file
+    * an associate each node with a location.
+    */
+    void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees)
     {
         VariantsSet set;
         loadData(info.getLocationsFilePath(), set);
@@ -66,11 +66,11 @@ public:
         newick.loadNewickFile(info.getTreesFilePath(), trees, set);
     }
 
-     /**
-     * Method: save
-     * --------------------
-     * Description: Saves multiples tree structures to the file system.
-     */
+    /**
+    * Method: save
+    * --------------------
+    * Description: Saves multiples tree structures to the file system.
+    */
     void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
     {
         NewickParser<T> newick;
@@ -105,7 +105,7 @@ private:
                     string name = trim(*it);
 
                     string ss;
-                    for(++it; it != values.end(); ++it)
+                    for (++it; it != values.end(); ++it)
                         ss += *it;
 
                     set.insert(name, ss);

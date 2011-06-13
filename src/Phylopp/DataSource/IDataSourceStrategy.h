@@ -29,7 +29,7 @@ public:
     * @param info information to access the datasource
     * @return loaded tree collection
     */
-    virtual void load(K& info, Domain::ITreeCollection<T>& trees) = 0;
+    virtual void load(const K& info, Domain::ITreeCollection<T>& trees) = 0;
 
     /**
     * Method: load

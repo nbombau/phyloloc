@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget* parent = 0);
+    explicit MainWindow(QWidget* parent = NULL);
 
     ~MainWindow();
 
@@ -30,7 +30,7 @@ private:
     Ui::MainWindow* ui;
     GraphWidget* graph;
     ITree<GuiNode>* actualTree;
-    void loadTree(DataSource::FilesInfo& info);
+    void loadTree(const DataSource::FilesInfo& info);
     ITreeCollection<GuiNode> trees;
 
 private slots:
