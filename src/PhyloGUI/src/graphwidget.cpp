@@ -61,14 +61,12 @@ class UnSelectAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-        unsigned int i = 0;
-        unsigned int size;
         n->setSelected(false);
         n->update();
         Edge* edge;
         QList<Edge*> edgesTo = n->edgesTo();
-        size = edgesTo.count();
-        for (; i < size; i++)
+        const unsigned int size = edgesTo.count();
+        for (unsigned int i = 0; i < size; i++)
         {
             edge = edgesTo.at(i);
             edge->setSelected(false);
@@ -84,8 +82,7 @@ class SelectDescendantsAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-        QList<Edge*> edgesFrom;
-        edgesFrom = n->edgesFrom();
+        QList<Edge*> edgesFrom = n->edgesFrom();
         Edge* edge = edgesFrom.at(0);
         if (n->isSelected() || (edge != NULL && edge->isSelected()))
         {
@@ -111,15 +108,15 @@ class SelectAncestorsAction
 public:
     VisitAction visitNode(GuiNode* n)
     {
-        QList<Edge*> edgesTo;
         QList<Edge*> edgesFrom;
-        edgesTo = n->edgesTo();
-        unsigned int i = 0;
-        unsigned int size = edgesTo.count();
-        Edge* edge;
-        for (; i < size; i++)
+        QList<Edge*> edgesTo = n->edgesTo();
+
+        const unsigned int size = edgesTo.count();
+
+        for (unsigned int i = 0; i < size; i++)
         {
-            edge = edgesTo.at(i);
+            Edge* edge = edgesTo.at(i);
+
             if (edge->isSelected())
             {
                 n->setSelected(true);
