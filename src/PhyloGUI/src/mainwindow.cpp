@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 MainWindow::~MainWindow()
 {
-    //delete graph;
+    delete graph;
     delete ui;
 }
 
