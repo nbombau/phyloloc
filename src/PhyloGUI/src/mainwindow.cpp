@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget* parent) :
 
 MainWindow::~MainWindow()
 {
-    delete graph;
+  //  delete graph;
     delete ui;
 }
 
@@ -59,27 +59,26 @@ void MainWindow::loadTree(const FilesInfo& info)
     try
     {
         fileDataSource.load(info, trees);
+
+        ListIterator< ITree<GuiNode> > *iter = trees.getIterator();
+
+        while (!iter->end())
+        {
+            QListWidgetItem* newItem = new QListWidgetItem;
+            newItem->setText(QString(info.getTreesFilePath().c_str()));
+            ui->listWidget->addItem(newItem);
+
+            iter->next();
+        }
+        delete iter;
     }
     catch (const std::exception& ex)
     {
+        //TODO clear trees
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
 
-    ListIterator< ITree<GuiNode> > *iter = trees.getIterator();
-
-    unsigned int i = 0;
-
-    while (!iter->end())
-    {
-        QListWidgetItem* newItem = new QListWidgetItem;
-        newItem->setText(QString(info.getTreesFilePath().c_str()));
-        ui->listWidget->addItem(newItem);
-
-        iter->next();
-        ++i;
-    }
-    delete iter;
 }
 
 void MainWindow::on_actionSave_As_triggered()
