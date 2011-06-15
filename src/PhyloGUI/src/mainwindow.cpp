@@ -72,13 +72,33 @@ void MainWindow::loadTree(const FilesInfo& info)
         }
         delete iter;
     }
-    catch (const std::exception& ex)
+    catch (malformed_file ex)
     {
-        //TODO clear trees
+        QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
+    catch (data_file_not_found ex)
+    {
+        QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
+    catch (missing_tree_separator ex)
+    {
+        QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
+    catch (tree_file_not_found ex)
+    {
+        QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
+    catch (malformed_expression ex)
+    {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
 
+    //TODO clear trees if exception ocurres
 }
 
 void MainWindow::on_actionSave_As_triggered()
