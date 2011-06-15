@@ -20,37 +20,34 @@ using namespace std;
 namespace DataSource
 {
 
+class DataFileExceptionHierarchy {};
+
+typedef GenericException<DataFileExceptionHierarchy> DataFileException;
+
+/**
+* malformed_file
+* --------------------
+* Description: Exception used when the file input its not correctly formed.
+* Example: when a node has no locations associated.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(malformed_file,
+                               DataFileExceptionHierarchy,
+                               "Error when parsing the input data file.");
+
+/**
+* data_file_not_found
+* --------------------
+* Description: Exception used when the input file is missing.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(data_file_not_found,
+                               DataFileExceptionHierarchy,
+                               "The input data file does not exist.");
+
+
 template <class T>
 class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
 {
-
 public:
-    /**
-    * Class: MalformedFile
-    * --------------------
-    * Description: Exception used when the file input its not correctly formed.
-    * Example: when a node has no locations associated.
-    */
-    class MalformedFile : public exception
-    {
-        virtual const char* what() const throw()
-        {
-            return "Error when parsing the input data file";
-        }
-    };
-
-    /**
-    * Class: DataFileNotFound
-    * --------------------
-    * Description: Exception used when the input file is missing.
-    */
-    class DataFileNotFound : public exception
-    {
-        virtual const char* what() const throw()
-        {
-            return "The input data file does not exist";
-        }
-    };
 
     /**
     * Method: load
@@ -97,7 +94,7 @@ private:
             {
                 if (values.size() == 1)
                 {
-                    throw MalformedFile();
+                    throw malformed_file();
                 }
                 else if (values.size() > 1)
                 {
@@ -115,7 +112,7 @@ private:
         }
         else
         {
-            throw DataFileNotFound();
+            throw data_file_not_found();
         }
     }
 
