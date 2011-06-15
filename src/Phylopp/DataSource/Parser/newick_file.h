@@ -10,56 +10,47 @@
 
 typedef std::string NodeName;
 
+class TreeFileExceptionHierarchy {};
+typedef GenericException<TreeFileExceptionHierarchy> TreeFileException;
+
+/**
+* missing_tree_separator
+* --------------------
+* Description: Exception used when the nodes separator its not found
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(missing_tree_separator,
+                               TreeFileExceptionHierarchy,
+                               "Missing tree separator (;).");
+
+/**
+* tree_file_not_found
+* --------------------
+* Description: Exception used when the input file is missing.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(tree_file_not_found,
+                               TreeFileExceptionHierarchy,
+                               "The input tree file does not exist.");
+
+/**
+* malformed_expression
+* --------------------
+* Description: Exception used when the input file is missing.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(malformed_expression,
+                               TreeFileExceptionHierarchy,
+                               "the input is not correctly formed.");
+
 template <class T>
 class NewickParser
 {
 public:
-
-     /**
-     * Class: TreeFileNotFound
-     * --------------------
-     * Description: Exception used when the nodes separator its not found
-     */  
-    class MissingTreeSeparator : public std::exception 
-    {
-        virtual const char* what() const throw()
-        {
-            return "Missing tree separator (;)";
-        } 
-    };
-
-     /**
-     * Class: TreeFileNotFound
-     * --------------------
-     * Description: Exception used when the input file is missing.
-     */   
-    class TreeFileNotFound : public std::exception 
-    { 
-        virtual const char* what() const throw()
-        {
-            return "The input tree file does not exist";
-        }
-    };  
-
-     /**
-     * Class: MalformedExpression
-     * --------------------
-     * Description: Exception used when the input file is missing.
-     */   
-    class MalformedExpression : public std::exception 
-    { 
-        virtual const char* what() const throw()
-        {
-            return "The input is not correctly formed";
-        }
-    };  
 
     void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees, VariantsSet& set)
     {
         std::ifstream f(fname.c_str());
 
         this->set = set;
-        
+
         if (f)
         {
             std::string tree_str, line;
@@ -69,7 +60,7 @@ public:
                 tree_str += line;
 
             character = tree_str.c_str();
-            
+
             do
             {
                 Domain::ITree<T>* tree = trees.addTree();
@@ -77,17 +68,17 @@ public:
                 consume_whitespace();
                 ret = (*character == ';');
                 if (!ret)
-                    throw MissingTreeSeparator();
+                    throw missing_tree_separator();
                 else
                     ++character;
-                
+
             }
             while (ret && *character != 0);
         }
         else
         {
-            throw TreeFileNotFound();
-        }       
+            throw tree_file_not_found();
+        }
     }
 
     void saveNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
@@ -95,7 +86,7 @@ public:
         Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
 
         std::ofstream os(fname.c_str());
-        
+
         while (!iter->end())
         {
             Domain::ITree<T>* tree = iter->get();
@@ -108,8 +99,8 @@ public:
 
 private:
     VariantsSet set;
-    const char *character;
-    
+    const char* character;
+
     void load_node(T* node)
     {
         bool ret;
@@ -118,7 +109,7 @@ private:
 
         // Output: either ',' or ')' (depending on the node type)
         consume_whitespace();
-        
+
         switch (*character)
         {
             case '(':
@@ -131,14 +122,14 @@ private:
                     name = consume_name();
                     node->setName(name);
                     branchLength = consume_branch_length();
-                    node->setBranchLength(branchLength);                   
+                    node->setBranchLength(branchLength);
                     // Set location, if exists, for the node
                     set_location(name, set, node);
                 }
                 else
                 {
-                    throw MalformedExpression();
-                }    
+                    throw malformed_expression();
+                }
                 break;
             case ',':
             case ')':
@@ -147,14 +138,14 @@ private:
                 node->setBranchLength(0.0);
                 break;
             case 0:
-                throw MalformedExpression();
+                throw malformed_expression();
                 break;
             default:
                 // We are leaf.
                 name = consume_name();
                 node->setName(name);
                 branchLength = consume_branch_length();
-                node->setBranchLength(branchLength);             
+                node->setBranchLength(branchLength);
                 // Set location, if exists, for the node
                 set_location(name, set, node);
         }
@@ -168,14 +159,14 @@ private:
             set.get_element(name, location);
             node->setLocation(location);
         }
-        catch(const BadElementName&) { }         
+        catch (const BadElementName&) { }
     }
 
     bool load_children(T* parent)
     {
         T* child;
-        bool keep_reading=true;
-        bool ret=true;
+        bool keep_reading = true;
+        bool ret = true;
 
         // Input: first char of first child.
         // output: ')'
@@ -195,7 +186,7 @@ private:
                     break;
                 default:
                     ret = false;
-                }
+            }
         }
         while (keep_reading && ret);
 
@@ -258,7 +249,7 @@ private:
 
     static void saveTree(T* node, std::ostream& os)
     {
-       
+
         if (!node->isLeaf())
         {
             os << '(';
