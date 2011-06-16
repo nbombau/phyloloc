@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     graph = new GraphWidget(ui->frame);
+    graph->setAttribute ( Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);
     ui->actionSelect_all_nodes->setEnabled(false);
@@ -28,7 +29,6 @@ MainWindow::MainWindow(QWidget* parent) :
 
 MainWindow::~MainWindow()
 {
-  //  delete graph;
     delete ui;
 }
 
