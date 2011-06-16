@@ -38,7 +38,7 @@ public:
     * @param trees treeCollection to be saved
     * @param info information to access the datasource
     */
-    virtual void save(Domain::ITreeCollection<T>& trees, K& info) = 0;
+    virtual void save(const Domain::ITreeCollection<T>& trees, const K& info) = 0;
 };
 }
 

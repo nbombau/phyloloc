@@ -13,7 +13,7 @@ class NewickWriter
 {
 public:
 
-    void saveNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
+    void saveNewickFile(const std::string& fname, const Domain::ITreeCollection<T>& trees)
     {
         Domain::ListIterator< Domain::ITree<T> >* iter = trees.getIterator();
 
@@ -31,7 +31,7 @@ public:
 
 private:
 
-    static void saveTree(T* node, std::ostream& os)
+    static void saveTree(const T* node, std::ostream& os)
     {
 
         if (!node->isLeaf())

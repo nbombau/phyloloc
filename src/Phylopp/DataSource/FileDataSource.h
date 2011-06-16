@@ -69,7 +69,7 @@ public:
     * --------------------
     * Description: Saves multiples tree structures to the file system.
     */
-    void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
+    void save(const Domain::ITreeCollection<T>& trees, const FilesInfo& info)
     {
         NewickWriter<T> newickWriter;
         newickWriter.saveNewickFile(info.getTreesFilePath(), trees);
