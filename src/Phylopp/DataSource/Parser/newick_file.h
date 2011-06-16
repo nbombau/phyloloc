@@ -54,7 +54,6 @@ public:
         if (f)
         {
             std::string tree_str, line;
-            bool ret(true);
 
             while (getline(f, line))
                 tree_str += line;
@@ -66,14 +65,12 @@ public:
                 Domain::ITree<T>* tree = trees.addTree();
                 load_node(tree->getRoot());
                 consume_whitespace();
-                ret = (*character == ';');
-                if (!ret)
+                if (*character != ';')
                     throw MissingTreeSeparator();
                 else
                     ++character;
-
             }
-            while (ret && *character != 0);
+            while (*character != 0);
         }
         else
         {
@@ -103,7 +100,6 @@ private:
 
     void load_node(T* node)
     {
-        bool ret;
         std::string name;
         float branchLength = 0.0;
 
@@ -115,21 +111,16 @@ private:
             case '(':
                 // We are nonleaf. Load new child.
                 ++character;
-                ret = load_children(node); // leaves in a parent
+                load_children(node); // leaves in a parent
                 character++;
-                if (ret) //Consume nonleaf name and branchlength, if present
-                {
-                    name = consume_name();
-                    node->setName(name);
-                    branchLength = consume_branch_length();
-                    node->setBranchLength(branchLength);
-                    // Set location, if exists, for the node
-                    set_location(name, set, node);
-                }
-                else
-                {
-                    throw MalformedExpression();
-                }
+
+                name = consume_name();
+                node->setName(name);
+                branchLength = consume_branch_length();
+                node->setBranchLength(branchLength);
+                // Set location, if exists, for the node
+                set_location(name, set, node);
+
                 break;
             case ',':
             case ')':
@@ -139,7 +130,6 @@ private:
                 break;
             case 0:
                 throw MalformedExpression();
-                break;
             default:
                 // We are leaf.
                 name = consume_name();
@@ -162,11 +152,10 @@ private:
         catch (const BadElementName&) { }
     }
 
-    bool load_children(T* parent)
+    void load_children(T* parent)
     {
         T* child;
         bool keep_reading = true;
-        bool ret = true;
 
         // Input: first char of first child.
         // output: ')'
@@ -185,12 +174,10 @@ private:
                     keep_reading = false;
                     break;
                 default:
-                    ret = false;
+                    throw MalformedExpression();
             }
         }
-        while (keep_reading && ret);
-
-        return ret;
+        while (keep_reading);
     }
 
     static inline bool is_namechar(char c)
