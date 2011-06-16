@@ -13,7 +13,8 @@
 #include "Domain/ITreeCollection.h"
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
-#include "Parser/newick_file.h"
+#include "NewickParser.h"
+#include "NewickWriter.h"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ class DataFileExceptionHierarchy {};
 typedef GenericException<DataFileExceptionHierarchy> DataFileException;
 
 /**
-* malformed_file
+* MalformedFile
 * --------------------
 * Description: Exception used when the file input its not correctly formed.
 * Example: when a node has no locations associated.
@@ -35,7 +36,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedFile,
                                "Error when parsing the input data file.");
 
 /**
-* data_file_not_found
+* DataFileNotFound
 * --------------------
 * Description: Exception used when the input file is missing.
 */
@@ -59,8 +60,8 @@ public:
     {
         VariantsSet set;
         loadData(info.getLocationsFilePath(), set);
-        NewickParser<T> newick;
-        newick.loadNewickFile(info.getTreesFilePath(), trees, set);
+        NewickParser<T> newickParser;
+        newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
     }
 
     /**
@@ -70,8 +71,8 @@ public:
     */
     void save(Domain::ITreeCollection<T>& trees, FilesInfo& info)
     {
-        NewickParser<T> newick;
-        newick.saveNewickFile(info.getTreesFilePath(), trees);
+        NewickWriter<T> newickWriter;
+        newickWriter.saveNewickFile(info.getTreesFilePath(), trees);
     }
 
 private:
