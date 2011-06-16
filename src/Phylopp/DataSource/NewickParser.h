@@ -10,6 +10,7 @@
 typedef std::string NodeName;
 
 class TreeFileExceptionHierarchy {};
+
 typedef GenericException<TreeFileExceptionHierarchy> TreeFileException;
 
 /**
@@ -19,7 +20,7 @@ typedef GenericException<TreeFileExceptionHierarchy> TreeFileException;
 */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(MissingTreeSeparator,
                                TreeFileExceptionHierarchy,
-                               "Missing tree separator (;).");
+                               "Missing tree separator (;)");
 
 /**
 * TreeFileNotFound
@@ -37,7 +38,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(TreeFileNotFound,
 */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedExpression,
                                TreeFileExceptionHierarchy,
-                               "the input is not correctly formed.");
+                               "the input is not correctly formed");
 
 template <class T>
 class NewickParser
@@ -48,14 +49,17 @@ public:
     {
         std::ifstream f(fname.c_str());
 
+        if (!f)
+            throw TreeFileNotFound();
+
         this->set = set;
 
-        if (f)
-        {
-            std::string tree_str, line;
+        std::string line;
 
-            while (getline(f, line))
-                tree_str += line;
+        currentLineNumber=1;
+        while (getline(f, line))
+        {
+            std::string tree_str = line;
 
             character = tree_str.c_str();
 
@@ -65,15 +69,13 @@ public:
                 load_node(tree->getRoot());
                 consume_whitespace();
                 if (*character != ';')
-                    throw MissingTreeSeparator();
+                    throw MissingTreeSeparator(getLineNumberText());
                 else
                     ++character;
             }
             while (*character != 0);
-        }
-        else
-        {
-            throw TreeFileNotFound();
+
+            currentLineNumber++;
         }
     }
 
@@ -81,10 +83,24 @@ private:
     VariantsSet set;
     const char* character;
 
+    /****************************************************
+     ** This variable and method will no longer be
+     ** needed when mili generic exceptions is updated **/
+
+    unsigned int currentLineNumber;
+
+    std::string getLineNumberText()
+    {
+        std:: stringstream s;
+        s << "Line: " << currentLineNumber;
+        return s.str();
+    }
+    /****************************************************/
+
     void load_node(T* node)
     {
         std::string name;
-        float branchLength = 0.0;
+        float branchLength = 0.0f;
 
         // Output: either ',' or ')' (depending on the node type)
         consume_whitespace();
@@ -109,10 +125,10 @@ private:
             case ')':
                 //Allow nameless nodes: dont consume character.
                 node->setName("");
-                node->setBranchLength(0.0);
+                node->setBranchLength(0.0f);
                 break;
             case 0:
-                throw MalformedExpression();
+                throw MalformedExpression(getLineNumberText());
             default:
                 // We are leaf.
                 name = consume_name();
@@ -124,7 +140,7 @@ private:
         }
     }
 
-    void set_location(const NodeName name, const VariantsSet set, T* node)
+    void set_location(const NodeName& name, const VariantsSet& set, T* node)
     {
         std::string location;
         try
@@ -157,7 +173,7 @@ private:
                     keep_reading = false;
                     break;
                 default:
-                    throw MalformedExpression();
+                    throw MalformedExpression(getLineNumberText());
             }
         }
         while (keep_reading);
