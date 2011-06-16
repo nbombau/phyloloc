@@ -484,19 +484,19 @@ namespace {
     TEST_F(FileDataSourceTest, loadTreesWithNoSeparator) 
     {
         ITreeCollection<TestNode> trees;
-        ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk","TestTrees/locations1.dat",trees),missing_tree_separator);
+        ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk","TestTrees/locations1.dat",trees),MissingTreeSeparator);
     }
     
     TEST_F(FileDataSourceTest, loadMalformedTree) 
     {
         ITreeCollection<TestNode> trees;
-        ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk","TestTrees/locations1.dat",trees),malformed_expression);
+        ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk","TestTrees/locations1.dat",trees),MalformedExpression);
     }
     
     TEST_F(FileDataSourceTest, loadMissingTree) 
     {
         ITreeCollection<TestNode> trees;
-        ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk","TestTrees/locations1.dat",trees),tree_file_not_found);
+        ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk","TestTrees/locations1.dat",trees),TreeFileNotFound);
     }
   
     TEST_F(FileDataSourceTest, saveTest1) 
@@ -629,7 +629,7 @@ namespace {
     {        
         ITreeCollection<TestNode> trees;
 
-        ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations6.dat",trees),malformed_file);
+        ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations6.dat",trees),MalformedFile);
     } 
 
     // Try to load non existent file
@@ -637,6 +637,6 @@ namespace {
     {        
         ITreeCollection<TestNode> trees;
         
-        ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations7.dat",trees),data_file_not_found);
+        ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk","TestTrees/locations7.dat",trees),DataFileNotFound);
     } 
 }

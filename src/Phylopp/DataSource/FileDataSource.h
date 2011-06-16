@@ -30,7 +30,7 @@ typedef GenericException<DataFileExceptionHierarchy> DataFileException;
 * Description: Exception used when the file input its not correctly formed.
 * Example: when a node has no locations associated.
 */
-DEFINE_SPECIFIC_EXCEPTION_TEXT(malformed_file,
+DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedFile,
                                DataFileExceptionHierarchy,
                                "Error when parsing the input data file.");
 
@@ -39,7 +39,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(malformed_file,
 * --------------------
 * Description: Exception used when the input file is missing.
 */
-DEFINE_SPECIFIC_EXCEPTION_TEXT(data_file_not_found,
+DEFINE_SPECIFIC_EXCEPTION_TEXT(DataFileNotFound,
                                DataFileExceptionHierarchy,
                                "The input data file does not exist.");
 
@@ -94,28 +94,28 @@ private:
             {
                 if (values.size() <= 1)
                 {
-                    throw malformed_file();
+                    throw MalformedFile();
                 }
-                else if (values.size() > 1)
+                else
                 {
                     vector<string>::const_iterator it = values.begin();
                     string name = trim(*it);
 
-                    string ss;
+                    string location;
                     for (++it; it != values.end(); ++it)
-                        ss += *it;
+                        location += *it;
 
-                    if (ss.empty())
-                        throw malformed_file();
+                    if (location.empty())
+                        throw MalformedFile();
 
-                    set.insert(name, ss);
+                    set.insert(name, location);
                     values.clear();
                 }
             }
         }
         else
         {
-            throw data_file_not_found();
+            throw DataFileNotFound();
         }
     }
 
