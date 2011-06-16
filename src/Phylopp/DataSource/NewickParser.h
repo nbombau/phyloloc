@@ -89,7 +89,7 @@ private:
 
     unsigned int currentLineNumber;
 
-    std::string getLineNumberText()
+    std::string getLineNumberText() const
     {
         std:: stringstream s;
         s << "Line: " << currentLineNumber;
