@@ -92,7 +92,7 @@ private:
         {
             while (f >> Separator(values, ','))
             {
-                if (values.size() == 1)
+                if (values.size() <= 1)
                 {
                     throw malformed_file();
                 }
@@ -104,6 +104,9 @@ private:
                     string ss;
                     for (++it; it != values.end(); ++it)
                         ss += *it;
+
+                    if (ss.empty())
+                        throw malformed_file();
 
                     set.insert(name, ss);
                     values.clear();
