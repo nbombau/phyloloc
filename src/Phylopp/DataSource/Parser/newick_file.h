@@ -18,7 +18,7 @@ typedef GenericException<TreeFileExceptionHierarchy> TreeFileException;
 * --------------------
 * Description: Exception used when the nodes separator its not found
 */
-DEFINE_SPECIFIC_EXCEPTION_TEXT(missing_tree_separator,
+DEFINE_SPECIFIC_EXCEPTION_TEXT(MissingTreeSeparator,
                                TreeFileExceptionHierarchy,
                                "Missing tree separator (;).");
 
@@ -27,7 +27,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(missing_tree_separator,
 * --------------------
 * Description: Exception used when the input file is missing.
 */
-DEFINE_SPECIFIC_EXCEPTION_TEXT(tree_file_not_found,
+DEFINE_SPECIFIC_EXCEPTION_TEXT(TreeFileNotFound,
                                TreeFileExceptionHierarchy,
                                "The input tree file does not exist.");
 
@@ -36,7 +36,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(tree_file_not_found,
 * --------------------
 * Description: Exception used when the input file is missing.
 */
-DEFINE_SPECIFIC_EXCEPTION_TEXT(malformed_expression,
+DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedExpression,
                                TreeFileExceptionHierarchy,
                                "the input is not correctly formed.");
 
@@ -68,7 +68,7 @@ public:
                 consume_whitespace();
                 ret = (*character == ';');
                 if (!ret)
-                    throw missing_tree_separator();
+                    throw MissingTreeSeparator();
                 else
                     ++character;
 
@@ -77,7 +77,7 @@ public:
         }
         else
         {
-            throw tree_file_not_found();
+            throw TreeFileNotFound();
         }
     }
 
@@ -128,7 +128,7 @@ private:
                 }
                 else
                 {
-                    throw malformed_expression();
+                    throw MalformedExpression();
                 }
                 break;
             case ',':
@@ -138,7 +138,7 @@ private:
                 node->setBranchLength(0.0);
                 break;
             case 0:
-                throw malformed_expression();
+                throw MalformedExpression();
                 break;
             default:
                 // We are leaf.

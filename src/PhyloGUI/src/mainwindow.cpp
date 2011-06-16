@@ -72,27 +72,27 @@ void MainWindow::loadTree(const FilesInfo& info)
         }
         delete iter;
     }
-    catch (malformed_file ex)
+    catch (const MalformedFile& ex)
     {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
-    catch (data_file_not_found ex)
+    catch (const DataFileNotFound& ex)
     {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
-    catch (missing_tree_separator ex)
+    catch (const MissingTreeSeparator& ex)
     {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
-    catch (tree_file_not_found ex)
+    catch (const TreeFileNotFound& ex)
     {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
-    catch (malformed_expression ex)
+    catch (const MalformedExpression& ex)
     {
         QMessageBox msg(QMessageBox::Information, "load error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
