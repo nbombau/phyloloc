@@ -15,6 +15,7 @@
 #include "Domain/ListIterator.h"
 #include "NewickParser.h"
 #include "NewickWriter.h"
+#include "DistancesParser.h"
 
 using namespace std;
 
@@ -58,8 +59,12 @@ public:
     */
     void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees)
     {
+        DistancesParser distancesParser;
+        distancesParser.loadDistancesFile(info.getDistancesFilePath());
+
         VariantsSet set;
         loadData(info.getLocationsFilePath(), set);
+
         NewickParser<T> newickParser;
         newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
     }

@@ -43,12 +43,12 @@ public:
 
     ~GuiAspect()
     {
-/*
-        for (QList<Edge*>::Iterator it = edgeListFrom.begin(); it != edgeListFrom.end(); ++it)
-        {
-            delete *it;
-        }
-*/
+        /*
+                for (QList<Edge*>::Iterator it = edgeListFrom.begin(); it != edgeListFrom.end(); ++it)
+                {
+                    delete *it;
+                }
+        */
 
         for (QList<Edge*>::Iterator it = edgeListTo.begin(); it != edgeListTo.end(); ++it)
         {
