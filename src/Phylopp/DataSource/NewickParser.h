@@ -56,7 +56,7 @@ public:
 
         std::string line;
 
-        currentLineNumber=1;
+        currentLineNumber = 1;
         while (getline(f, line))
         {
             std::string tree_str = line;
@@ -227,7 +227,7 @@ private:
             }
 
             if (!from_string(branchLenStr, ret))
-                ret = 0.0f;
+                throw MalformedExpression(getLineNumberText());
 
         }
         return ret;

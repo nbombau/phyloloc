@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     graph = new GraphWidget(ui->frame);
-    graph->setAttribute ( Qt::WA_DeleteOnClose, true);
+    graph->setAttribute(Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);
     ui->actionSelect_all_nodes->setEnabled(false);
@@ -82,7 +82,11 @@ void MainWindow::loadTree(const FilesInfo& info)
         QMessageBox msg(QMessageBox::Information, "Load tree file error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
     }
-
+    catch (const DistancesFileException& ex)
+    {
+        QMessageBox msg(QMessageBox::Information, "Load distances file error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
     //TODO clear trees if exception ocurres
 }
 
@@ -141,14 +145,14 @@ void MainWindow::on_actionSelect_Ancestors_triggered()
 void MainWindow::on_actionSearch_terminal_nodes_triggered()
 {
     bool ok;
-     QString text = QInputDialog::getText(this, tr("Search nodes..."),
-                                              tr("Node name:"), QLineEdit::Normal,
-                                              "", &ok);
-     if (ok)
-     {
-         cout << "Search for: " << text.toStdString();
-     }
-     //else not needed
+    QString text = QInputDialog::getText(this, tr("Search nodes..."),
+                                         tr("Node name:"), QLineEdit::Normal,
+                                         "", &ok);
+    if (ok)
+    {
+        cout << "Search for: " << text.toStdString();
+    }
+    //else not needed
 }
 
 void MainWindow::drawTree()

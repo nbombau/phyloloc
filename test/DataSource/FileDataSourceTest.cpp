@@ -54,7 +54,7 @@ namespace {
         //TODO update tests to support distances file
         void loadTreeFromFile(std::string treesFile,std::string placesFile,ITreeCollection<TestNode>& trees)
         {
-            FilesInfo info(treesFile,placesFile,"");
+            FilesInfo info(treesFile,placesFile,"TestTrees/distances1.dist");
             fileDataSource.load(info,trees);
         }
         
