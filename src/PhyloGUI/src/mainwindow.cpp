@@ -1,9 +1,9 @@
 #include <QColorDialog>
 #include <QErrorMessage>
 #include <QMessageBox>
-
+#include <QInputDialog>
 #include "PhyloGUI/inc/mainwindow.h"
-#include "PhyloGUI/ui_mainwindow.h"
+#include "ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/filedialog.h"
@@ -138,6 +138,18 @@ void MainWindow::on_actionSelect_Ancestors_triggered()
     graph->selectNodeAncestors(actualTree);
 }
 
+void MainWindow::on_actionSearch_terminal_nodes_triggered()
+{
+    bool ok;
+     QString text = QInputDialog::getText(this, tr("Search nodes..."),
+                                              tr("Node name:"), QLineEdit::Normal,
+                                              "", &ok);
+     if (ok)
+     {
+         cout << "Search for: " << text.toStdString();
+     }
+     //else not needed
+}
 
 void MainWindow::drawTree()
 {
@@ -149,3 +161,4 @@ void MainWindow::drawTree()
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
+

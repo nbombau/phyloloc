@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sat Apr 30 17:42:54 2011
-**      by: Qt User Interface Compiler version 4.7.0
+** Created: Thu Jun 16 21:41:04 2011
+**      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -30,34 +30,35 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction* actionOpen;
-    QAction* actionSave_As;
-    QAction* actionQuit;
-    QAction* actionProcess_tree;
-    QAction* actionConcense_trees;
-    QAction* actionParameters;
-    QAction* actionOptions;
-    QAction* actionClear_selection;
-    QAction* actionSelect_descendants;
-    QAction* actionSelect_Ancestors;
-    QAction* actionExpand;
-    QAction* actionCollapse;
-    QAction* actionColor_nodes;
-    QAction* actionNode_details;
-    QAction* actionSelect_all_nodes;
-    QWidget* centralWidget;
-    QHBoxLayout* horizontalLayout;
-    QListWidget* listWidget;
-    QMdiArea* frame;
-    QMenuBar* menuBar;
-    QMenu* menuFile;
-    QMenu* menuNode;
-    QMenu* menuTools;
-    QMenu* menuConfiguration;
-    QToolBar* mainToolBar;
-    QStatusBar* statusBar;
+    QAction *actionOpen;
+    QAction *actionSave_As;
+    QAction *actionQuit;
+    QAction *actionProcess_tree;
+    QAction *actionConcense_trees;
+    QAction *actionParameters;
+    QAction *actionOptions;
+    QAction *actionClear_selection;
+    QAction *actionSelect_descendants;
+    QAction *actionSelect_Ancestors;
+    QAction *actionExpand;
+    QAction *actionCollapse;
+    QAction *actionColor_nodes;
+    QAction *actionNode_details;
+    QAction *actionSelect_all_nodes;
+    QAction *actionSelect_terminal_nodes;
+    QWidget *centralWidget;
+    QHBoxLayout *horizontalLayout;
+    QListWidget *listWidget;
+    QMdiArea *frame;
+    QMenuBar *menuBar;
+    QMenu *menuFile;
+    QMenu *menuNode;
+    QMenu *menuTools;
+    QMenu *menuConfiguration;
+    QToolBar *mainToolBar;
+    QStatusBar *statusBar;
 
-    void setupUi(QMainWindow* MainWindow)
+    void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
@@ -92,6 +93,8 @@ public:
         actionNode_details->setObjectName(QString::fromUtf8("actionNode_details"));
         actionSelect_all_nodes = new QAction(MainWindow);
         actionSelect_all_nodes->setObjectName(QString::fromUtf8("actionSelect_all_nodes"));
+        actionSelect_terminal_nodes = new QAction(MainWindow);
+        actionSelect_terminal_nodes->setObjectName(QString::fromUtf8("actionSelect_terminal_nodes"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -113,7 +116,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 640, 22));
+        menuBar->setGeometry(QRect(0, 0, 640, 25));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuNode = new QMenu(menuBar);
@@ -145,6 +148,8 @@ public:
         menuNode->addAction(actionCollapse);
         menuNode->addAction(actionColor_nodes);
         menuNode->addAction(actionSelect_all_nodes);
+        menuNode->addSeparator();
+        menuNode->addAction(actionSelect_terminal_nodes);
         menuTools->addAction(actionProcess_tree);
         menuTools->addAction(actionConcense_trees);
         menuConfiguration->addAction(actionParameters);
@@ -155,7 +160,7 @@ public:
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow* MainWindow)
+    void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
         actionOpen->setText(QApplication::translate("MainWindow", "Open...", 0, QApplication::UnicodeUTF8));
@@ -183,6 +188,7 @@ public:
         actionColor_nodes->setText(QApplication::translate("MainWindow", "Color nodes...", 0, QApplication::UnicodeUTF8));
         actionNode_details->setText(QApplication::translate("MainWindow", "Node details...", 0, QApplication::UnicodeUTF8));
         actionSelect_all_nodes->setText(QApplication::translate("MainWindow", "Select all nodes", 0, QApplication::UnicodeUTF8));
+        actionSelect_terminal_nodes->setText(QApplication::translate("MainWindow", "Select terminal nodes...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
@@ -191,9 +197,8 @@ public:
 
 };
 
-namespace Ui
-{
-class MainWindow: public Ui_MainWindow {};
+namespace Ui {
+    class MainWindow: public Ui_MainWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE
