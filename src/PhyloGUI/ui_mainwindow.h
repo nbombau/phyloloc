@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu Jun 16 21:41:04 2011
+** Created: Thu Jun 16 21:48:51 2011
 **      by: Qt User Interface Compiler version 4.7.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -45,7 +45,7 @@ public:
     QAction *actionColor_nodes;
     QAction *actionNode_details;
     QAction *actionSelect_all_nodes;
-    QAction *actionSelect_terminal_nodes;
+    QAction *actionSearch_terminal_nodes;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QListWidget *listWidget;
@@ -93,8 +93,8 @@ public:
         actionNode_details->setObjectName(QString::fromUtf8("actionNode_details"));
         actionSelect_all_nodes = new QAction(MainWindow);
         actionSelect_all_nodes->setObjectName(QString::fromUtf8("actionSelect_all_nodes"));
-        actionSelect_terminal_nodes = new QAction(MainWindow);
-        actionSelect_terminal_nodes->setObjectName(QString::fromUtf8("actionSelect_terminal_nodes"));
+        actionSearch_terminal_nodes = new QAction(MainWindow);
+        actionSearch_terminal_nodes->setObjectName(QString::fromUtf8("actionSearch_terminal_nodes"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -149,7 +149,7 @@ public:
         menuNode->addAction(actionColor_nodes);
         menuNode->addAction(actionSelect_all_nodes);
         menuNode->addSeparator();
-        menuNode->addAction(actionSelect_terminal_nodes);
+        menuNode->addAction(actionSearch_terminal_nodes);
         menuTools->addAction(actionProcess_tree);
         menuTools->addAction(actionConcense_trees);
         menuConfiguration->addAction(actionParameters);
@@ -188,7 +188,7 @@ public:
         actionColor_nodes->setText(QApplication::translate("MainWindow", "Color nodes...", 0, QApplication::UnicodeUTF8));
         actionNode_details->setText(QApplication::translate("MainWindow", "Node details...", 0, QApplication::UnicodeUTF8));
         actionSelect_all_nodes->setText(QApplication::translate("MainWindow", "Select all nodes", 0, QApplication::UnicodeUTF8));
-        actionSelect_terminal_nodes->setText(QApplication::translate("MainWindow", "Select terminal nodes...", 0, QApplication::UnicodeUTF8));
+        actionSearch_terminal_nodes->setText(QApplication::translate("MainWindow", "Search terminal nodes...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));

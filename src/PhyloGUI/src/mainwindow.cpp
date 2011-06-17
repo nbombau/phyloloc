@@ -3,7 +3,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include "PhyloGUI/inc/mainwindow.h"
-#include "ui_mainwindow.h"
+#include "PhyloGUI/ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/filedialog.h"
