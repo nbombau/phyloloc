@@ -187,6 +187,7 @@ compiler_moc_header_clean:
 moc_mainwindow.cpp: PhyloGUI/inc/graphwidget.h \
 		Domain/ITree.h \
 		Domain/INode.h \
+        Domain/LocationAspect.h \
 		Domain/ListIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
@@ -241,6 +242,7 @@ main.o: PhyloGUI/src/main.cpp PhyloGUI/inc/mainwindow.h \
 		PhyloGUI/inc/graphwidget.h \
 		Domain/ITree.h \
 		Domain/INode.h \
+        Domain/LocationAspect.h \
 		Domain/ListIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
@@ -258,6 +260,7 @@ mainwindow.o: PhyloGUI/src/mainwindow.cpp PhyloGUI/inc/mainwindow.h \
 		PhyloGUI/inc/graphwidget.h \
 		Domain/ITree.h \
 		Domain/INode.h \
+        Domain/LocationAspect.h \
 		Domain/ListIterator.h \
 		PhyloGUI/inc/edge.h \
 		PhyloGUI/GuiAspect.h \
