@@ -17,18 +17,16 @@ namespace Propagation
     class PropagatorAspect : public Domain::Node<PropagatorAspect<T> >
     {
     public:
-        //TODO: Temporary, wired until integration
-        PropagatorAspect() 
-        { 
-        }
-                
+        PropagatorAspect() {}
+        
         ~PropagatorAspect() {}
         
         void propagateFromChildren(Domain::BranchLength branchLengthSum, 
                                    Locations::DistanceVector& dispersalVector, 
                                    Weight geographicFactorWeight, 
                                    Weight branchLenghtFactorWeight)
-        {          
+        {   
+            //if it's leaf, theres nothing to propagate
             if(!this->isLeaf())
             {
                 Domain::ListIterator<PropagatorAspect<T> > childIter = this->getChildrenIterator();
@@ -47,6 +45,11 @@ namespace Propagation
                 );
                 
                 applyCorrectionFactors(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
+            }
+            //if its leaf, the first time the probabilities vector shall be initialized
+            else if(probabilities.size() == 0)
+            {
+                initProbabilities();
             }
         }
         
@@ -106,12 +109,25 @@ namespace Propagation
             );
         }
         
-        
     //TODO: temporary until integgration. protected removed for initializing leaf probabilities
     //shall be removed during integration
     //protected:
         
         LocationProbabilities probabilities;        
+        
+    private:
+        
+        void initProbabilities()
+        {
+           /* Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());
+            size_t locationCount = this->locationManager.getLocationsCount();
+            
+            if(locationCount > 0 && id > 0)
+            {
+                probabilities.resize(locationCount, 0);
+                probabilities[id] = 1.0f;
+            }*/
+        }
     };
    
 }

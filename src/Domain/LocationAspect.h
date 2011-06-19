@@ -36,7 +36,7 @@ namespace Locations
                                    "The location its not defined");
 
     template <class T>
-    class LocationAspect  : public Domain::Node<LocationAspect<T> >                           
+    class LocationAspect  : public Domain::Node<LocationAspect<T> >                        
     {
     public:        
 
@@ -198,19 +198,11 @@ namespace Locations
              */
             const DistanceVector& getDispersionVector()
             {
-                if(dispersionVector.size() == 0)
-                {
-                    calculateDispersionVector();
-                }
+                calculateDispersionVector();
                 return dispersionVector;
             }
             
-        private:
-            
-            VariantsSet nodeLocationSet;
-            VariantsSet locationIdSet;
-            std::vector<std::vector<Distance> > locationsDistances;
-            DistanceVector dispersionVector;
+            //TODO: Make these private, first resolve propagator initialization
             /**
              * Method: getLocationId
              * ----------------------
@@ -239,7 +231,18 @@ namespace Locations
              */
             LocationId getLocationId(const LocationAspect<T>* node)
             {
-                NodeName name = node->getName();
+                return getNameLocationId(node->getName());
+                
+            }
+            
+            /**
+             * Method: getLocationId
+             * ----------------------
+             * Description: Look for the id mapped to a location
+             * Returns: Cero if the id is not defined. 
+             */
+            LocationId getNameLocationId(const NodeName& name)
+            {
                 Location location = getLocation(name);
                 return getLocationId(location);
             }
@@ -253,6 +256,13 @@ namespace Locations
             {
                 return nodeLocationSet.size();
             }
+            
+        private:
+            
+            VariantsSet nodeLocationSet;
+            VariantsSet locationIdSet;
+            std::vector<std::vector<Distance> > locationsDistances;
+            DistanceVector dispersionVector;
             
             /**
              * Method: InitializeDistancesMatrix
@@ -275,10 +285,11 @@ namespace Locations
              */
             void calculateDispersionVector()
             {
-                size_t locationsNumber = getLocationsNumber();
+                size_t locationsNumber = getLocationsCount();
                 
                 if(locationsNumber > 0)
                 {
+                    dispersionVector.clear();
                     dispersionVector.resize(locationsNumber, 0);
                     Distance distancesSum = 0.0f;
                     
@@ -294,24 +305,15 @@ namespace Locations
                         distancesSum += locationDistancesSum;
                     }
                     
+                    Distance distancesAverage = distancesSum / Distance(locationsNumber);
                     for(unsigned int i = 0; i < locationsNumber; i++)
                     {
                         Distance locationAverage = dispersionVector[i];
-                        dispersionVector[i] = 1.0f - locationAverage / distancesSum;
+                        dispersionVector[i] = 1.0f - locationAverage / distancesAverage;
                     }
                 }
             }
-            
-            /**
-             * Method: getLocationsNumber
-             * ----------------------
-             * Description: returns number of locations the locationManager
-             * is holding
-             */
-            size_t getLocationsNumber() const
-            {
-                return locationsDistances.size();
-            }
+
             
         }; // End of Class LocationManager
 
