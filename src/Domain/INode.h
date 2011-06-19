@@ -73,9 +73,10 @@ public:
     * client to iterate through the node's children.
     * @returns ListIterator to iterate through the node's children
     */
-    ListIterator<T>* getChildrenIterator() const
+    ListIterator<T> getChildrenIterator() const
     {
-        return new ListIterator<T>(children);
+        ListIterator<T> iter = ListIterator<T>(children);
+        return iter;
     }
 
     /**

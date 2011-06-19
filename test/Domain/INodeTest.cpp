@@ -68,14 +68,13 @@ using ::testing::Test;
         //check child's parent is n
         EXPECT_EQ( child1->getParent(), &n );
         
-        ListIterator<TestNode>* it = n.getChildrenIterator();
+        ListIterator<TestNode> it = n.getChildrenIterator();
         
         //check child1 is n's descendant
-        TestNode* aux = it->get();
+        TestNode* aux = it.get();
         ASSERT_FALSE(aux == NULL);
         EXPECT_EQ(aux, child1);
         
-        delete it;
         
         //n should be root, but not leaf anymore
         ASSERT_FALSE(n.isLeaf());
@@ -98,10 +97,8 @@ using ::testing::Test;
         child5->setName("c5");
         
         //Check iteration
-        ListIterator<TestNode>* iter = n.getChildrenIterator();
+        ListIterator<TestNode> iter = n.getChildrenIterator();
         
-        EXPECT_EQ(iter->count(), 5); //5 childs have been added
-                
-        delete iter;
+        EXPECT_EQ(iter.count(), 5); //5 childs have been added
     }    
 }

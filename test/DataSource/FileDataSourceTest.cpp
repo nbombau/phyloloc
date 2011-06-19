@@ -253,25 +253,22 @@ namespace {
         static bool compareTreeCollections(ITreeCollection<TestNode>& trees1, ITreeCollection<TestNode>& trees2)
         {
                  
-            ListIterator< ITree<TestNode> > *iter1 = trees1.getIterator();
-            ListIterator< ITree<TestNode> > *iter2 = trees2.getIterator();
+            ListIterator< ITree<TestNode> > iter1 = trees1.getIterator();
+            ListIterator< ITree<TestNode> > iter2 = trees2.getIterator();
             
-            bool ret = iter1->count()==iter2->count();
+            bool ret = iter1.count()==iter2.count();
             EXPECT_TRUE(ret);
             
             if (ret)
             {
-                while (ret && !iter1->end())
+                while (ret && !iter1.end())
                 {
-                    ret = compareTrees(iter1->get(),iter2->get());
-                    iter1->next();
-                    iter2->next();
+                    ret = compareTrees(iter1.get(),iter2.get());
+                    iter1.next();
+                    iter2.next();
                 }
             }
-            
-            delete iter1;
-            delete iter2;
-            
+                        
             return ret;
             
         }
@@ -280,16 +277,14 @@ namespace {
         {
             bool ret(true);
             
-            ListIterator< ITree<TestNode> > *treesIterator = trees.getIterator();
+            ListIterator< ITree<TestNode> > treesIterator = trees.getIterator();
  
-            while (ret && !treesIterator->end())
+            while (ret && !treesIterator.end())
             {
-                ITree<TestNode>* tree = treesIterator->get();
+                ITree<TestNode>* tree = treesIterator.get();
                 ret = compareNodeLocations(tree->getRoot(),map);
-                treesIterator->next();
+                treesIterator.next();
             }
-            
-            delete treesIterator;
             
             return ret;
             
@@ -305,15 +300,13 @@ namespace {
           
             if (ret)
             {
-                ListIterator<TestNode> *iterNode = node1->getChildrenIterator();
+                ListIterator<TestNode> iterNode = node1->getChildrenIterator();
 
-                while (ret && !iterNode->end())
+                while (ret && !iterNode.end())
                 {
-                    ret = compareNodeLocations(iterNode->get(),map);
-                    iterNode->next();
+                    ret = compareNodeLocations(iterNode.get(),map);
+                    iterNode.next();
                 }
-                      
-                delete iterNode;
             }
         
             return ret;
@@ -331,25 +324,23 @@ namespace {
                 << " - n2: " << node2->getName()<< ":" << node2->getBranchLength();
             if (ret)
             {
-                ListIterator<TestNode> *iterNode1 = node1->getChildrenIterator();
-                ListIterator<TestNode> *iterNode2 = node2->getChildrenIterator();
+                ListIterator<TestNode> iterNode1 = node1->getChildrenIterator();
+                ListIterator<TestNode> iterNode2 = node2->getChildrenIterator();
             
-                ret = iterNode1->count()==iterNode2->count(); 
+                ret = iterNode1.count()==iterNode2.count(); 
                 
                 EXPECT_TRUE(ret);
                
                 if (ret)
                 {
-                    while (ret && !iterNode1->end())
+                    while (ret && !iterNode1.end())
                     {
-                        ret = compareNodes(iterNode1->get(),iterNode2->get());
-                        iterNode1->next();
-                        iterNode2->next();
+                        ret = compareNodes(iterNode1.get(),iterNode2.get());
+                        iterNode1.next();
+                        iterNode2.next();
                     }
                 }
                
-                delete iterNode1;
-                delete iterNode2;
             }
         
             return ret;

@@ -190,7 +190,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
-    ListIterator<GuiNode> * it = node->getChildrenIterator();
+    ListIterator<GuiNode>  it = node->getChildrenIterator();
     list<QPointF> points;
     QPointF nodeCoord;
     QPointF ret;
@@ -206,12 +206,12 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     }
     else
     {
-        while (!it->end())
+        while (!it.end())
         {
-            GuiNode* auxNode = it->get();
+            GuiNode* auxNode = it.get();
             ret = drawTreeAux(scene, auxNode, depth + node->getBranchLength(), leafNumber);
             points.push_front(ret);
-            it->next();
+            it.next();
         }
         last = points.front();
         first = points.back();
@@ -222,18 +222,16 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
     scene->addItem(node);
 
-    it->restart();
-    while (!it->end())
+    it.restart();
+    for(; !it.end(); it.next())
     {
-        GuiNode* const auxNode = it->get();
+        GuiNode* const auxNode = it.get();
         edge = new Edge(node, auxNode);
 
         scene->addItem(edge);
         auxNode->addEdgeFrom(edge);
         node->addEdgeTo(edge);
-        it->next();
     }
-    delete it;
     return nodeCoord;
 }
 

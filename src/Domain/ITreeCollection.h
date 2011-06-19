@@ -42,9 +42,10 @@ public:
     * trees of the collection.
     * @return trees iterator
     */
-    ListIterator<ITree<T> >* getIterator() const
+    ListIterator<ITree<T> > getIterator() const
     {
-        return new ListIterator<ITree<T> >(trees);
+        ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
+        return iter;
     }
 
     /*
@@ -57,20 +58,18 @@ public:
     {
         unsigned int i = 0;
         ITree<T>* ret = NULL;
-        ListIterator<ITree<T> >* it = this->getIterator();
+        ListIterator<ITree<T> > it = this->getIterator();
 
-        while (i < index && !it->end())
+        while (i < index && !it.end())
         {
-            it->next();
+            it.next();
             i++;
         }
 
         if (i == index)
         {
-            ret = it->get();
+            ret = it.get();
         }
-        
-        delete it;
 
         return ret;
     }
