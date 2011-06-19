@@ -33,7 +33,7 @@ class LocationsParser
 {
 public:
 
-    void loadLocationsFile(const std::string& fname,VariantsSet& set)
+    void loadLocationsFile(const std::string& fname, VariantsSet& set)
     {
         std::ifstream f(fname.c_str());
 
