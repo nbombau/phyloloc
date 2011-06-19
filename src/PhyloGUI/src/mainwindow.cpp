@@ -73,19 +73,16 @@ void MainWindow::loadTree(const FilesInfo& info)
     {
         QMessageBox msg(QMessageBox::Information, "Load data file error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
-        trees.clear();
     }
     catch (const TreeFileException& ex)
     {
         QMessageBox msg(QMessageBox::Information, "Load tree file error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
-        trees.clear();
     }
     catch (const DistancesFileException& ex)
     {
         QMessageBox msg(QMessageBox::Information, "Load distances file error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
-        trees.clear();
     }
 }
 

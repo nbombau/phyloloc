@@ -15,16 +15,13 @@ public:
 
     void saveNewickFile(const std::string& fname, const Domain::ITreeCollection<T>& trees)
     {
-        Domain::ListIterator< Domain::ITree<T> > iter = trees.getIterator();
-
         std::ofstream os(fname.c_str());
 
-        while (!iter.end())
+        for (Domain::ListIterator< Domain::ITree<T> > iter = trees.getIterator(); !iter.end(); iter.next())
         {
             Domain::ITree<T>* tree = iter.get();
             saveTree(tree->getRoot(), os);
             os << ";\n";
-            iter.next();
         }
     }
 

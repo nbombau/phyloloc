@@ -34,15 +34,59 @@ public:
     */
     void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees)
     {
-        DistancesParser distancesParser;
-        distancesParser.loadDistancesFile(info.getDistancesFilePath());
+        try
+        {
+            DistancesParser distancesParser;
+            distancesParser.loadDistancesFile(info.getDistancesFilePath());
 
-        VariantsSet set;
-        LocationsParser locationsParser;
-        locationsParser.loadLocationsFile(info.getLocationsFilePath(), set);
+            VariantsSet set;
+            LocationsParser locationsParser;
+            locationsParser.loadLocationsFile(info.getLocationsFilePath(), set);
 
-        NewickParser<T> newickParser;
-        newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
+            NewickParser<T> newickParser;
+            newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
+        }
+
+        catch (const MalformedFile& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const DataFileNotFound& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const MissingTreeSeparator& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const TreeFileNotFound& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const MalformedExpression& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const DistancesFileNotFound& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+        catch (const MalformedDistancesFile& ex)
+        {
+            trees.clear();
+            throw ex;
+        }
+
+        //TODO replace all this catch blocks for only one.
+        //Current problem: if it is done in that way,
+        //the rethrown exception looses its particular type
+
     }
 
     /**
