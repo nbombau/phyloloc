@@ -7,7 +7,6 @@
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
 
-typedef std::string NodeName;
 
 class TreeFileExceptionHierarchy {};
 
@@ -141,7 +140,7 @@ private:
         }
     }
 
-    void set_location(const NodeName& name, const VariantsSet& set, T* node)
+    void set_location(const Domain::NodeName& name, const VariantsSet& set, T* node)
     {
         std::string location;
         try

@@ -6,7 +6,7 @@
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
 
-typedef std::string NodeName;
+
 
 template <class T>
 class NewickWriter

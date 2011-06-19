@@ -38,28 +38,60 @@ namespace Propagation
     class PropagateFromChildrenAction
     {
     public:
-        PropagateFromChildrenAction() {}
+        PropagateFromChildrenAction(Domain::BranchLength blSum, 
+                                    const Locations::DistanceVector& dispersal, 
+                                    Weight geographic, 
+                                    Weight branch) 
+            : branchLengthSum(blSum),
+            geographicFactorWeight(geographic),
+            branchLenghtFactorWeight(branch),
+            dispersalVector(dispersal)
+            
+        {}
         
         VisitAction visitNode(T* n)
         {
-            n->propagateFromChildren();
+            n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
             
             return ContinueTraversing;
         }
+        
+    private:
+        
+        Domain::BranchLength branchLengthSum;
+        Weight geographicFactorWeight;
+        Weight branchLenghtFactorWeight;
+        Locations::DistanceVector& dispersalVector;
     };
     
     template <class T>
     class PropagateFromParentAction
     {
     public:
-        PropagateFromParentAction() {}
+        PropagateFromParentAction(Domain::BranchLength blSum, 
+                                  const Locations::DistanceVector& dispersal, 
+                                  Weight geographic, 
+                                  Weight branch) 
+            : branchLengthSum(blSum),
+            geographicFactorWeight(geographic),
+            branchLenghtFactorWeight(branch),
+            dispersalVector(dispersal)
+        
+        {}
         
         VisitAction visitNode(T* n)
         {
-            n->propagateFromParent();
+            n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
             
             return ContinueTraversing;
         }
+        
+    private:
+        
+        Domain::BranchLength branchLengthSum;
+        Weight geographicFactorWeight;
+        Weight branchLenghtFactorWeight;
+        Locations::DistanceVector& dispersalVector;
     };
     
 }
