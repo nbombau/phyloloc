@@ -49,8 +49,8 @@ public:
             if (values.size() != 3)
                 throw MalformedDistancesFile(getLineNumberText());
 
-            std::string location1 = trim(values[0]);
-            std::string location2 = trim(values[1]);
+            const std::string location1 = trim(values[0]);
+            const std::string location2 = trim(values[1]);
 
             float distance;
             if (!from_string(values[2], distance))
@@ -69,7 +69,8 @@ private:
 
     /****************************************************
      ** This variable and method will no longer be
-     ** needed when mili generic exceptions is updated **/
+     ** needed when mili generic exceptions is updated.
+     *********       mili issue 35              ********/
 
     unsigned int currentLineNumber;
 

@@ -38,7 +38,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(TreeFileNotFound,
 */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedExpression,
                                TreeFileExceptionHierarchy,
-                               "the input is not correctly formed");
+                               "The input is not correctly formed");
 
 template <class T>
 class NewickParser
@@ -85,7 +85,8 @@ private:
 
     /****************************************************
      ** This variable and method will no longer be
-     ** needed when mili generic exceptions is updated **/
+     ** needed when mili generic exceptions is updated.
+     *********       mili issue 35              ********/
 
     unsigned int currentLineNumber;
 
