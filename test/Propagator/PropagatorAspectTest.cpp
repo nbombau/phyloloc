@@ -32,7 +32,7 @@ namespace {
     
     typedef Propagation::PropagatorAspect<Domain::BaseAspect> Node;
     
-    TEST_F(PropagatorAspectTest, propagateFromChildrenTest) 
+    TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest) 
     {        
         const float epsilon = 0.0001f;
          
@@ -68,24 +68,28 @@ namespace {
         v4.push_back(1.0);
         c4->probabilities = v4;
         
-        root.propagateFromChildren();
+        std::vector<float> dispersalVector;
+        dispersalVector.resize(3);
+        
+        
+        root.propagateFromChildren(0, dispersalVector, 0, 0);
         ASSERT_TRUE(abs(root.probabilities[0] - 0.5) < epsilon);
         ASSERT_TRUE(abs(root.probabilities[1] - 0.25) < epsilon);
         ASSERT_TRUE(abs(root.probabilities[2] - 0.25) < epsilon);
         
-        c1->propagateFromParent();
+        c1->propagateFromParent(0, dispersalVector, 0, 0);;
         ASSERT_TRUE(abs(c1->probabilities[0] - 0.75) < epsilon);
         ASSERT_TRUE(abs(c1->probabilities[1] - 0.125) < epsilon);
         ASSERT_TRUE(abs(c1->probabilities[2] - 0.125) < epsilon);
-        c2->propagateFromParent();
+        c2->propagateFromParent(0, dispersalVector, 0, 0);;
         ASSERT_TRUE(abs(c2->probabilities[0] - 0.75) < epsilon);
         ASSERT_TRUE(abs(c2->probabilities[1] - 0.125) < epsilon);
         ASSERT_TRUE(abs(c2->probabilities[2] - 0.125) < epsilon);
-        c3->propagateFromParent();
+        c3->propagateFromParent(0, dispersalVector, 0, 0);;
         ASSERT_TRUE(abs(c3->probabilities[0] - 0.25) < epsilon);
         ASSERT_TRUE(abs(c3->probabilities[1] - 0.625) < epsilon);
         ASSERT_TRUE(abs(c3->probabilities[2] - 0.125) < epsilon);
-        c4->propagateFromParent();
+        c4->propagateFromParent(0, dispersalVector, 0, 0);;
         ASSERT_TRUE(abs(c4->probabilities[0] - 0.25) < epsilon);
         ASSERT_TRUE(abs(c4->probabilities[1] - 0.125) < epsilon);
         ASSERT_TRUE(abs(c4->probabilities[2] - 0.625) < epsilon);
