@@ -26,11 +26,11 @@ namespace Propagation
         {          
             if(!this->isLeaf())
             {
-                Domain::ListIterator<PropagatorAspect<T> >* childIter = this->getChildrenIterator();
+                Domain::ListIterator<PropagatorAspect<T> > childIter = this->getChildrenIterator();
                 
-                for(; !childIter->end(); childIter->next())
+                for(; !childIter.end(); childIter.next())
                 {
-                    PropagatorAspect<T>* child = childIter->get();
+                    PropagatorAspect<T>* child = childIter.get();
                     
                     VectorHelper::vectorialOperation<Probability, std::plus<Probability> >(
                         probabilities, child->probabilities, probabilities
@@ -38,10 +38,9 @@ namespace Propagation
                 }
                 
                 VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(
-                    probabilities, 1.0f / float(childIter->count())
+                    probabilities, 1.0f / float(childIter.count())
                 );
-                
-                delete childIter;
+               
             }
         }
         

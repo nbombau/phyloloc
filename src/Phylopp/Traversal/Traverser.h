@@ -76,17 +76,14 @@ public:
 
             if(act == ContinueTraversing)
             {
-                Domain::ListIterator<T>* it = node->getChildrenIterator();
+                Domain::ListIterator<T> it = node->getChildrenIterator();
                 
                 //And add the node's children to the queue
-                while (!it->end())
+                for(; !it.end(); it.next())
                 {
-                    node = it->get();
+                    node = it.get();
                     queue.push(node);
-                    it->next();
                 }
-                
-                delete it;    
             }            
         }
     }
@@ -144,17 +141,14 @@ private:
     {       
         if(!node->isLeaf())
         {
-            Domain::ListIterator<T>* it = node->getChildrenIterator();
+            Domain::ListIterator<T> it = node->getChildrenIterator();
             
             //And add the node's children to the queue
-            while (!it->end())
+            for(; !it.end(); it.next())
             {
-                T* child = it->get();
+                T* child = it.get();
                 traversePostOrderRecursive(child, v);
-                it->next();
             }
-            
-            delete it;             
         }
         return v.visit(node);        
     }

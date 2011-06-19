@@ -60,17 +60,14 @@ void MainWindow::loadTree(const FilesInfo& info)
     {
         fileDataSource.load(info, trees);
 
-        ListIterator< ITree<GuiNode> > *iter = trees.getIterator();
+        ListIterator< ITree<GuiNode> > iter = trees.getIterator();
 
-        while (!iter->end())
+        for(; !iter.end(); iter.next())
         {
             QListWidgetItem* newItem = new QListWidgetItem;
             newItem->setText(QString(info.getTreesFilePath().c_str()));
             ui->listWidget->addItem(newItem);
-
-            iter->next();
         }
-        delete iter;
     }
     catch (const DataFileException& ex)
     {

@@ -11,6 +11,7 @@ namespace Locations
 
     typedef GenericException<LocationExceptionHierarchy> LocationException;     
     typedef float Distance;
+    typedef std::vector<Distance> DistanceVector;
 
     /**
     * InvalidNodeName
@@ -59,6 +60,17 @@ namespace Locations
         const Location& locationTo )
         {
             locationManager.addDistance(distance, locationFrom, locationTo);        
+        }
+        
+        /**
+         * Method: getDispersionVector
+         * ----------------------
+         * Returns: The dispersion vector of the locations
+         * holded by locationManager
+         */
+        static const DistanceVector& getDispersionVector()
+        {
+            return locationManager.getDispersionVector();
         }
         
         /**
@@ -176,12 +188,27 @@ namespace Locations
                 return locationsDistances[idFrom - 1][idTo - 1];                                    
             }            
             
+            /**
+             * Method: getDispersionVector
+             * ----------------------
+             * Returns: The dispersion vector of the locations
+             * holded by locationManager
+             */
+            const DistanceVector& getDispersionVector()
+            {
+                if(dispersionVector.size() == 0)
+                {
+                    calculateDispersionVector();
+                }
+                return dispersionVector;
+            }
+            
         private:
             
             VariantsSet nodeLocationSet;
             VariantsSet locationIdSet;
             std::vector<std::vector<Distance> > locationsDistances;
-            
+            DistanceVector dispersionVector;
             /**
              * Method: getLocationId
              * ----------------------
@@ -237,6 +264,51 @@ namespace Locations
                 {
                     locationsDistances[i].resize(locationsNumber, 0);
                 } 
+            }
+            
+            /**
+             * Method: CalculateDispersionVector
+             * ----------------------
+             * Description: calculates de vector of dispersion factors
+             */
+            void calculateDispersionVector()
+            {
+                size_t locationsNumber = getLocationsNumber();
+                
+                if(locationsNumber > 0)
+                {
+                    dispersionVector.resize(locationsNumber, 0);
+                    Distance distancesSum = 0f;
+                    
+                    for(unsigned int i = 0; i < locationsNumber; i++)
+                    {
+                        Distance locationDistancesSum = 0f;
+                        
+                        for(unsigned int j = 0; j < locationsNumber, j++)
+                        {
+                            locationDistancesSum += locationsDistances[i][j]
+                        }
+                        dispersionVector[i] = locationDistancesSum / Distance(locationsNumber);
+                        distancesSum += locationDistancesSum;
+                    }
+                    
+                    for(unsigned int i = 0; i < locationsNumber; i++)
+                    {
+                        Distance locationAverage = dispersionVector[i];
+                        dispersionVector[i] = 1 - locationAverage / distancesSum;
+                    }
+                }
+            }
+            
+            /**
+             * Method: getLocationsNumber
+             * ----------------------
+             * Description: returns number of locations the locationManager
+             * is holding
+             */
+            size_t getLocationsNumber() const
+            {
+                return locationsDistances.size();
             }
             
         }; // End of Class LocationManager
