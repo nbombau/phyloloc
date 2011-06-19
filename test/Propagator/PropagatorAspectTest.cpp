@@ -9,6 +9,7 @@ namespace {
     
     using namespace Propagation;
     using ::testing::Test;
+    using namespace Locations;
     
     class PropagatorAspectTest : public Test 
     {

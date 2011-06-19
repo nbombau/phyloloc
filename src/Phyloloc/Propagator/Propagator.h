@@ -28,23 +28,36 @@ namespace Propagation
         {
             BranchLength branchLenghtSum = calculateBranchLengthSum(tree);
             Traverser<T, PropagateFromChildrenAction<T>, AlwaysTruePredicate<T> > t;
+            Traverser<T, PropagateFromParentAction<T>, AlwaysTruePredicate<T> > t;
+            
             PropagateFromChildrenAction<T> a(branchLenghtSum, 
                                              getDispersionVector(), 
                                              geographicFactorWeight, 
                                              branchLengthFactorWeight);
-            
-            t.traversePostOrder(tree, a);
-            
-            Traverser<T, PropagateFromParentAction<T>, AlwaysTruePredicate<T> > t;
             PropagateFromParentAction<T> a(branchLenghtSum, 
                                            getDispersionVector(), 
                                            geographicFactorWeight, 
                                            branchLengthFactorWeight);
-            
-            t.traverseDescendants(tree, a);
+            for(unsigned int i = 0; i < passesCount; i++)
+            {
+                if(isUpPass(i))                
+                {
+                    t.traversePostOrder(tree, a);                    
+                }
+                else
+                {
+                    t.traverseDescendants(tree, a);        
+                }
+            }            
         }
         
     private:
+        
+        static bool isUpPass(unsigned int i)
+        {
+            //even passes are up
+            return i % 2 == 0;
+        }
         
         static const Locations::DistanceVector& getDispersionVector()
         {
