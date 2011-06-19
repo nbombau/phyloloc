@@ -3,14 +3,16 @@
 
 #include "Domain/INode.h"
 #include "Domain/ListIterator.h"
+#include "Domain/LocationAspect.h"
 #include "VectorHelper.h"
-
-typedef float Probability;
-typedef unsigned int LocationId;
-typedef std::vector<Probability> LocationProbabilities;
 
 namespace Propagation
 {
+    typedef float Probability;
+    typedef float Weight;
+    typedef unsigned int LocationId;
+    typedef std::vector<Probability> LocationProbabilities;
+    
     template <class T>
     class PropagatorAspect : public Domain::Node<PropagatorAspect<T> >
     {
@@ -22,7 +24,10 @@ namespace Propagation
                 
         ~PropagatorAspect() {}
         
-        void propagateFromChildren()
+        void propagateFromChildren(Domain::BranchLength branchLengthSum, 
+                                   Locations::DistanceVector& dispersalVector, 
+                                   Weight geographicFactorWeight, 
+                                   Weight branchLenghtFactorWeight)
         {          
             if(!this->isLeaf())
             {
@@ -40,11 +45,15 @@ namespace Propagation
                 VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(
                     probabilities, 1.0f / float(childIter.count())
                 );
-               
+                
+                applyCorrectionFactors(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
             }
         }
         
-        void propagateFromParent()
+        void propagateFromParent(Domain::BranchLength branchLengthSum, 
+                                 Locations::DistanceVector& dispersalVector, 
+                                 Weight geographicFactorWeight, 
+                                 Weight branchLenghtFactorWeight)
         {                        
             if(!this->isRoot())
             {
@@ -55,7 +64,46 @@ namespace Propagation
                 VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(
                     probabilities, 0.5f
                 );
+                                
+                applyCorrectionFactors(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
             }
+        }
+        
+        void applyCorrectionFactors(Domain::BranchLength branchLengthSum, 
+                                       Locations::DistanceVector& dispersalVector, 
+                                       Weight geographicFactorWeight, 
+                                       Weight branchLenghtFactorWeight)
+        {
+            //remaining weight
+            Weight remainingWeight = 1.0f - geographicFactorWeight - branchLenghtFactorWeight;
+            
+            //branchlength correction factor
+            Domain::BranchLength branchLengthCorrectionFactor = 1.0f - this->getBranchLength() / branchLengthSum;
+            
+            //store all probabilities' sum in order to normalize later
+            Probability sum = 0.0f;
+            
+            for(unsigned int i = 0; i < probabilities.size(); i++)
+            {
+                Probability current = probabilities[i];
+                
+                //weight topological factor
+                Probability weighted = current * remainingWeight;
+                
+                //weight branchLength factor
+                weighted += current * branchLengthCorrectionFactor * branchLenghtFactorWeight;
+                
+                //weight geographic factor
+                weighted += current * dispersalVector[i] * geographicFactorWeight;
+                
+                probabilities[i] = weighted;
+                sum += weighted;
+            }           
+            
+            //normalize so that probabilities vector's sum is 1
+            VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(
+                probabilities, 1.0f / sum
+            );
         }
         
         
@@ -63,10 +111,9 @@ namespace Propagation
     //shall be removed during integration
     //protected:
         
-        LocationProbabilities probabilities;
-        
+        LocationProbabilities probabilities;        
     };
-
+   
 }
 
 #endif

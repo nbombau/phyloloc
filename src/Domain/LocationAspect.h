@@ -7,6 +7,8 @@
 
 namespace Locations
 {
+    using namespace Domain;
+    
     class LocationExceptionHierarchy {};
 
     typedef GenericException<LocationExceptionHierarchy> LocationException;     
@@ -278,15 +280,15 @@ namespace Locations
                 if(locationsNumber > 0)
                 {
                     dispersionVector.resize(locationsNumber, 0);
-                    Distance distancesSum = 0f;
+                    Distance distancesSum = 0.0f;
                     
                     for(unsigned int i = 0; i < locationsNumber; i++)
                     {
-                        Distance locationDistancesSum = 0f;
+                        Distance locationDistancesSum = 0.0f;
                         
-                        for(unsigned int j = 0; j < locationsNumber, j++)
+                        for(unsigned int j = 0; j < locationsNumber; j++)
                         {
-                            locationDistancesSum += locationsDistances[i][j]
+                            locationDistancesSum += locationsDistances[i][j];
                         }
                         dispersionVector[i] = locationDistancesSum / Distance(locationsNumber);
                         distancesSum += locationDistancesSum;
@@ -295,7 +297,7 @@ namespace Locations
                     for(unsigned int i = 0; i < locationsNumber; i++)
                     {
                         Distance locationAverage = dispersionVector[i];
-                        dispersionVector[i] = 1 - locationAverage / distancesSum;
+                        dispersionVector[i] = 1.0f - locationAverage / distancesSum;
                     }
                 }
             }
