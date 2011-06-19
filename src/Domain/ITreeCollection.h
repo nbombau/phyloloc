@@ -74,6 +74,16 @@ public:
         return ret;
     }
 
+    /*
+     * Method: clear
+     * -------------------
+     * Description: Clears the tree collection
+     */
+    void clear()
+    {
+         delete_container(trees);
+    }
+
     //Destructor
     ~ITreeCollection()
     {
