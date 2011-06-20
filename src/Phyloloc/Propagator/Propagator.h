@@ -9,16 +9,17 @@
 
 namespace Propagation
 {
-    typedef std::vector<Domain::BranchLength> BranchLengthVector; 
+    using namespace Domain;
+    using namespace Traversal;
+    using namespace Locations;
     
+    typedef std::vector<Domain::BranchLength> BranchLengthVector; 
+
     template <class T>
     class Propagator
     {
     public:
         Propagator() {}
-        
-        //TODO: Dummy implementation with two passes, 
-        //passes number should be parametrized.
         
         static void propagate(Domain::ITree<T>* tree, 
                               unsigned int passesCount,
@@ -26,29 +27,31 @@ namespace Propagation
                               Weight branchLengthFactorWeight
                              )
         {
-            BranchLength branchLenghtSum = calculateBranchLengthSum(tree);
-            Traverser<T, PropagateFromChildrenAction<T>, AlwaysTruePredicate<T> > t;
-            Traverser<T, PropagateFromParentAction<T>, AlwaysTruePredicate<T> > t;
+            BranchLength branchLenghtSum = getBranchLengthSum(tree);
             
-            PropagateFromChildrenAction<T> a(branchLenghtSum, 
-                                             getDispersionVector(), 
+            const DistanceVector& dispersalVector = getDispersionVector();
+            
+            PropagateFromChildrenAction<T> childrenAction(branchLenghtSum, 
+                                             dispersalVector, 
                                              geographicFactorWeight, 
                                              branchLengthFactorWeight);
-            PropagateFromParentAction<T> a(branchLenghtSum, 
-                                           getDispersionVector(), 
+            PropagateFromParentAction<T> parentAction(branchLenghtSum, 
+                                           dispersalVector, 
                                            geographicFactorWeight, 
                                            branchLengthFactorWeight);
             for(unsigned int i = 0; i < passesCount; i++)
             {
                 if(isUpPass(i))                
                 {
-                    t.traversePostOrder(tree, a);                    
+                    Traverser<T, PropagateFromChildrenAction<T>, AlwaysTruePredicate<T> >
+                        ::traversePostOrder(tree, childrenAction);                    
                 }
                 else
                 {
-                    t.traverseDescendants(tree, a);        
+                    Traverser<T, PropagateFromParentAction<T>, AlwaysTruePredicate<T> >
+                        ::traverseDescendants(tree, parentAction);        
                 }
-            }            
+            } 
         }
         
     private:
@@ -61,23 +64,23 @@ namespace Propagation
         
         static const Locations::DistanceVector& getDispersionVector()
         {
-            return LocationAspect<T>::getDispersionVector();
+            return T::getDispersionVector();
         }
         
-        static Domain::BranchLength getBranchLengthSum(Domain::ITree<T>* tree)
+        static BranchLength getBranchLengthSum(Domain::ITree<T>* tree)
         {
-            Domain::BranchLength branchLengthSum = calculateBranchLengthSum(tree->getRoot());
+            return calculateBranchLengthSum(tree->getRoot());
         }
         
-        static Domain::BranchLength calculateBranchLengthSum(T* node)
+        static BranchLength calculateBranchLengthSum(T* node)
         {
-            Domain::BranchLength ret = 0f;
+            BranchLength ret = 0.0f;
             
             ret = node->getBranchLength();
             
             if(!node->isLeaf())
             {
-                ListIterator<T> it = node->getChildrenIterator();
+                ListIterator<T, Node> it = node->template getChildrenIterator<T>();
                 for( ; !it.end(); it.next())
                 {
                     ret += calculateBranchLengthSum(it.get());
@@ -87,7 +90,7 @@ namespace Propagation
         }
         
         
-    }
+    };
 }
 
 #endif

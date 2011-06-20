@@ -271,7 +271,7 @@ namespace Locations
              */
             size_t getLocationsCount()
             {
-                return nodeLocationSet.size();
+                return locationIdSet.size();
             }
             
         private:

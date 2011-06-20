@@ -61,7 +61,7 @@ namespace Propagation
         Domain::BranchLength branchLengthSum;
         Weight geographicFactorWeight;
         Weight branchLenghtFactorWeight;
-        Locations::DistanceVector& dispersalVector;
+        const Locations::DistanceVector& dispersalVector;
     };
     
     template <class T>
@@ -91,7 +91,7 @@ namespace Propagation
         Domain::BranchLength branchLengthSum;
         Weight geographicFactorWeight;
         Weight branchLenghtFactorWeight;
-        Locations::DistanceVector& dispersalVector;
+        const Locations::DistanceVector& dispersalVector;
     };
     
 }
