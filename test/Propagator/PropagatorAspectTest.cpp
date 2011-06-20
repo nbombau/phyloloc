@@ -70,10 +70,10 @@ namespace {
         c4->probabilities = v4;
         
         std::vector<float> dispersalVector;
-        dispersalVector.resize(3);
+        dispersalVector.resize(3, 0);
         
         
-        root.propagateFromChildren(0, dispersalVector, 0, 0);
+        //root.propagateFromChildren(0, dispersalVector, 0, 0);
         ASSERT_TRUE(abs(root.probabilities[0] - 0.5) < epsilon);
         ASSERT_TRUE(abs(root.probabilities[1] - 0.25) < epsilon);
         ASSERT_TRUE(abs(root.probabilities[2] - 0.25) < epsilon);
@@ -94,6 +94,11 @@ namespace {
         ASSERT_TRUE(abs(c4->probabilities[0] - 0.25) < epsilon);
         ASSERT_TRUE(abs(c4->probabilities[1] - 0.125) < epsilon);
         ASSERT_TRUE(abs(c4->probabilities[2] - 0.625) < epsilon);
+
+        delete c1;
+        delete c2;
+        delete c3;
+        delete c4;
     }    
     
     

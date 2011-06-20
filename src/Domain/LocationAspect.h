@@ -127,7 +127,7 @@ namespace Locations
              * Returns: The location of the node or empty if no location
              * is set for that node
              */
-            Location getLocation(NodeName& name) const
+            Location getLocation(const NodeName& name) const
             { 
                 Location location; 
                 try
@@ -176,7 +176,7 @@ namespace Locations
              */
             Distance distance( 
             const LocationAspect<T>* nodeFrom, 
-            const LocationAspect<T>* nodeTo ) 
+            const LocationAspect<T>* nodeTo ) const
             {
                 LocationId idFrom = getLocationId(nodeFrom);
                 LocationId idTo = getLocationId(nodeTo);
@@ -209,7 +209,7 @@ namespace Locations
              * Description: Look for the id mapped to a location
              * Returns: Cero if the id is not defined. 
              */
-            LocationId getLocationId(const Location& location)
+            LocationId getLocationId(const Location& location) const
             {
                 LocationId id;
                 try
@@ -229,7 +229,7 @@ namespace Locations
              * Description: Look for the id mapped to a location
              * Returns: Cero if the id is not defined. 
              */
-            LocationId getLocationId(const LocationAspect<T>* node)
+            LocationId getLocationId(const LocationAspect<T>* node) const
             {
                 return getNameLocationId(node->getName());
                 

@@ -119,14 +119,14 @@ namespace Propagation
         
         void initProbabilities()
         {
-           /* Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());
+            Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());
             size_t locationCount = this->locationManager.getLocationsCount();
             
             if(locationCount > 0 && id > 0)
             {
                 probabilities.resize(locationCount, 0);
                 probabilities[id] = 1.0f;
-            }*/
+            }
         }
     };
    
