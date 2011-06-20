@@ -128,7 +128,7 @@
   </action>
   <action name="actionProcess_tree">
    <property name="text">
-    <string>Process trees...</string>
+    <string>Propagate...</string>
    </property>
   </action>
   <action name="actionConcense_trees">
