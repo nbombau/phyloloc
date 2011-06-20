@@ -200,22 +200,6 @@ namespace Domain
 
 
     };
-
-    /**
-    * Class: BaseAspect
-    * -----------------
-    * Description: Base underlying node aspect for the Node template
-    */
-    /*class BaseAspect
-    {
-
-    };
-    
-    template <class T>
-    class EndAspect : public Node<T>, public T
-    {
-        
-    };*/
 }
 
 #endif
