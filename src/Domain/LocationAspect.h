@@ -42,7 +42,7 @@ namespace Locations
     {
     public:        
 
-        static void Clear()
+        static void clear()
         {
             locationManager.clear();
         }            

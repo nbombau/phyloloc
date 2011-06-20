@@ -39,7 +39,7 @@ protected:
 
     virtual void TearDown()
     {
-
+        LocationAspect<Domain::Node>::clear();
     }
 
 
@@ -550,7 +550,7 @@ TEST_F(FileDataSourceTest, loadLocations1)
     loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", trees);
     LocationsMap map;
 
-    //EXPECT_TRUE(compareLocations(trees, map));
+    EXPECT_TRUE(compareLocations(trees, map));
 }
 
 // Single location.
@@ -590,7 +590,7 @@ TEST_F(FileDataSourceTest, loadLocations4)
     LocationsMap map;
     map["a"] = "placeA2";
 
-    //EXPECT_TRUE(compareLocations(trees, map));
+    EXPECT_TRUE(compareLocations(trees, map));
 }
 
 // More associations node/location than nodes in the tree
