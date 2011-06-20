@@ -14,7 +14,7 @@ namespace Propagation
     typedef std::vector<Probability> LocationProbabilities;
     
     template <class T>
-    class PropagatorAspect : public Domain::Node<PropagatorAspect<T> >
+    class PropagatorAspect : public T
     {
     public:
         PropagatorAspect() {}
@@ -29,7 +29,7 @@ namespace Propagation
             //if it's leaf, theres nothing to propagate
             if(!this->isLeaf())
             {
-                Domain::ListIterator<PropagatorAspect<T> > childIter = this->getChildrenIterator();
+                Domain::ListIterator<PropagatorAspect<T>, Domain::Node > childIter = this->template getChildrenIterator<PropagatorAspect<T> >();
                 
                 for(; !childIter.end(); childIter.next())
                 {
@@ -61,7 +61,7 @@ namespace Propagation
             if(!this->isRoot())
             {
                 VectorHelper::vectorialOperation<Probability, std::plus<Probability> >(
-                    probabilities, this->getParent()->probabilities, probabilities
+                    probabilities, this->template getParent<PropagatorAspect<T> >()->probabilities, probabilities
                 );
                 
                 VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(

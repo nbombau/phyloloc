@@ -3,7 +3,7 @@
 #include <gmock/gmock.h> 
 #include "../../src/Phyloloc/Propagator/PropagatorAspect.h"
 #include "../../src/Domain/INode.h"
-
+#include "../../src/Domain/LocationAspect.h"
 
 namespace {
     
@@ -31,22 +31,22 @@ namespace {
         }        
     };
     
-    typedef Propagation::PropagatorAspect<Domain::BaseAspect> Node;
+    typedef Propagation::PropagatorAspect<Locations::LocationAspect<Domain::Node> > PropNode;
     
     TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest) 
     {        
         const float epsilon = 0.0001f;
          
-        Node root;
+        PropNode root;
         std::vector<float> vRoot;
         vRoot.push_back(0.0);
         vRoot.push_back(0.0);
         vRoot.push_back(0.0);
         root.probabilities = vRoot;
-        Node* c1 = root.addChild();
-        Node* c2 = root.addChild();
-        Node* c3 = root.addChild();
-        Node* c4 = root.addChild();
+        PropNode* c1 = root.addChild<PropNode>();
+        PropNode* c2 = root.addChild<PropNode>();
+        PropNode* c3 = root.addChild<PropNode>();
+        PropNode* c4 = root.addChild<PropNode>();
                 
         std::vector<float> v1;
         v1.push_back(1.0);

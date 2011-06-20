@@ -15,12 +15,12 @@ namespace Domain
 * Type Parameter T: T is the object that conforms the collection
 * to be iterated
 */
-template <class T>
+template <class T, class K = T>
 class ListIterator
 {
 public:
     //Constructor
-    ListIterator(std::list<T*> l)
+    ListIterator(std::list<K*> l)
     {
         iterableList = l;
         it = iterableList.begin();
@@ -43,12 +43,12 @@ public:
 
     virtual const T* get() const
     {
-        return *it;
+        return static_cast<T*>(*it);
     }
 
     virtual T* get()
     {
-        return *it;
+        return static_cast<T*>(*it);
     }
 
     virtual size_t count()
@@ -60,10 +60,10 @@ public:
 
 private:
 
-    typedef typename std::list<T*>::iterator iterator;
-    typedef typename std::list<T*>::const_iterator const_iterator;
+    typedef typename std::list<K*>::iterator iterator;
+    typedef typename std::list<K*>::const_iterator const_iterator;
 
-    std::list<T*> iterableList;
+    std::list<K*> iterableList;
     iterator it;
 };
 }

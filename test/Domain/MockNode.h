@@ -7,7 +7,8 @@
 #include "../../src/Domain/INode.h"
 
 template <class T>
-class MockNode : public Domain::Node<MockNode<T> > {
+class MockNode : public T
+{
  public:
      
      bool visited;
@@ -15,6 +16,6 @@ class MockNode : public Domain::Node<MockNode<T> > {
      MockNode() : visited(false) {}
 };
 
-typedef MockNode<Domain::BaseAspect> TestNode;
+typedef MockNode<Domain::Node> TestNode;
 
 #endif

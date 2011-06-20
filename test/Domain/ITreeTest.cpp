@@ -10,7 +10,7 @@ namespace {
     using namespace Domain;
     using ::testing::Test;
         
-    typedef MockNode<Domain::BaseAspect> TestNode;
+    typedef MockNode<Domain::Node> TestNode;
     
     
     class ITreeTest : public Test 

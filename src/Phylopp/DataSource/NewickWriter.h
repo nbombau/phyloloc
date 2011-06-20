@@ -33,7 +33,7 @@ private:
         if (!node->isLeaf())
         {
             os << '(';
-            Domain::ListIterator<T> iter = node->getChildrenIterator();
+            Domain::ListIterator<T, Domain::Node> iter = node->template getChildrenIterator<T>();
 
             while (!iter.end())
             {

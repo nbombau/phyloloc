@@ -76,7 +76,7 @@ public:
 
             if(act == ContinueTraversing)
             {
-                Domain::ListIterator<T> it = node->getChildrenIterator();
+                Domain::ListIterator<T, Domain::Node> it = node->template getChildrenIterator<T>();
                 
                 //And add the node's children to the queue
                 for(; !it.end(); it.next())
@@ -113,7 +113,7 @@ public:
             {
                 //get the parent
                 if (!node->isRoot())
-                    node = node->getParent();
+                    node = node->template getParent<T>();
                 else
                     act = StopTraversing;    
             }            
@@ -141,7 +141,7 @@ private:
     {       
         if(!node->isLeaf())
         {
-            Domain::ListIterator<T> it = node->getChildrenIterator();
+            Domain::ListIterator<T, Domain::Node> it = node->template getChildrenIterator<T>();
             
             //And add the node's children to the queue
             for(; !it.end(); it.next())

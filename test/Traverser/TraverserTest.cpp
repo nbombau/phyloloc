@@ -15,7 +15,7 @@ namespace {
     using namespace Traversal;
     using ::testing::Test;
     
-    typedef MockNode<Domain::BaseAspect> TestNode;
+    //typedef MockNode<Domain::Node> TestNode;
     
     
     class TraverserTest : public Test 
@@ -85,19 +85,19 @@ namespace {
         TestNode* n = t.getRoot();
         
         //build a three levels tree
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c1->addChild();
-        TestNode* c2c2 = c1->addChild();
+        TestNode* c2c1 = c1->addChild<TestNode>();
+        TestNode* c2c2 = c1->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -127,19 +127,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c1->addChild();
-        TestNode* c2c2 = c1->addChild();
+        TestNode* c2c1 = c1->addChild<TestNode>();
+        TestNode* c2c2 = c1->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -169,19 +169,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c2->addChild();
-        TestNode* c2c2 = c2->addChild();
+        TestNode* c2c1 = c2->addChild<TestNode>();
+        TestNode* c2c2 = c2->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -210,19 +210,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c2->addChild();
-        TestNode* c2c2 = c2->addChild();
+        TestNode* c2c1 = c2->addChild<TestNode>();
+        TestNode* c2c2 = c2->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -255,19 +255,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c2->addChild();
-        TestNode* c2c2 = c2->addChild();
+        TestNode* c2c1 = c2->addChild<TestNode>();
+        TestNode* c2c2 = c2->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -296,19 +296,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c2->addChild();
-        TestNode* c2c2 = c2->addChild();
+        TestNode* c2c1 = c2->addChild<TestNode>();
+        TestNode* c2c2 = c2->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
@@ -339,19 +339,19 @@ namespace {
         Domain::ITree<TestNode>& t = itree;
         TestNode* n = t.getRoot();
         
-        TestNode* c1 = n->addChild();
-        TestNode* c2 = n->addChild();
-        TestNode* c3 = n->addChild();
-        TestNode* c4 = n->addChild();
-        TestNode* c5 = n->addChild();
+        TestNode* c1 = n->addChild<TestNode>();
+        TestNode* c2 = n->addChild<TestNode>();
+        TestNode* c3 = n->addChild<TestNode>();
+        TestNode* c4 = n->addChild<TestNode>();
+        TestNode* c5 = n->addChild<TestNode>();
         
-        TestNode* c1c1 = c1->addChild();
-        TestNode* c1c2 = c1->addChild();
-        TestNode* c1c3 = c1->addChild();
-        TestNode* c1c4 = c1->addChild();
+        TestNode* c1c1 = c1->addChild<TestNode>();
+        TestNode* c1c2 = c1->addChild<TestNode>();
+        TestNode* c1c3 = c1->addChild<TestNode>();
+        TestNode* c1c4 = c1->addChild<TestNode>();
         
-        TestNode* c2c1 = c2->addChild();
-        TestNode* c2c2 = c2->addChild();
+        TestNode* c2c1 = c2->addChild<TestNode>();
+        TestNode* c2c2 = c2->addChild<TestNode>();
         
         Traverser<TestNode, TagAction, AlwaysTruePredicate> traverser;
         TagAction a;
