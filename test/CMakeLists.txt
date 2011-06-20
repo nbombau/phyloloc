@@ -10,6 +10,7 @@ set(test_src TestMain.cpp
              DataSource/FileDataSourceTest.cpp
              Propagator/VectorHelperTest.cpp
              Propagator/PropagatorAspectTest.cpp
+             Propagator/PropagatorTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

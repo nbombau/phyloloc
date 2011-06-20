@@ -136,14 +136,13 @@ public:
     }
     
 private:
-    //TODO: this traversal shall be iterative
+
     static VisitAction traversePostOrderRecursive(T* node, NodeVisitor<Action, Predicate, T>& v)
     {       
         if(!node->isLeaf())
         {
             Domain::ListIterator<T, Domain::Node> it = node->template getChildrenIterator<T>();
             
-            //And add the node's children to the queue
             for(; !it.end(); it.next())
             {
                 T* child = it.get();

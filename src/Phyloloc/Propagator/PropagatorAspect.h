@@ -1,5 +1,5 @@
-#ifndef PROPAGATOR_H
-#define PROPAGATOR_H
+#ifndef PROPAGATORASPECT_H
+#define PROPAGATORASPECT_H
 
 #include "Domain/INode.h"
 #include "Domain/ListIterator.h"
@@ -22,10 +22,13 @@ namespace Propagation
         ~PropagatorAspect() {}
         
         void propagateFromChildren(Domain::BranchLength branchLengthSum, 
-                                   Locations::DistanceVector& dispersalVector, 
+                                   const Locations::DistanceVector& dispersalVector, 
                                    Weight geographicFactorWeight, 
                                    Weight branchLenghtFactorWeight)
         {   
+
+            initProbabilities();
+            
             //if it's leaf, theres nothing to propagate
             if(!this->isLeaf())
             {
@@ -46,15 +49,10 @@ namespace Propagation
                 
                 applyCorrectionFactors(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
             }
-            //if its leaf, the first time the probabilities vector shall be initialized
-            else if(probabilities.size() == 0)
-            {
-                initProbabilities();
-            }
         }
         
         void propagateFromParent(Domain::BranchLength branchLengthSum, 
-                                 Locations::DistanceVector& dispersalVector, 
+                                 const Locations::DistanceVector& dispersalVector, 
                                  Weight geographicFactorWeight, 
                                  Weight branchLenghtFactorWeight)
         {                        
@@ -73,7 +71,7 @@ namespace Propagation
         }
         
         void applyCorrectionFactors(Domain::BranchLength branchLengthSum, 
-                                       Locations::DistanceVector& dispersalVector, 
+                                       const Locations::DistanceVector& dispersalVector, 
                                        Weight geographicFactorWeight, 
                                        Weight branchLenghtFactorWeight)
         {
@@ -85,7 +83,7 @@ namespace Propagation
             
             //store all probabilities' sum in order to normalize later
             Probability sum = 0.0f;
-            
+
             for(unsigned int i = 0; i < probabilities.size(); i++)
             {
                 Probability current = probabilities[i];
@@ -102,7 +100,6 @@ namespace Propagation
                 probabilities[i] = weighted;
                 sum += weighted;
             }           
-            
             //normalize so that probabilities vector's sum is 1
             VectorHelper::scalarOperation<Probability, std::multiplies<Probability> >(
                 probabilities, 1.0f / sum
@@ -114,18 +111,26 @@ namespace Propagation
     //protected:
         
         LocationProbabilities probabilities;        
-        
+    
     private:
-        
+    
         void initProbabilities()
         {
-            Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());
-            size_t locationCount = this->locationManager.getLocationsCount();
-            
-            if(locationCount > 0 && id > 0)
+            if(probabilities.empty())
             {
-                probabilities.resize(locationCount, 0);
-                probabilities[id] = 1.0f;
+                size_t locationCount = this->locationManager.getLocationsCount();
+                
+                if(locationCount > 0)
+                {
+                    probabilities.resize(locationCount, 0);
+                }
+                if(this->isLeaf())
+                {
+                    Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());    
+                    
+                    if(id > 0)
+                        probabilities[id - 1] = 1.0f;
+                }
             }
         }
     };
