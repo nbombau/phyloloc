@@ -46,47 +46,21 @@ public:
             NewickParser<T> newickParser;
             newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
         }
-
-        catch (const MalformedFile& ex)
+        catch (const TreeFileException& ex)
         {
             trees.clear();
-            throw ex;
+            throw;
         }
-        catch (const DataFileNotFound& ex)
+        catch (const DataFileException& ex)
         {
             trees.clear();
-            throw ex;
+            throw;
         }
-        catch (const MissingTreeSeparator& ex)
+        catch (const DistancesFileException& ex)
         {
             trees.clear();
-            throw ex;
+            throw;
         }
-        catch (const TreeFileNotFound& ex)
-        {
-            trees.clear();
-            throw ex;
-        }
-        catch (const MalformedExpression& ex)
-        {
-            trees.clear();
-            throw ex;
-        }
-        catch (const DistancesFileNotFound& ex)
-        {
-            trees.clear();
-            throw ex;
-        }
-        catch (const MalformedDistancesFile& ex)
-        {
-            trees.clear();
-            throw ex;
-        }
-
-        //TODO replace all this catch blocks for only one.
-        //Current problem: if it is done in that way,
-        //the rethrown exception looses its particular type
-
     }
 
     /**

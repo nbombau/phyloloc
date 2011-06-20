@@ -46,10 +46,12 @@ public:
 
     ~GuiAspect()
     {
+        /*
         for (QList<Edge*>::Iterator it = edgeListTo.begin(); it != edgeListTo.end(); ++it)
         {
             delete *it;
         }
+        */
     }
 
     bool isSelected() const
