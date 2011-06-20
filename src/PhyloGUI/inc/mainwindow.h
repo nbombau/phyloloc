@@ -25,7 +25,7 @@ public:
     explicit MainWindow(QWidget* parent = NULL);
 
     ~MainWindow();
-    
+
 
 private:
     Ui::MainWindow* ui;
@@ -36,7 +36,7 @@ private:
 
 public slots:
     void drawTree();
-    
+
 private slots:
     void on_actionProcess_tree_triggered();
     void on_actionSelect_Ancestors_triggered();

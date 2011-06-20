@@ -199,7 +199,7 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     QPointF ret;
     QPointF first;
     QPointF last;
-    QGraphicsTextItem * text;
+    QGraphicsTextItem* text;
     Edge* edge;
     if (node->isLeaf() || !node->isExpanded())
     {
@@ -224,15 +224,16 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
 
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
     scene->addItem(node);
-    if(node->isLeaf()){
+    if (node->isLeaf())
+    {
         text = new QGraphicsTextItem(QString(node->getName().c_str()));
-        text->setPos(nodeCoord.x() + 200+10, nodeCoord.y() + 200+20);
+        text->setPos(nodeCoord.x() + 200 + 10, nodeCoord.y() + 200 + 20);
         text->rotate(90);
         scene->addItem(text);
     }
 
     it.restart();
-    for(; !it.end(); it.next())
+    for (; !it.end(); it.next())
     {
         GuiNode* const auxNode = it.get();
         edge = new Edge(node, auxNode);
@@ -255,7 +256,7 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
 {
     QGraphicsScene* scene = new QGraphicsScene(this);
     this->setScene(scene);
-    this->tree=tree;
+    this->tree = tree;
     drawTree(scene, tree->getRoot());
 
     this->adjustSize();
@@ -264,7 +265,8 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
 void GraphWidget::draw()
 {
     printf("draw()\n");
-    if(tree!=NULL){
+    if (tree != NULL)
+    {
         drawTree(this->scene(), tree->getRoot());
     }
 }

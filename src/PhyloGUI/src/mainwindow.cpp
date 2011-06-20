@@ -69,7 +69,7 @@ void MainWindow::loadTree(const FilesInfo& info)
 
         ListIterator< ITree<GuiNode> > iter = trees.getIterator();
 
-        for(; !iter.end(); iter.next())
+        for (; !iter.end(); iter.next())
         {
             QListWidgetItem* newItem = new QListWidgetItem;
             newItem->setText(QString(info.getTreesFilePath().c_str()));
@@ -153,10 +153,10 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
                                          "", &ok);
     if (ok)
     {
-        const std::string & searchString=text.toStdString();
+        const std::string& searchString = text.toStdString();
         SearchNode<GuiNode> sn;
         sn.setRoot(actualTree->getRoot());
-        sn.search(const_cast<std::string &>(searchString));
+        sn.search(const_cast<std::string&>(searchString));
     }
     //else not needed
 }
@@ -164,13 +164,14 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 void MainWindow::on_actionProcess_tree_triggered()
 {
     PropagateDialog propagate;
-    if(propagate.exec()){
-        printf("%d %f %f\n",propagate.getPasses(),propagate.getBCLF(),propagate.getGCF());
+    if (propagate.exec())
+    {
+        printf("%d %f %f\n", propagate.getPasses(), propagate.getBCLF(), propagate.getGCF());
     }
 }
 
 void MainWindow::drawTree()
-{    
+{
     ui->actionClear_selection->setEnabled(true);
     ui->actionColor_nodes->setEnabled(true);
     ui->actionSelect_all_nodes->setEnabled(true);

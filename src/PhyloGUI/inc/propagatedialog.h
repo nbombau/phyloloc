@@ -22,17 +22,17 @@ private:
     QLabel* BCFLLabel;
     QLineEdit* BCFLLine;
 
-    QLabel * GCFerror;
+    QLabel* GCFerror;
     QLabel* GCFLabel;
     QLineEdit* GCFLine;
 
-    QLabel * passerror;
+    QLabel* passerror;
     QLabel* passLabel;
     QLineEdit* passLine;
 
     QPushButton* propagateButton;
     QPushButton* cancelButton;
-    
+
 private slots:
     void acceptInput();
 };
