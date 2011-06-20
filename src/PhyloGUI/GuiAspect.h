@@ -37,7 +37,7 @@ template <class T>
 class GuiAspect : public T, public QGraphicsItem
 {
 public:
-    
+
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
         setCacheMode(DeviceCoordinateCache);
@@ -144,20 +144,25 @@ public:
         painter->drawEllipse(-10, -10, 20, 20);
     }
 
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     {
         Q_UNUSED(event);
         QMenu menu;
-        if(!this->isLeaf()){
-            if(this->isExpanded()){
+        if (!this->isLeaf())
+        {
+            if (this->isExpanded())
+            {
                 menu.addAction("Collapse");
             }
-            else{
+            else
+            {
                 menu.addAction("Expand");
             }
-            QAction *a = menu.exec(event->screenPos());
-            if(a!=NULL){
-                if(a->text().compare("Collapse") || a->text().compare("Expand")){
+            QAction* a = menu.exec(event->screenPos());
+            if (a != NULL)
+            {
+                if (a->text().compare("Collapse") || a->text().compare("Expand"))
+                {
                     setExpanded(!isExpanded());
                     //QGraphicsView * qgv=this->scene()->views().takeLast();
                     //GraphWidget * gw = static_cast<GraphWidget *>(qgv);
@@ -179,16 +184,19 @@ protected:
             }
         }
     }
-    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event ){
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+    {
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
         description.append(this->getName().c_str());
         description.append("\n\nLocation: ");
         description.append(this->getLocation().c_str());
 
-        if(this->probabilities.size()!=0){
+        if (this->probabilities.size() != 0)
+        {
             description.append("\n\nProbabilities vector: [ ");
-            for(unsigned int i = 0; i < this->probabilities.size(); i++){
+            for (unsigned int i = 0; i < this->probabilities.size(); i++)
+            {
                 description.append(QString().setNum(this->probabilities[i]));
                 description.append(" ");
             }
