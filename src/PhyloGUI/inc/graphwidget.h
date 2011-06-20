@@ -14,9 +14,11 @@
 #include "Domain/INode.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/GuiAspect.h"
+#include "Phyloloc/Propagator/PropagatorAspect.h"
+#include "Domain/LocationAspect.h"
 
 using namespace Domain;
-typedef GuiAspect< BaseAspect> GuiNode;
+typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 namespace Ui
 {
@@ -25,7 +27,6 @@ class GraphWidget;
 
 class GraphWidget : public QGraphicsView
 {
-    Q_OBJECT
 
 public:
     GraphWidget(QWidget* parent = 0);
@@ -33,6 +34,7 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void paintNode(QColor color, ITree<GuiNode>* tree);
     void draw(ITree<GuiNode>* tree);
+    void draw(void);
     void unSelectAllNodes(ITree<GuiNode>* tree);
     void selectAllNodes(ITree<GuiNode>* tree);
     void selectNodeDescendants(ITree<GuiNode>* tree);
@@ -45,6 +47,7 @@ protected:
     void resizeEvent(QResizeEvent* event);
 
 private:
+    ITree<GuiNode>* tree;
     int timerId;
     void drawTree(QGraphicsScene* scene, GuiNode* node);
     QPointF drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber);

@@ -18,9 +18,11 @@
 #include <list>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QContextMenuEvent>
+#include <QMessageBox>
 
 #include "../Domain/INode.h"
-#include "inc/graphwidget.h"
+#include "PhyloGUI/inc/graphwidget.h"
+#include "Phyloloc/Propagator/PropagatorAspect.h"
 
 namespace Ui
 {
@@ -28,13 +30,14 @@ class GuiAspect;
 }
 
 class Edge;
+class GraphWidget;
 using namespace std;
 
 template <class T>
-class GuiAspect : public Domain::Node<GuiAspect<T> >, public QGraphicsItem
+class GuiAspect : public T, public QGraphicsItem
 {
 public:
-
+    
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
         setCacheMode(DeviceCoordinateCache);
@@ -43,24 +46,11 @@ public:
 
     ~GuiAspect()
     {
-        /*
-                for (QList<Edge*>::Iterator it = edgeListFrom.begin(); it != edgeListFrom.end(); ++it)
-                {
-                    delete *it;
-                }
-        */
-
         for (QList<Edge*>::Iterator it = edgeListTo.begin(); it != edgeListTo.end(); ++it)
         {
             delete *it;
         }
-
-
     }
-
-
-    /*GuiAspect(const Location l, const NodeName n, const BranchLength b)
-    : Domain::Node<GuiAspect<T> > (l, n, b) {}*/
 
     bool isSelected() const
     {
@@ -152,6 +142,29 @@ public:
         painter->drawEllipse(-10, -10, 20, 20);
     }
 
+    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+    {
+        Q_UNUSED(event);
+        QMenu menu;
+        if(!this->isLeaf()){
+            if(this->isExpanded()){
+                menu.addAction("Collapse");
+            }
+            else{
+                menu.addAction("Expand");
+            }
+            QAction *a = menu.exec(event->screenPos());
+            if(a!=NULL){
+                if(a->text().compare("Collapse") || a->text().compare("Expand")){
+                    setExpanded(!isExpanded());
+                    //QGraphicsView * qgv=this->scene()->views().takeLast();
+                    //GraphWidget * gw = static_cast<GraphWidget *>(qgv);
+                    //gw->draw();
+                }
+            }
+        }
+    }
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event)
     {
@@ -163,16 +176,25 @@ protected:
                 update();
             }
         }
-        else if (event->modifiers() == Qt::CTRL)
-        {
-            if (isUnderMouse())
-            {
-                setExpanded(!isExpanded());
-                update();
+    }
+    void mouseDoubleClickEvent( QGraphicsSceneMouseEvent * event ){
+        Q_UNUSED(event);
+        QString description = QString::fromAscii("Name: ");
+        description.append(this->getName().c_str());
+        description.append("\n\nLocation: ");
+        description.append(this->getLocation().c_str());
+
+        if(this->probabilities.size()!=0){
+            description.append("\n\nProbabilities vector: [ ");
+            for(unsigned int i = 0; i < this->probabilities.size(); i++){
+                description.append(QString().setNum(this->probabilities[i]));
+                description.append(" ");
             }
+            description.append(" ]");
         }
-        else
-            printf("detalles");
+        QMessageBox msgBox;
+        msgBox.setText(description);
+        msgBox.exec();
     }
 
 private:
@@ -181,8 +203,6 @@ private:
     QColor color;
     QList<Edge*> edgeListFrom;
     QList<Edge*> edgeListTo;
-    //QPointF newPos;
-    //GraphWidget *graph;
 };
 
 

@@ -7,8 +7,11 @@
 #include "PhyloGUI/inc/graphwidget.h"
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/filedialog.h"
+#include "PhyloGUI/inc/propagatedialog.h"
+#include "Phyloloc/Propagator/Propagator.h"
 
 using namespace DataSource;
+using namespace Propagation;
 
 
 
@@ -24,6 +27,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSelect_all_nodes->setEnabled(false);
     ui->actionSelect_descendants->setEnabled(false);
     ui->actionSelect_Ancestors->setEnabled(false);
+    ui->actionProcess_tree->setEnabled(false);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -151,13 +155,22 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
     //else not needed
 }
 
-void MainWindow::drawTree()
+void MainWindow::on_actionProcess_tree_triggered()
 {
+    PropagateDialog propagate;
+    if(propagate.exec()){
+        printf("%d %f %f\n",propagate.getPasses(),propagate.getBCLF(),propagate.getGCF());
+    }
+}
+
+void MainWindow::drawTree()
+{    
     ui->actionClear_selection->setEnabled(true);
     ui->actionColor_nodes->setEnabled(true);
     ui->actionSelect_all_nodes->setEnabled(true);
     ui->actionSelect_descendants->setEnabled(true);
     ui->actionSelect_Ancestors->setEnabled(true);
+    ui->actionProcess_tree->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }

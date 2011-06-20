@@ -83,8 +83,9 @@ public:
     VisitAction visitNode(GuiNode* n)
     {
         QList<Edge*> edgesFrom = n->edgesFrom();
-        Edge* edge = edgesFrom.at(0);
-        if (n->isSelected() || (edge != NULL && edge->isSelected()))
+        Edge* edge;
+        //Edge* edge = edgesFrom.at(0);
+        if (n->isSelected() || (!edgesFrom.isEmpty() && edgesFrom.at(0) != NULL && edgesFrom.at(0)->isSelected()))
         {
             n->setSelected(true);
             n->update();
@@ -127,9 +128,11 @@ public:
         if (n->isSelected())
         {
             edgesFrom = n->edgesFrom();
-            Edge* edge = edgesFrom.at(0);
-            if (edge != NULL)
+            Edge* edge;
+            //Edge* edge = edgesFrom.at(0);
+            if (!edgesFrom.isEmpty())
             {
+                edge = edgesFrom.at(0);
                 edge->setSelected(true);
                 edge->update();
             }
@@ -190,19 +193,19 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
-    ListIterator<GuiNode>  it = node->getChildrenIterator();
+    ListIterator<GuiNode, Domain::Node>  it = node->getChildrenIterator<GuiNode>();
     list<QPointF> points;
     QPointF nodeCoord;
     QPointF ret;
     QPointF first;
     QPointF last;
+    QGraphicsTextItem * text;
     Edge* edge;
     if (node->isLeaf() || !node->isExpanded())
     {
         nodeCoord.setX((*leafNumber) * 100);
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
         ++(*leafNumber);
-        //QGraphicsTextItem text* =scene->addText("hola");
     }
     else
     {
@@ -221,6 +224,12 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
 
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
     scene->addItem(node);
+    if(node->isLeaf()){
+        text = new QGraphicsTextItem(QString(node->getName().c_str()));
+        text->setPos(nodeCoord.x() + 200+10, nodeCoord.y() + 200+20);
+        text->rotate(90);
+        scene->addItem(text);
+    }
 
     it.restart();
     for(; !it.end(); it.next())
@@ -246,12 +255,19 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
 {
     QGraphicsScene* scene = new QGraphicsScene(this);
     this->setScene(scene);
-
+    this->tree=tree;
     drawTree(scene, tree->getRoot());
 
     this->adjustSize();
 }
 
+void GraphWidget::draw()
+{
+    printf("draw()\n");
+    if(tree!=NULL){
+        drawTree(this->scene(), tree->getRoot());
+    }
+}
 
 void GraphWidget::resizeEvent(QResizeEvent*)
 {

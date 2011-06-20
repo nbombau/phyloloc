@@ -6,9 +6,13 @@
 #include "graphwidget.h"
 #include "../../Domain/INode.h"
 #include "PhyloGUI/GuiAspect.h"
+#include "Phyloloc/Propagator/PropagatorAspect.h"
+#include "Domain/LocationAspect.h"
 
 using namespace Domain;
-typedef GuiAspect< BaseAspect> GuiNode;
+typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
+
+
 
 namespace Ui
 {
