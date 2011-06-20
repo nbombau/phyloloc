@@ -305,7 +305,10 @@ namespace Locations
                         distancesSum += locationDistancesSum;
                     }
                     
-                    Distance distancesAverage = distancesSum / Distance(locationsNumber);
+                    //As we added the whole distance matrix, to get the average distance
+                    // we must divide by twice the locationsNumber, because the matrix
+                    //is assymetrical, so we are summing each distance twice.
+                    Distance distancesAverage = distancesSum / (2.0f * Distance(locationsNumber));
                     for(unsigned int i = 0; i < locationsNumber; i++)
                     {
                         Distance locationAverage = dispersionVector[i];
