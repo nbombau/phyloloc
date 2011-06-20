@@ -5,6 +5,7 @@
 #include <string>
 
 #include "../../src/Domain/INode.h"
+#include "../../src/Domain/LocationAspect.h"
 
 template <class T>
 class MockNode : public T

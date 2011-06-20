@@ -14,6 +14,8 @@ namespace Locations
     typedef GenericException<LocationExceptionHierarchy> LocationException;     
     typedef float Distance;
     typedef std::vector<Distance> DistanceVector;
+    typedef std::string Location;
+    typedef unsigned int LocationId;
 
     /**
     * InvalidNodeName
@@ -82,7 +84,7 @@ namespace Locations
          * @return the node's location
          */
         Location getLocation() const
-        { 
+        {             
             NodeName name = this->getName();
             return locationManager.getLocation(name);
         }
@@ -231,8 +233,7 @@ namespace Locations
              */
             LocationId getLocationId(const LocationAspect<T>* node) const
             {
-                return getNameLocationId(node->getName());
-                
+                return getNameLocationId(node->getName());                
             }
             
             /**
@@ -272,7 +273,7 @@ namespace Locations
             void initializeDistancesMatrix(size_t locationsNumber)
             {
                 locationsDistances.resize(locationsNumber);                
-                for(int i = 0; i < locationsNumber; i++) 
+                for(unsigned int i = 0; i < locationsNumber; i++) 
                 {
                     locationsDistances[i].resize(locationsNumber, 0);
                 } 

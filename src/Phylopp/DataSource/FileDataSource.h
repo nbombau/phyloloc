@@ -34,17 +34,16 @@ public:
     */
     void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees)
     {
+        LocationsParser locationsParser;
+        locationsParser.loadLocationsFile(info.getLocationsFilePath());
+
+        DistancesParser distancesParser;        
+        distancesParser.loadDistancesFile(info.getDistancesFilePath());
+
         try
         {
-            DistancesParser distancesParser;
-            distancesParser.loadDistancesFile(info.getDistancesFilePath());
-
-            VariantsSet set;
-            LocationsParser locationsParser;
-            locationsParser.loadLocationsFile(info.getLocationsFilePath(), set);
-
             NewickParser<T> newickParser;
-            newickParser.loadNewickFile(info.getTreesFilePath(), trees, set);
+            newickParser.loadNewickFile(info.getTreesFilePath(), trees);
         }
         catch (const TreeFileException& ex)
         {

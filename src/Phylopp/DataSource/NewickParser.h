@@ -44,14 +44,12 @@ class NewickParser
 {
 public:
 
-    void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees, VariantsSet& set)
+    void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
     {
         std::ifstream f(fname.c_str());
 
         if (!f)
             throw TreeFileNotFound();
-
-        this->set = set;
 
         std::string line;
 
@@ -118,7 +116,6 @@ private:
                 branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);
                 // Set location, if exists, for the node
-                set_location(name, set, node);
 
                 break;
             case ',':
@@ -136,19 +133,7 @@ private:
                 branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);
                 // Set location, if exists, for the node
-                set_location(name, set, node);
         }
-    }
-
-    void set_location(const Domain::NodeName& name, const VariantsSet& set, T* node)
-    {
-        std::string location;
-        try
-        {
-            set.get_element(name, location);
-            node->setLocation(location);
-        }
-        catch (const BadElementName&) { }
     }
 
     void load_children(T* parent)
