@@ -42,6 +42,11 @@ namespace Locations
     {
     public:        
 
+        static void Clear()
+        {
+            locationManager.clear();
+        }            
+
         /**
          * Method: addLocation
          * ----------------------
@@ -111,6 +116,17 @@ namespace Locations
             
         public:
             
+            void clear()
+            {
+                nodeLocationSet.clear();
+                locationIdSet.clear();               
+                for(unsigned int i = 0; i < locationsDistances.size(); i++) 
+                {
+                    locationsDistances[i].clear();
+                }   
+                locationsDistances.clear();
+            }
+
             /**
              * Method: addLocation
              * ----------------------
