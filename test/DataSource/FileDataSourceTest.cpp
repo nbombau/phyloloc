@@ -18,7 +18,6 @@ using namespace Domain;
 using ::testing::Test;
 using namespace std;
 
-typedef MockNode<Domain::BaseAspect> TestNode;
 typedef std::map<std::string, std::string> LocationsMap;
 
 
@@ -71,19 +70,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "", 0.0f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "", 0.0f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "", 0.0f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "", 0.0f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "", 0.0f, "");
 
     }
@@ -94,19 +93,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "A", 0.0f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "B", 0.0f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "", 0.0f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "C", 0.0f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "D", 0.0f, "");
 
     }
@@ -117,19 +116,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "F", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "A", 0.0f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "B", 0.0f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "E", 0.0f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "C", 0.0f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "D", 0.0f, "");
 
     }
@@ -141,19 +140,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "", 0.1f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "", 0.2f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "", 0.5f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "", 0.3f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "", 0.4f, "");
 
     }
@@ -165,19 +164,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "", 0.1f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "", 0.2f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "", 0.5f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "", 0.3f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "", 0.4f, "");
 
     }
@@ -188,19 +187,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "A", 0.1f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "B", 0.2f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "", 0.5f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "C", 0.3f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "D", 0.4f, "");
 
     }
@@ -211,19 +210,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "F", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "A", 0.1f, "");
 
-        TestNode* child2 = root->addChild();
+        TestNode* child2 = root->addChild<TestNode>();
         setNodeAttrs(child2, "B", 0.2f, "");
 
-        TestNode* child3 = root->addChild();
+        TestNode* child3 = root->addChild<TestNode>();
         setNodeAttrs(child3, "E", 0.5f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "C", 0.3f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "D", 0.4f, "");
 
     }
@@ -234,19 +233,19 @@ protected:
         TestNode* root = tree->getRoot();
         setNodeAttrs(root, "A", 0.0f, "");
 
-        TestNode* child1 = root->addChild();
+        TestNode* child1 = root->addChild<TestNode>();
         setNodeAttrs(child1, "F", 0.1f, "");
 
-        TestNode* child2 = child1->addChild();
+        TestNode* child2 = child1->addChild<TestNode>();
         setNodeAttrs(child2, "B", 0.2f, "");
 
-        TestNode* child3 = child1->addChild();
+        TestNode* child3 = child1->addChild<TestNode>();
         setNodeAttrs(child3, "E", 0.5f, "");
 
-        TestNode* child4 = child3->addChild();
+        TestNode* child4 = child3->addChild<TestNode>();
         setNodeAttrs(child4, "C", 0.3f, "");
 
-        TestNode* child5 = child3->addChild();
+        TestNode* child5 = child3->addChild<TestNode>();
         setNodeAttrs(child5, "D", 0.4f, "");
 
     }
@@ -301,7 +300,7 @@ private:
 
         if (ret)
         {
-            ListIterator<TestNode> iterNode = node1->getChildrenIterator();
+            ListIterator<TestNode, Domain::Node> iterNode = node1->getChildrenIterator<TestNode>();
 
             while (ret && !iterNode.end())
             {
@@ -325,8 +324,8 @@ private:
                          << " - n2: " << node2->getName() << ":" << node2->getBranchLength();
         if (ret)
         {
-            ListIterator<TestNode> iterNode1 = node1->getChildrenIterator();
-            ListIterator<TestNode> iterNode2 = node2->getChildrenIterator();
+            ListIterator<TestNode, Domain::Node> iterNode1 = node1->getChildrenIterator<TestNode>();
+            ListIterator<TestNode, Domain::Node> iterNode2 = node2->getChildrenIterator<TestNode>();
 
             ret = iterNode1.count() == iterNode2.count();
 

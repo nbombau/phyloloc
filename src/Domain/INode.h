@@ -23,9 +23,7 @@ namespace Domain
     * Class: Node
     * -----------
     * Description: Base phylogenetic node implementation
-    * Type Parameter T: T is the underlying node class (CRTP)
     */
-    template <class T>
     class Node
     {
     public:
@@ -61,6 +59,7 @@ namespace Domain
         * @return if the node is not root, the parent of the node; and
         * null otherwise
         */
+        template <class T>
         T* getParent() const
         {
             return static_cast<T*>(parent);
@@ -74,9 +73,10 @@ namespace Domain
         * client to iterate through the node's children.
         * @returns ListIterator to iterate through the node's children
         */
-        ListIterator<T> getChildrenIterator() const
+        template <class T>
+        ListIterator<T, Node> getChildrenIterator() const
         {
-            ListIterator<T> iter = ListIterator<T>(children);
+            ListIterator<T, Node> iter(children);
             return iter;
         }
 
@@ -87,6 +87,7 @@ namespace Domain
         * already topologically binded to the tree.
         * @return Node already binded to the current node.
         */
+        template <class T>
         T* addChild()
         {
             T* child = new T();
@@ -181,21 +182,23 @@ namespace Domain
 
         Node() : parent(NULL) { }
 
-
-    protected:
-
-        Node<T>* parent;
-        std::list<T*> children;
-        NodeName name;
-        Location location;
-        LocationId locationId;
-        BranchLength branchLength;
-
         ~Node()
         {
             //Call to MiLi's delete_container
             delete_container(children);
         }
+        
+    protected:
+
+        Node* parent;
+        std::list<Node*> children;
+        
+        NodeName name;
+        Location location;
+        LocationId locationId;
+        BranchLength branchLength;
+
+
     };
 
     /**
@@ -203,10 +206,16 @@ namespace Domain
     * -----------------
     * Description: Base underlying node aspect for the Node template
     */
-    class BaseAspect
+    /*class BaseAspect
     {
 
     };
+    
+    template <class T>
+    class EndAspect : public Node<T>, public T
+    {
+        
+    };*/
 }
 
 #endif

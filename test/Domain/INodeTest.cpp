@@ -10,12 +10,12 @@ using ::testing::Test;
 
 
     template <class T>
-    class DummyNode : public Domain::Node<DummyNode<T> >    
+    class DummyNode : public T
     {
     
     };
 
-    typedef DummyNode<Domain::BaseAspect> TestNode;
+    typedef DummyNode<Domain::Node> TestNode;
     
     
     class INodeTest : public Test 
@@ -63,12 +63,12 @@ using ::testing::Test;
     //Add child, and check bindings
    TEST_F(INodeTest, AddChildTest) 
     {
-        TestNode* child1 = n.addChild();
+        TestNode* child1 = n.addChild<TestNode>();
         
         //check child's parent is n
-        EXPECT_EQ( child1->getParent(), &n );
+        EXPECT_EQ( child1->getParent<TestNode>(), &n );
         
-        ListIterator<TestNode> it = n.getChildrenIterator();
+        ListIterator<TestNode, Domain::Node> it = n.getChildrenIterator<TestNode>();
         
         //check child1 is n's descendant
         TestNode* aux = it.get();
@@ -85,10 +85,10 @@ using ::testing::Test;
         ASSERT_FALSE(aux->isRoot());
         
         //check several childs can be added
-        TestNode* child2 = n.addChild();
-        TestNode* child3 = n.addChild();
-        TestNode* child4 = n.addChild();
-        TestNode* child5 = n.addChild();
+        TestNode* child2 = n.addChild<TestNode>();
+        TestNode* child3 = n.addChild<TestNode>();
+        TestNode* child4 = n.addChild<TestNode>();
+        TestNode* child5 = n.addChild<TestNode>();
         
         child1->setName("c1");
         child2->setName("c2");
@@ -97,7 +97,7 @@ using ::testing::Test;
         child5->setName("c5");
         
         //Check iteration
-        ListIterator<TestNode> iter = n.getChildrenIterator();
+        ListIterator<TestNode, Domain::Node> iter = n.getChildrenIterator<TestNode>();
         
         EXPECT_EQ(iter.count(), 5); //5 childs have been added
     }    

@@ -36,7 +36,7 @@ namespace Locations
                                    "The location its not defined");
 
     template <class T>
-    class LocationAspect  : public Domain::Node<LocationAspect<T> >                        
+    class LocationAspect : public T
     {
     public:        
 

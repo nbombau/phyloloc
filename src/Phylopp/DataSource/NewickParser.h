@@ -160,7 +160,7 @@ private:
         // output: ')'
         do
         {
-            child = parent->addChild();
+            child = parent->template addChild<T>();
             load_node(child);
             consume_whitespace();
             switch (*character)
