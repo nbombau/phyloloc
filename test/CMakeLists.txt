@@ -5,6 +5,7 @@ set(test_src TestMain.cpp
              Domain/ListIteratorTest.cpp 
              Domain/ITreeTest.cpp
              Domain/ITreeCollectionTest.cpp
+             Domain/LocationAspectTest.cpp
              Traverser/TraverserTest.cpp
              DataSource/FileDataSourceTest.cpp
              Propagator/VectorHelperTest.cpp

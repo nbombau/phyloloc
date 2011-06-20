@@ -44,11 +44,9 @@ using ::testing::Test;
     // Check the getters work properly
     TEST_F(INodeTest, GettersTest) 
     {
-        n.setLocation("LocationA");
         n.setName("A");
         n.setBranchLength(0.1);
         
-        EXPECT_EQ(n.getLocation(), "LocationA");
         EXPECT_EQ(n.getName(), "A");
         ASSERT_TRUE( (n.getBranchLength() - BranchLength(0.1)) < epsilon );
     }

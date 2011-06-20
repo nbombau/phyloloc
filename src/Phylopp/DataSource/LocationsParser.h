@@ -5,6 +5,10 @@
 #include <vector>
 #include <iostream>
 #include <mili/mili.h>
+#include "Domain/INode.h"
+#include "Domain/LocationAspect.h"
+
+using namespace Locations;
 
 class DataFileExceptionHierarchy {};
 
@@ -33,7 +37,7 @@ class LocationsParser
 {
 public:
 
-    void loadLocationsFile(const std::string& fname, VariantsSet& set)
+    void loadLocationsFile(const std::string& fname)
     {
         std::ifstream f(fname.c_str());
 
@@ -49,18 +53,22 @@ public:
             if (values.size() != 2)
                 throw MalformedFile(getLineNumberText());
 
-            const std::string name = trim(values[0]);
-            const std::string location = trim(values[1]);
+            NodeName name = trim(values[0]);
+            Location location = trim(values[1]);
 
-            set.insert(name, location);
-
+            addLocation(name, location);
+            
             values.clear();
-
             currentLineNumber++;
         }
     }
 
 private:
+
+    void addLocation(const NodeName nodeName, const Location& location)
+    {
+        LocationAspect<Domain::Node>::addLocation(location, nodeName);
+    }
 
     /****************************************************
      ** This variable and method will no longer be

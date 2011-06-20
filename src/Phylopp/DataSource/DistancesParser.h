@@ -5,6 +5,10 @@
 #include <vector>
 #include <iostream>
 #include <mili/mili.h>
+#include "Domain/LocationAspect.h"
+#include "Domain/INode.h"
+
+using namespace Locations;
 
 class DistancesFileExceptionHierarchy {};
 
@@ -49,16 +53,15 @@ public:
             if (values.size() != 3)
                 throw MalformedDistancesFile(getLineNumberText());
 
-            const std::string location1 = trim(values[0]);
-            const std::string location2 = trim(values[1]);
+            Location location1 = trim(values[0]);
+            Location location2 = trim(values[1]);
 
             float distance;
             if (!from_string(values[2], distance))
                 throw MalformedDistancesFile(getLineNumberText());
 
-            //do something with this!
-            std::cout << "location1:" << location1 << " location2:" << location2 << " distance:" << distance << "\n";
-
+            addDistance(distance, location1, location2);
+            
             values.clear();
 
             currentLineNumber++;
@@ -66,6 +69,17 @@ public:
     }
 
 private:
+
+    void addDistance(const float distance, const Location& location1, const Location& location2)
+    {
+        try
+        {
+            LocationAspect<Domain::Node>::addDistance(distance, location1, location2);
+        }
+        catch(InvalidLocation)
+        {
+        }
+    }
 
     /****************************************************
      ** This variable and method will no longer be
