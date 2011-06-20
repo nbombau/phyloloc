@@ -9,10 +9,12 @@
 #include "PhyloGUI/inc/filedialog.h"
 #include "PhyloGUI/inc/propagatedialog.h"
 #include "Phyloloc/Propagator/Propagator.h"
+#include "Phylopp/Searching/SearchNode.h"
+
 
 using namespace DataSource;
 using namespace Propagation;
-
+using namespace Searching;
 
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -28,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSelect_descendants->setEnabled(false);
     ui->actionSelect_Ancestors->setEnabled(false);
     ui->actionProcess_tree->setEnabled(false);
+    ui->actionSearch_terminal_nodes->setEnabled(false);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -150,7 +153,10 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
                                          "", &ok);
     if (ok)
     {
-        cout << "Search for: " << text.toStdString();
+        const std::string & searchString=text.toStdString();
+        SearchNode<GuiNode> sn;
+        sn.setRoot(actualTree->getRoot());
+        sn.search(const_cast<std::string &>(searchString));
     }
     //else not needed
 }
@@ -171,6 +177,7 @@ void MainWindow::drawTree()
     ui->actionSelect_descendants->setEnabled(true);
     ui->actionSelect_Ancestors->setEnabled(true);
     ui->actionProcess_tree->setEnabled(true);
+    ui->actionSearch_terminal_nodes->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
