@@ -134,7 +134,14 @@ namespace Locations
              */
             void addLocation(const Location& location, const NodeName& name )
             {
-                size_t generatedId = getLocationsCount() + 1;
+                LocationId id = getLocationId(location);
+
+                size_t generatedId;
+                if (id == 0)
+                    generatedId = getLocationsCount() + 1;
+                else
+                    generatedId = id; //consistent if location already exists
+
                 nodeLocationSet.insert(name, location);                
                 locationIdSet.insert(location, generatedId);
             }
