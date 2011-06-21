@@ -166,7 +166,8 @@ void MainWindow::on_actionProcess_tree_triggered()
     PropagateDialog propagate;
     if (propagate.exec())
     {
-        printf("%d %f %f\n", propagate.getPasses(), propagate.getBCLF(), propagate.getGCF());
+        //printf("%d %f %f\n", propagate.getPasses(), propagate.getBCLF(), propagate.getGCF());
+        Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(),propagate.getBCLF());
     }
 }
 
