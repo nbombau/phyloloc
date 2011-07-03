@@ -117,24 +117,24 @@ void PropagateDialog::acceptInput()
     bool error = false;
     int pos = 0;
     QString errorString;
-    const QString& passInput = passLine->text();
-    const QString& GCFinput = GCFLine->text();
-    const QString& BCLFinput = BCFLLine->text();
+    QString passInput = passLine->text();
+    QString GCFinput = GCFLine->text();
+    QString BCLFinput = BCFLLine->text();
     passerror->setText("");
     GCFerror->setText("");
     BCFLerror->setText("");
 
-    if (intValidator.validate(const_cast<QString&>(passInput), pos) != QValidator::Acceptable)
+    if (intValidator.validate(passInput, pos) != QValidator::Acceptable)
     {
         error = true;
         passerror->setText("<font color='red'>The amount of passes must be a number between 0 and 9999</font>");
     }
-    if (doubleValidator.validate(const_cast<QString&>(GCFinput), pos) != QValidator::Acceptable)
+    if (doubleValidator.validate(GCFinput, pos) != QValidator::Acceptable)
     {
         error = true;
         GCFerror->setText("<font color='red'>The GCF value must be a number between 0 and 1</font>");
     }
-    if (doubleValidator.validate(const_cast<QString&>(BCLFinput), pos) != QValidator::Acceptable)
+    if (doubleValidator.validate(BCLFinput, pos) != QValidator::Acceptable)
     {
         error = true;
         BCFLerror->setText("<font color='red'>The BCLF value must be a number between 0 and 1</font>");

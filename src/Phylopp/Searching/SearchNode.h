@@ -22,7 +22,7 @@ template <class T>
 class SelectNodeAction
 {
 public:
-    SelectNodeAction(std::string& searchString)
+    SelectNodeAction(const std::string& searchString)
     {
         regExp = searchString;
     }
@@ -50,7 +50,7 @@ public:
         node = root;
     }
 
-    void search(std::string& expression)
+    void search(const std::string& expression)
     {
         Traverser<T, SelectNodeAction<T> , IsLeafPredicate<T> > t;
         SelectNodeAction<T> a(expression);

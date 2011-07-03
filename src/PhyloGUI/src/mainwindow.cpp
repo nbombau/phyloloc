@@ -157,7 +157,7 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
         const std::string& searchString = text.toStdString();
         SearchNode<GuiNode> sn;
         sn.setRoot(actualTree->getRoot());
-        sn.search(const_cast<std::string&>(searchString));
+        sn.search(searchString);
     }
     //else not needed
 }
@@ -167,7 +167,6 @@ void MainWindow::on_actionProcess_tree_triggered()
     PropagateDialog propagate;
     if (propagate.exec())
     {
-        //printf("%d %f %f\n", propagate.getPasses(), propagate.getBCLF(), propagate.getGCF());
         Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
     }
 }
@@ -177,7 +176,6 @@ void MainWindow::resizeEvent(QResizeEvent* event)
     graph->adjustSize();
     if (actualTree != NULL)
     {
-        //graph->draw();
         graph->update();
     }
 }
