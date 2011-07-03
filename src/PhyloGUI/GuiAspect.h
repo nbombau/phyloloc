@@ -41,7 +41,6 @@ public:
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
         setCacheMode(DeviceCoordinateCache);
-        setZValue(-1);
     }
 
     ~GuiAspect()
@@ -124,9 +123,9 @@ public:
         Q_UNUSED(option);
         Q_UNUSED(widget);
         QRect rect(-7, -7, 20, 20);
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(Qt::darkGray);
-        painter->drawEllipse(rect);
+        //painter->setPen(Qt::NoPen);
+        //painter->setBrush(Qt::darkGray);
+        //painter->drawEllipse(rect);
 
         QRadialGradient gradient(-3, -3, 10);
 
@@ -184,6 +183,7 @@ protected:
             }
         }
     }
+
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     {
         Q_UNUSED(event);

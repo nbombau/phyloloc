@@ -165,7 +165,6 @@ GraphWidget::GraphWidget(QWidget* parent)
     setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
-    resize(parentWidget()->width(), parentWidget()->height());
     rotate(qreal(-90));
 }
 
@@ -188,8 +187,6 @@ void GraphWidget::scaleView(qreal scaleFactor)
 
     scale(scaleFactor, scaleFactor);
 }
-
-
 
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
@@ -258,24 +255,24 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
     this->setScene(scene);
     this->tree = tree;
     drawTree(scene, tree->getRoot());
-
     this->adjustSize();
+    this->fitInView(sceneRect(), Qt::KeepAspectRatio);
 }
 
 void GraphWidget::draw()
 {
-    printf("draw()\n");
     if (tree != NULL)
-    {
         drawTree(this->scene(), tree->getRoot());
-    }
 }
 
 void GraphWidget::resizeEvent(QResizeEvent*)
 {
-    resize(parentWidget()->width(), parentWidget()->height());
+    if (scene() != NULL)
+        resize(parentWidget()->width(), parentWidget()->height());
+    else
+        resize(parentWidget()->width(), parentWidget()->height());
 }
-
+/*
 void GraphWidget::reScaleScene()
 {
     const double sceneWidth = scene()->width();
@@ -304,7 +301,7 @@ void GraphWidget::reScaleScene()
         printf("4\n");
         scale(qreal(parentHeight / sceneHeight), qreal(parentHeight / sceneHeight));
     }
-}
+}*/
 
 void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 {

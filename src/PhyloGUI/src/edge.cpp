@@ -10,6 +10,7 @@ Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     dest = destNode;
     //source->addEdge(this);
     //dest->addEdge(this);
+    setZValue(-1);
     adjust();
 }
 
