@@ -188,9 +188,15 @@ protected:
     {
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
-        description.append(this->getName().c_str());
+        if (this->getName().empty())
+            description.append("No information available.");
+        else
+            description.append(this->getName().c_str());
         description.append("\n\nLocation: ");
-        description.append(this->getLocation().c_str());
+        if (this->getName().empty())
+            description.append("No information available.");
+        else
+            description.append(this->getLocation().c_str());
 
         if (this->probabilities.size() != 0)
         {
