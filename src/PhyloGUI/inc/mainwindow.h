@@ -37,6 +37,9 @@ private:
 public slots:
     void drawTree();
 
+protected:
+    void resizeEvent(QResizeEvent* event);
+
 private slots:
     void on_actionProcess_tree_triggered();
     void on_actionSelect_Ancestors_triggered();

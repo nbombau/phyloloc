@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    actualTree = NULL;
     graph = new GraphWidget(ui->frame);
     graph->setAttribute(Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
@@ -167,7 +168,17 @@ void MainWindow::on_actionProcess_tree_triggered()
     if (propagate.exec())
     {
         //printf("%d %f %f\n", propagate.getPasses(), propagate.getBCLF(), propagate.getGCF());
-        Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(),propagate.getBCLF());
+        Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
+    }
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event)
+{
+    graph->adjustSize();
+    if (actualTree != NULL)
+    {
+        //graph->draw();
+        graph->update();
     }
 }
 
