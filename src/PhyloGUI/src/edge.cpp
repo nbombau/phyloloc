@@ -42,23 +42,23 @@ bool Edge::isSelected() const
 }
 void Edge::adjust()
 {
-    if (!source || !dest)
-        return;
-
-    QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
-    qreal length = line.length();
-
-    prepareGeometryChange();
-
-    if (length > qreal(20.))
+    if (source && dest)
     {
-        QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
-        sourcePoint = line.p1() + edgeOffset;
-        destPoint = line.p2() - edgeOffset;
-    }
-    else
-    {
-        sourcePoint = destPoint = line.p1();
+        QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
+        qreal length = line.length();
+
+        prepareGeometryChange();
+
+        if (length > qreal(20.))
+        {
+            QPointF edgeOffset((line.dx() * 10) / length, (line.dy() * 10) / length);
+            sourcePoint = line.p1() + edgeOffset;
+            destPoint = line.p2() - edgeOffset;
+        }
+        else
+        {
+            sourcePoint = destPoint = line.p1();
+        }
     }
 }
 

@@ -154,7 +154,7 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
                                          "", &ok);
     if (ok)
     {
-        const std::string& searchString = text.toStdString();
+        const std::string searchString = text.toStdString();
         SearchNode<GuiNode> sn;
         sn.setRoot(actualTree->getRoot());
         sn.search(searchString);
