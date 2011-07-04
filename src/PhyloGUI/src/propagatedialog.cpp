@@ -15,7 +15,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
     const int topMargin  = 20;
     const int labelWidth = 500;
     const int lineWidth  = 50;
-    const int buttonWidth = 50;
+    //const int buttonWidth = 50;
 
     const int loadButtonWidth = 100;
     const int height = 25;

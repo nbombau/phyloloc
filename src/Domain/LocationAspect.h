@@ -9,7 +9,7 @@ namespace Locations
 {
     using namespace Domain;
     
-    static const unsigned int locationNotFound = 0;
+    static const unsigned int LOCATION_NOT_FOUND = 0;
 
     class LocationExceptionHierarchy {};
 
@@ -138,7 +138,7 @@ namespace Locations
             {
                 LocationId id = getLocationId(location);
 
-                size_t generatedId = id == locationNotFound ? getLocationsCount() + 1 : id;
+                size_t generatedId = id == LOCATION_NOT_FOUND ? getLocationsCount() + 1 : id;
                 //consistent if location already exists
 
                 nodeLocationSet.insert(name, location);                
@@ -242,7 +242,7 @@ namespace Locations
                 }
                 catch (const BadElementName&)
                 {
-                    id = locationNotFound;
+                    id = LOCATION_NOT_FOUND;
                 }
                 return id;
             }
