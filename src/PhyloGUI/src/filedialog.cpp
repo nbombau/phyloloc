@@ -2,9 +2,14 @@
 #include <QMessageBox>
 #include "PhyloGUI/inc/filedialog.h"
 
+static QString lastDialogDir;
+
 FileDialog::FileDialog(QWidget* parent)
     : QDialog(parent)
 {
+
+    lastDialogDir = lastDialogDir == NULL ? QDir::currentPath() : lastDialogDir;
+
     this->setBaseSize(450, 350);
     setFixedSize(baseSize());
 
@@ -98,13 +103,15 @@ FileDialog::~FileDialog()
 
 void FileDialog::distancesButtonAction()
 {
-    QFileDialog dialog(this, "Open distances file", QDir::homePath(), "");
+    QFileDialog dialog(this, "Open distances file", lastDialogDir, "");
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setFileMode(QFileDialog::ExistingFile);
     dialog.setFilter("Distance files (*.dist);;All files (*)");
 
     if (dialog.exec())
     {
+        lastDialogDir = dialog.directory().absolutePath();
+
         QStringList list = dialog.selectedFiles();
 
         for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
@@ -116,13 +123,15 @@ void FileDialog::distancesButtonAction()
 
 void FileDialog::locationsButtonAction()
 {
-    QFileDialog dialog(this, "Open locations file", QDir::homePath(), "");
+    QFileDialog dialog(this, "Open locations file", lastDialogDir, "");
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setFileMode(QFileDialog::ExistingFile);
     dialog.setFilter("Locations files (*.dat);;All files (*)");
 
     if (dialog.exec())
     {
+        lastDialogDir = dialog.directory().absolutePath();
+
         QStringList list = dialog.selectedFiles();
 
         for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
@@ -134,13 +143,15 @@ void FileDialog::locationsButtonAction()
 
 void FileDialog::treesButtonAction()
 {
-    QFileDialog dialog(this, "Open trees file", QDir::homePath(), "");
+    QFileDialog dialog(this, "Open trees file", lastDialogDir, "");
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     dialog.setFileMode(QFileDialog::ExistingFile);
     dialog.setFilter("Trees files (*.nwk);;All files (*)");
 
     if (dialog.exec())
     {
+        lastDialogDir = dialog.directory().absolutePath();
+
         QStringList list = dialog.selectedFiles();
 
         for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
