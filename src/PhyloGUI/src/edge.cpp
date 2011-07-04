@@ -8,8 +8,6 @@ Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     setAcceptedMouseButtons(0);
     source = sourceNode;
     dest = destNode;
-    //source->addEdge(this);
-    //dest->addEdge(this);
     setZValue(-1);
     adjust();
 }
@@ -42,7 +40,7 @@ bool Edge::isSelected() const
 }
 void Edge::adjust()
 {
-    if (source && dest)
+    if (source != NULL && dest != NULL)
     {
         QLineF line(mapFromItem(source, 0, 0), mapFromItem(dest, 0, 0));
         qreal length = line.length();
@@ -65,7 +63,7 @@ void Edge::adjust()
 QRectF Edge::boundingRect() const
 {
     QRectF rect;
-    if (!source || !dest)
+    if (source == NULL || dest == NULL)
     {
         rect = QRectF();
     }
@@ -86,20 +84,20 @@ QRectF Edge::boundingRect() const
 
 void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
-    if (!source || !dest)
-        return;
+    if (source != NULL && dest != NULL)
+    {
+        //Union between the two parts of the line
+        QPointF point(destPoint.x(), sourcePoint.y());
 
-    //Union between the two parts of the line
-    QPointF point(destPoint.x(), sourcePoint.y());
+        // Draw the horizontal part of the line
+        QLineF line(sourcePoint, point);
+        painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter->drawLine(line);
 
-    // Draw the horizontal part of the line
-    QLineF line(sourcePoint, point);
-    painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
-
-    // Draw the vertical part of the line
-    line.setPoints(point, destPoint);
-    painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+        // Draw the vertical part of the line
+        line.setPoints(point, destPoint);
+        painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter->drawLine(line);
+    }
 }
 

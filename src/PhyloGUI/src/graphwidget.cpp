@@ -166,6 +166,7 @@ GraphWidget::GraphWidget(QWidget* parent)
     setTransformationAnchor(AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
+    setParent(parent);
 }
 
 void GraphWidget::wheelEvent(QWheelEvent* event)
@@ -251,12 +252,32 @@ void GraphWidget::drawTree(QGraphicsScene* scene, GuiNode* node)
 
 void GraphWidget::draw(ITree<GuiNode>* tree)
 {
+    //Reset properties (only usefull when drawing more than one tree)
+    resetCachedContent();
+    resetMatrix();
+    resetTransform();
+
+    //Set Properties
+    setCacheMode(CacheBackground);
+    setViewportUpdateMode(BoundingRectViewportUpdate);
+    setRenderHint(QPainter::Antialiasing);
+    setTransformationAnchor(AnchorUnderMouse);
+    setDragMode(QGraphicsView::ScrollHandDrag);
+    rotate(qreal(-90));
+
+    //Create scene
     QGraphicsScene* scene = new QGraphicsScene(this);
     this->setScene(scene);
     this->tree = tree;
     drawTree(scene, tree->getRoot());
-    this->adjustSize();
-    this->fitInView(sceneRect(), Qt::KeepAspectRatio);
+
+    //Ensure visibility of the tree
+    fitInView(this->scene()->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void GraphWidget::resizeEvent(QResizeEvent* event)
+{
+    QGraphicsView::resizeEvent(event);
 }
 
 void GraphWidget::draw()
@@ -264,44 +285,6 @@ void GraphWidget::draw()
     if (tree != NULL)
         drawTree(this->scene(), tree->getRoot());
 }
-
-void GraphWidget::resizeEvent(QResizeEvent*)
-{
-    if (scene() != NULL)
-        resize(parentWidget()->width(), parentWidget()->height());
-    else
-        resize(parentWidget()->width(), parentWidget()->height());
-}
-/*
-void GraphWidget::reScaleScene()
-{
-    const double sceneWidth = scene()->width();
-    const double sceneHeight = scene()->height();
-    const double parentWidth = parentWidget()->width();
-    const double parentHeight = parentWidget()->height();
-    printf("sceneWidth=%f sceneHeight=%f parentWidth=%f parentHeight=%f\n", sceneWidth, sceneHeight, parentWidth, parentHeight);
-
-    if (sceneWidth > parentWidth)
-    {
-        printf("1\n");
-        scale(qreal(parentWidth / sceneWidth), qreal(parentWidth / sceneWidth));
-    }
-    else if (sceneHeight > parentHeight)
-    {
-        printf("2\n");
-        scale(qreal(parentHeight / sceneHeight), qreal(parentHeight / sceneHeight));
-    }
-    else if (sceneWidth < parentWidth)
-    {
-        printf("3\n");
-        scale(qreal(parentWidth / sceneWidth), qreal(parentWidth / sceneWidth));
-    }
-    else
-    {
-        printf("4\n");
-        scale(qreal(parentHeight / sceneHeight), qreal(parentHeight / sceneHeight));
-    }
-}*/
 
 void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 {
@@ -349,3 +332,7 @@ void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 
 }
 
+QSize GraphWidget::sizeHint() const
+{
+    return QSize(600, 300);
+}

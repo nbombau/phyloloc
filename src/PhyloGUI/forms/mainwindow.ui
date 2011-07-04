@@ -16,23 +16,26 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QListWidget" name="listWidget">
-      <property name="minimumSize">
-       <size>
-        <width>101</width>
-        <height>271</height>
-       </size>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>141</width>
-        <height>16777215</height>
-       </size>
-      </property>
+      <widget class="QListWidget" name="listWidget">
+       <property name="minimumSize">
+        <size>
+         <width>101</width>
+         <height>271</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>141</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QMdiArea" name="frame"/>
      </widget>
-    </item>
-    <item>
-     <widget class="QMdiArea" name="frame"/>
     </item>
    </layout>
   </widget>
