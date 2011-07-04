@@ -171,7 +171,7 @@ void MainWindow::on_actionProcess_tree_triggered()
     }
 }
 
-void MainWindow::resizeEvent(QResizeEvent* event)
+void MainWindow::resizeEvent(QResizeEvent* /*event*/)
 {
     graph->adjustSize();
     if (actualTree != NULL)

@@ -28,7 +28,7 @@ namespace Propagation
     template <class T>
     struct AlwaysTruePredicate
     {
-        bool operator()(T* node) const
+        bool operator()(T* /*node*/) const
         {
             return true;
         }

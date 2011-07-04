@@ -8,7 +8,7 @@ using namespace std;
 
 struct AlwaysTruePredicate
 {
-    bool operator()(GuiNode* node) const
+    bool operator()(GuiNode* /*node*/) const
     {
         return true;
     }
