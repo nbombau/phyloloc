@@ -7,6 +7,7 @@
 #include <queue>
 #include <list>
 #include <QSizePolicy>
+#include <QSize>
 #include <QGraphicsTextItem>
 
 #include "Domain/ITree.h"
@@ -39,6 +40,7 @@ public:
     void selectAllNodes(ITree<GuiNode>* tree);
     void selectNodeDescendants(ITree<GuiNode>* tree);
     void selectNodeAncestors(ITree<GuiNode>*tree);
+    QSize sizeHint() const;
 
 protected:
     void wheelEvent(QWheelEvent* event);

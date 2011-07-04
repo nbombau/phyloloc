@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading UI file 'mainwindow.ui'
+** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Thu Jun 16 21:48:51 2011
-**      by: Qt User Interface Compiler version 4.7.2
+** Created: Sun Jul 3 22:18:08 2011
+**      by: Qt User Interface Compiler version 4.5.2
 **
-** WARNING! All changes made in this file will be lost when recompiling UI file!
+** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
 
 #ifndef UI_MAINWINDOW_H
@@ -21,6 +21,7 @@
 #include <QtGui/QMdiArea>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
+#include <QtGui/QSplitter>
 #include <QtGui/QStatusBar>
 #include <QtGui/QToolBar>
 #include <QtGui/QWidget>
@@ -48,6 +49,7 @@ public:
     QAction* actionSearch_terminal_nodes;
     QWidget* centralWidget;
     QHBoxLayout* horizontalLayout;
+    QSplitter* splitter;
     QListWidget* listWidget;
     QMdiArea* frame;
     QMenuBar* menuBar;
@@ -99,19 +101,18 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setMargin(11);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        listWidget = new QListWidget(centralWidget);
+        splitter = new QSplitter(centralWidget);
+        splitter->setObjectName(QString::fromUtf8("splitter"));
+        splitter->setOrientation(Qt::Horizontal);
+        listWidget = new QListWidget(splitter);
         listWidget->setObjectName(QString::fromUtf8("listWidget"));
-        listWidget->setMinimumSize(QSize(101, 271));
-        listWidget->setMaximumSize(QSize(141, 16777215));
+        listWidget->setMinimumSize(QSize(80, 271));
+        listWidget->setMaximumSize(QSize(16777215, 16777215));
+        splitter->addWidget(listWidget);
 
-        horizontalLayout->addWidget(listWidget);
-
-        frame = new QMdiArea(centralWidget);
-        frame->setObjectName(QString::fromUtf8("frame"));
-
-        horizontalLayout->addWidget(frame);
+        horizontalLayout->addWidget(splitter);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
@@ -175,7 +176,7 @@ public:
         actionQuit->setToolTip(QApplication::translate("MainWindow", "Quit the application", 0, QApplication::UnicodeUTF8));
 #endif // QT_NO_TOOLTIP
         actionQuit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0, QApplication::UnicodeUTF8));
-        actionProcess_tree->setText(QApplication::translate("MainWindow", "Process trees...", 0, QApplication::UnicodeUTF8));
+        actionProcess_tree->setText(QApplication::translate("MainWindow", "Propagate...", 0, QApplication::UnicodeUTF8));
         actionConcense_trees->setText(QApplication::translate("MainWindow", "Concense trees...", 0, QApplication::UnicodeUTF8));
         actionParameters->setText(QApplication::translate("MainWindow", "Parameters...", 0, QApplication::UnicodeUTF8));
         actionOptions->setText(QApplication::translate("MainWindow", "Options...", 0, QApplication::UnicodeUTF8));

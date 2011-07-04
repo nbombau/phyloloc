@@ -23,7 +23,6 @@ class Edge : public QGraphicsItem
 {
 public:
     Edge(GuiNode* sourceNode, GuiNode* destNode);
-
     GuiNode* sourceNode() const;
     GuiNode* destNode() const;
     QColor getColor() const;

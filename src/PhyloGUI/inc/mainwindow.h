@@ -23,9 +23,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget* parent = NULL);
-
     ~MainWindow();
-
 
 private:
     Ui::MainWindow* ui;
@@ -36,9 +34,6 @@ private:
 
 public slots:
     void drawTree();
-
-protected:
-    void resizeEvent(QResizeEvent* event);
 
 private slots:
     void on_actionProcess_tree_triggered();

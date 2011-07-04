@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget* parent) :
 {
     ui->setupUi(this);
     actualTree = NULL;
-    graph = new GraphWidget(ui->frame);
+    graph = new GraphWidget(ui->splitter);
     graph->setAttribute(Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);
@@ -32,6 +32,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSelect_Ancestors->setEnabled(false);
     ui->actionProcess_tree->setEnabled(false);
     ui->actionSearch_terminal_nodes->setEnabled(false);
+    ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -73,7 +74,9 @@ void MainWindow::loadTree(const FilesInfo& info)
         for (; !iter.end(); iter.next())
         {
             QListWidgetItem* newItem = new QListWidgetItem;
-            newItem->setText(QString(info.getTreesFilePath().c_str()));
+            QString path(info.getTreesFilePath().c_str());
+            newItem->setToolTip(path);
+            newItem->setText(path);
             ui->listWidget->addItem(newItem);
         }
     }
@@ -166,18 +169,7 @@ void MainWindow::on_actionProcess_tree_triggered()
 {
     PropagateDialog propagate;
     if (propagate.exec())
-    {
         Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
-    }
-}
-
-void MainWindow::resizeEvent(QResizeEvent* /*event*/)
-{
-    graph->adjustSize();
-    if (actualTree != NULL)
-    {
-        graph->update();
-    }
 }
 
 void MainWindow::drawTree()
