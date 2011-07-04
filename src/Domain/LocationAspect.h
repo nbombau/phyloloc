@@ -9,6 +9,8 @@ namespace Locations
 {
     using namespace Domain;
     
+    static const unsigned int locationNotFound = 0;
+
     class LocationExceptionHierarchy {};
 
     typedef GenericException<LocationExceptionHierarchy> LocationException;     
@@ -136,11 +138,8 @@ namespace Locations
             {
                 LocationId id = getLocationId(location);
 
-                size_t generatedId;
-                if (id == 0)
-                    generatedId = getLocationsCount() + 1;
-                else
-                    generatedId = id; //consistent if location already exists
+                size_t generatedId = id == locationNotFound ? getLocationsCount() + 1 : id;
+                //consistent if location already exists
 
                 nodeLocationSet.insert(name, location);                
                 locationIdSet.insert(location, generatedId);
@@ -243,7 +242,7 @@ namespace Locations
                 }
                 catch (const BadElementName&)
                 {
-                    id = 0;
+                    id = locationNotFound;
                 }
                 return id;
             }
@@ -265,7 +264,7 @@ namespace Locations
              * Description: Look for the id mapped to a location
              * Returns: Cero if the id is not defined. 
              */
-            LocationId getNameLocationId(const NodeName& name)
+            LocationId getNameLocationId(const NodeName& name) const
             {
                 Location location = getLocation(name);
                 return getLocationId(location);
@@ -276,7 +275,7 @@ namespace Locations
              * ----------------------
              * Returns: The number of locations stored
              */
-            size_t getLocationsCount()
+            size_t getLocationsCount() const
             {
                 return locationIdSet.size();
             }
