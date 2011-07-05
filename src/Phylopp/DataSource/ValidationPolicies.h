@@ -5,7 +5,7 @@ class DefaultValidationPolicy
 {
 public:
     template <class T>
-    bool validate(T* /*leaf*/)
+    bool validate(const T* /*node*/) const
     {
         return true;
     }
@@ -15,9 +15,9 @@ class ForbidMissinbgDataPolicy
 {
 public:
     template <class T>
-    bool validate(T* leaf)
-    {
-        return leaf->getName() != "";
+    bool validate(const T* node) const
+    {        
+        return node->isLeaf() ? !node->getName().empty() : true;
     }
 };
 

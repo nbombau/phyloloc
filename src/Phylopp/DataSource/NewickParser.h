@@ -148,7 +148,7 @@ private:
                 node->setBranchLength(branchLength);
                 // Set location, if exists, for the node
         }
-        if (node->isLeaf() && !validationPolicy.validate(node))
+        if (!validationPolicy.validate(node))
             throw MissingDataException(getLineNumberText());
     }
 
