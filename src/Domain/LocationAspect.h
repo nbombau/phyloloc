@@ -118,10 +118,37 @@ namespace Locations
             
         public:
             
+            void validate()
+            {
+
+                bool continueIterating = true;
+
+                VariantsSet::iterator it = nodeLocationSet.begin();
+
+                //check that every node != "" has a location
+                for (; continueIterating && it != nodeLocationSet.end(); it++)
+                {
+                    continueIterating = (!it->first.empty()) ? !it->second.empty() : true;
+                }
+
+                //check thay every location has a distance to every location
+                size_t locationsNumber = getLocationsCount();
+                for(unsigned int i = 0; continueIterating && i < locationsNumber; i++)
+                {
+                    for(unsigned int j = 0; j < locationsNumber; j++)
+                    {
+                        continueIterating = (i != j) ? locationsDistances[i][j] != 0.0f : true;
+                    }
+                }
+
+                valid = continueIterating;
+            }
+
             void clear()
             {
                 nodeLocationSet.clear();
-                locationIdSet.clear();               
+                locationIdSet.clear();
+                valid = false;
                 for(unsigned int i = 0; i < locationsDistances.size(); i++) 
                 {
                     locationsDistances[i].clear();
@@ -279,13 +306,18 @@ namespace Locations
             {
                 return locationIdSet.size();
             }
-            
+        protected:
+            bool isValid() const
+            {
+                return valid;
+            }
         private:
             
             VariantsSet nodeLocationSet;
             VariantsSet locationIdSet;
             std::vector<std::vector<Distance> > locationsDistances;
             DistanceVector dispersionVector;
+            bool valid;
             
             /**
              * Method: InitializeDistancesMatrix
