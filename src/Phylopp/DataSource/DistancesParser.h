@@ -61,7 +61,7 @@ public:
                 throw MalformedDistancesFile(getLineNumberText());
 
             addDistance(distance, location1, location2);
-            
+
             values.clear();
 
             currentLineNumber++;
@@ -76,7 +76,7 @@ private:
         {
             LocationAspect<Domain::Node>::addDistance(distance, location1, location2);
         }
-        catch(InvalidLocation)
+        catch (InvalidLocation)
         {
         }
     }
