@@ -6,7 +6,7 @@
 #include <mili/mili.h>
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
-
+#include "ValidationPolicies.h"
 
 class TreeFileExceptionHierarchy {};
 
@@ -39,10 +39,23 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(MalformedExpression,
                                TreeFileExceptionHierarchy,
                                "The input is not correctly formed");
 
-template <class T>
+
+/**
+* MissingDataException
+* --------------------
+* Description: Exception used when missing data in leaf nodes is not allowed
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(MissingDataException,
+                               TreeFileExceptionHierarchy,
+                               "Missing data not allowed. All terminal nodes should have name");
+
+
+template < class T, class ValidationPolicy = DefaultValidationPolicy >
 class NewickParser
 {
 public:
+
+    NewickParser(const ValidationPolicy& validationPolicy = ValidationPolicy()) : validationPolicy(validationPolicy) {}
 
     void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
     {
@@ -77,6 +90,7 @@ public:
     }
 
 private:
+    ValidationPolicy validationPolicy;
     VariantsSet set;
     const char* character;
 
@@ -134,6 +148,8 @@ private:
                 node->setBranchLength(branchLength);
                 // Set location, if exists, for the node
         }
+        if (node->isLeaf() && !validationPolicy.validate(node))
+            throw MissingDataException(getLineNumberText());
     }
 
     void load_children(T* parent)

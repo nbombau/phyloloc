@@ -17,6 +17,7 @@
 #include "NewickWriter.h"
 #include "DistancesParser.h"
 #include "LocationsParser.h"
+#include "ValidationPolicies.h"
 
 namespace DataSource
 {
@@ -37,7 +38,7 @@ public:
         LocationsParser locationsParser;
         locationsParser.loadLocationsFile(info.getLocationsFilePath());
 
-        DistancesParser distancesParser;        
+        DistancesParser distancesParser;
         distancesParser.loadDistancesFile(info.getDistancesFilePath());
 
         try
@@ -46,16 +47,6 @@ public:
             newickParser.loadNewickFile(info.getTreesFilePath(), trees);
         }
         catch (const TreeFileException& ex)
-        {
-            trees.clear();
-            throw;
-        }
-        catch (const DataFileException& ex)
-        {
-            trees.clear();
-            throw;
-        }
-        catch (const DistancesFileException& ex)
         {
             trees.clear();
             throw;

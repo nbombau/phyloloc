@@ -57,7 +57,7 @@ public:
             Location location = trim(values[1]);
 
             addLocation(name, location);
-            
+
             values.clear();
             currentLineNumber++;
         }
