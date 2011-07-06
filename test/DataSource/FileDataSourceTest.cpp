@@ -249,109 +249,72 @@ protected:
 
     }
 
-    static bool compareTreeCollections(ITreeCollection<TestNode>& trees1, ITreeCollection<TestNode>& trees2)
+    static void assertTreeCollectionsEquals(ITreeCollection<TestNode>& expectedTrees, ITreeCollection<TestNode>& actualTrees)
     {
 
-        ListIterator< ITree<TestNode> > iter1 = trees1.getIterator();
-        ListIterator< ITree<TestNode> > iter2 = trees2.getIterator();
+        ITreeCollection<TestNode>::iterator iterExpected = expectedTrees.getIterator();
+        ITreeCollection<TestNode>::iterator iterActual = actualTrees.getIterator();
 
-        bool ret = iter1.count() == iter2.count();
-        EXPECT_TRUE(ret);
+        ASSERT_EQ(iterExpected.count(), iterActual.count());
 
-        if (ret)
+        while (!iterExpected.end())
         {
-            while (ret && !iter1.end())
-            {
-                ret = compareTrees(iter1.get(), iter2.get());
-                iter1.next();
-                iter2.next();
-            }
+            assertTreesEquals(iterExpected.get(), iterActual.get());
+            iterExpected.next();
+            iterActual.next();
         }
-
-        return ret;
-
     }
 
-    static bool compareLocations(ITreeCollection<TestNode>& trees, LocationsMap& map)
+    static void assertLocationsEquals(ITreeCollection<TestNode>& actualTrees, LocationsMap& expectedLocationsMap)
     {
-        bool ret(true);
+        ITreeCollection<TestNode>::iterator treesIterator = actualTrees.getIterator();
 
-        ListIterator< ITree<TestNode> > treesIterator = trees.getIterator();
-
-        while (ret && !treesIterator.end())
+        for (; !treesIterator.end(); treesIterator.next())
         {
             ITree<TestNode>* tree = treesIterator.get();
-            ret = compareNodeLocations(tree->getRoot(), map);
-            treesIterator.next();
+            assertNodeLocationsEquals(tree->getRoot(), expectedLocationsMap);
         }
-
-        return ret;
-
     }
 
 private:
 
-    static bool compareNodeLocations(const TestNode* node1, LocationsMap& map)
+    static void assertNodeLocationsEquals(const TestNode* actualNode, LocationsMap& expectedLocationsMap)
     {
-        bool ret = node1->getLocation() == map[node1->getName()];
+        ASSERT_EQ(expectedLocationsMap[actualNode->getName()], actualNode->getLocation());
 
-        EXPECT_TRUE(ret) << "Node location: " << node1->getLocation() << " - Expected: " << map[node1->getName()];
+        ListIterator<TestNode, Domain::Node> iterNode = actualNode->getChildrenIterator<TestNode>();
 
-        if (ret)
+        for (; !iterNode.end() ; iterNode.next())
         {
-            ListIterator<TestNode, Domain::Node> iterNode = node1->getChildrenIterator<TestNode>();
-
-            while (ret && !iterNode.end())
-            {
-                ret = compareNodeLocations(iterNode.get(), map);
-                iterNode.next();
-            }
+            assertNodeLocationsEquals(iterNode.get(), expectedLocationsMap);
         }
-
-        return ret;
-
-    }
-    static bool compareNodes(const TestNode* node1, const TestNode* node2)
-    {
-
-        bool ret = node1->getName() == node2->getName() &&
-                   node1->getBranchLength() - node2->getBranchLength() < epsilon &&
-                   node1->getLocation() == node2->getLocation();
-
-
-        EXPECT_TRUE(ret) << "n1: " << node1->getName() << ":" << node1->getBranchLength()
-                         << " - n2: " << node2->getName() << ":" << node2->getBranchLength();
-        if (ret)
-        {
-            ListIterator<TestNode, Domain::Node> iterNode1 = node1->getChildrenIterator<TestNode>();
-            ListIterator<TestNode, Domain::Node> iterNode2 = node2->getChildrenIterator<TestNode>();
-
-            ret = iterNode1.count() == iterNode2.count();
-
-            EXPECT_TRUE(ret);
-
-            if (ret)
-            {
-                while (ret && !iterNode1.end())
-                {
-                    ret = compareNodes(iterNode1.get(), iterNode2.get());
-                    iterNode1.next();
-                    iterNode2.next();
-                }
-            }
-
-        }
-
-        return ret;
-
     }
 
-    static bool compareTrees(ITree<TestNode>* tree1, ITree<TestNode>* tree2)
+    static void assertNodesEquals(const TestNode* expectedNode, const TestNode* actualNode)
     {
-        bool ret = compareNodes(tree1->getRoot(), tree2->getRoot());
-        EXPECT_TRUE(ret);
 
-        return ret;
+        ASSERT_EQ(expectedNode->getName(), actualNode->getName());
+
+        ASSERT_EQ(expectedNode->getBranchLength(), actualNode->getBranchLength());
+
+        ASSERT_EQ(expectedNode->getLocation(), actualNode->getLocation());
+
+        ListIterator<TestNode, Domain::Node> iterExpected = expectedNode->getChildrenIterator<TestNode>();
+        ListIterator<TestNode, Domain::Node> iterActual = actualNode->getChildrenIterator<TestNode>();
+
+        ASSERT_EQ(iterExpected.count(), iterActual.count());
+
+        while (!iterExpected.end())
+        {
+            assertNodesEquals(iterExpected.get(), iterActual.get());
+            iterExpected.next();
+            iterActual.next();
+        }
+    }
+
+    static void assertTreesEquals(ITree<TestNode>* expectedTree, ITree<TestNode>* actualTree)
+    {
+        assertNodesEquals(expectedTree->getRoot(), actualTree->getRoot());
     }
 };
 
@@ -365,7 +328,7 @@ TEST_F(FileDataSourceTest, loadTest1)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest2)
@@ -376,7 +339,7 @@ TEST_F(FileDataSourceTest, loadTest2)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest3)
@@ -387,7 +350,7 @@ TEST_F(FileDataSourceTest, loadTest3)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest4)
@@ -398,7 +361,7 @@ TEST_F(FileDataSourceTest, loadTest4)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest5)
@@ -409,7 +372,7 @@ TEST_F(FileDataSourceTest, loadTest5)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest6)
@@ -420,7 +383,7 @@ TEST_F(FileDataSourceTest, loadTest6)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest7)
@@ -431,7 +394,7 @@ TEST_F(FileDataSourceTest, loadTest7)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTest8)
@@ -442,7 +405,7 @@ TEST_F(FileDataSourceTest, loadTest8)
     ITreeCollection<TestNode> trees;
     loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 
@@ -468,7 +431,7 @@ TEST_F(FileDataSourceTest, loadTest9)
     loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees);
     loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees);
 
-    EXPECT_TRUE(compareTreeCollections(myTrees, trees));
+    assertTreeCollectionsEquals(myTrees, trees);
 }
 
 TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
@@ -476,16 +439,16 @@ TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
     ITreeCollection<TestNode> trees;
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/locations1.dat", trees), MissingTreeSeparator);
 
-    ListIterator< ITree<TestNode> > treesIterator = trees.getIterator();
+    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
-
 }
 
 TEST_F(FileDataSourceTest, loadMalformedTree)
 {
     ITreeCollection<TestNode> trees;
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/locations1.dat", trees), MalformedExpression);
-    ListIterator< ITree<TestNode> > treesIterator = trees.getIterator();
+
+    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
 }
 
@@ -550,7 +513,7 @@ TEST_F(FileDataSourceTest, loadLocations1)
     loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", trees);
     LocationsMap map;
 
-    EXPECT_TRUE(compareLocations(trees, map));
+    assertLocationsEquals(trees, map);
 }
 
 // Single location.
@@ -561,7 +524,7 @@ TEST_F(FileDataSourceTest, loadLocations2)
 
     LocationsMap map;
     map["a"] = "placeA";
-    EXPECT_TRUE(compareLocations(trees, map));
+    assertLocationsEquals(trees, map);
 }
 
 // Correctly formed file, with a location per node
@@ -578,7 +541,7 @@ TEST_F(FileDataSourceTest, loadLocations3)
     map["e"] = "placeE";
     map["f"] = "placeF";
 
-    EXPECT_TRUE(compareLocations(trees, map));
+    assertLocationsEquals(trees, map);
 }
 
 // Multiple locations for a node
@@ -590,7 +553,7 @@ TEST_F(FileDataSourceTest, loadLocations4)
     LocationsMap map;
     map["a"] = "placeA2";
 
-    EXPECT_TRUE(compareLocations(trees, map));
+    assertLocationsEquals(trees, map);
 }
 
 // More associations node/location than nodes in the tree
@@ -617,7 +580,7 @@ TEST_F(FileDataSourceTest, loadLocations5)
     map["i"] = "place";
     map["j"] = "place";
 
-    EXPECT_TRUE(compareLocations(trees, map));
+    assertLocationsEquals(trees, map);
 }
 
 // Try to load a malformed file
@@ -626,7 +589,8 @@ TEST_F(FileDataSourceTest, loadLocations6)
     ITreeCollection<TestNode> trees;
 
     ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", trees), MalformedFile);
-    ListIterator< ITree<TestNode> > treesIterator = trees.getIterator();
+
+    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
 }
 

@@ -7,382 +7,405 @@
 
 namespace Locations
 {
-    using namespace Domain;
-    
-    static const unsigned int LOCATION_NOT_FOUND = 0;
+using namespace Domain;
 
-    class LocationExceptionHierarchy {};
+static const unsigned int LOCATION_NOT_FOUND = 0;
 
-    typedef GenericException<LocationExceptionHierarchy> LocationException;     
-    typedef float Distance;
-    typedef std::vector<Distance> DistanceVector;
-    typedef std::string Location;
-    typedef unsigned int LocationId;
+class LocationExceptionHierarchy {};
 
-    /**
-    * InvalidNodeName
-    * --------------------
-    * Description: Exception when it not exists a node with a node name passed
-    * as a parameter.
-    */
-    DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidNodeName,
-                                   LocationExceptionHierarchy,
-                                   "The node name is not valid for any node");
+typedef GenericException<LocationExceptionHierarchy> LocationException;
+typedef float Distance;
+typedef std::vector<Distance> DistanceVector;
+typedef std::string Location;
+typedef unsigned int LocationId;
 
-    /**
-    * InvalidLocation
-    * --------------------
-    * Description: Exception used a location passed as parameter was not 
-    * previously initilized as an existing location.
-    */
-    DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidLocation,
-                                   LocationExceptionHierarchy,
-                                   "The location its not defined");
+/**
+* InvalidNodeName
+* --------------------
+* Description: Exception when it not exists a node with a node name passed
+* as a parameter.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidNodeName,
+                               LocationExceptionHierarchy,
+                               "The node name is not valid for any node");
 
-    template <class T>
-    class LocationAspect : public T
+/**
+* InvalidLocation
+* --------------------
+* Description: Exception used a location passed as parameter was not
+* previously initilized as an existing location.
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidLocation,
+                               LocationExceptionHierarchy,
+                               "The location its not defined");
+
+template <class T>
+class LocationAspect : public T
+{
+public:
+
+    static void clear()
     {
-    public:        
+        locationManager.clear();
+    }
 
-        static void clear()
+    /**
+     * Method: addLocation
+     * ----------------------
+     * Description: Add a new location and node mapping
+     */
+    static void addLocation(const Location& location, const NodeName& nodeName)
+    {
+        locationManager.addLocation(location, nodeName);
+    }
+
+    /**
+     * Method: addDistances
+     * ----------------------
+     * Description: Add a new distance from one location to another
+     * The distance is not bidirectional
+     */
+    static void addDistance(
+        const Distance distance,
+        const Location& locationFrom,
+        const Location& locationTo)
+    {
+        locationManager.addDistance(distance, locationFrom, locationTo);
+    }
+
+    /**
+     * Method: getDispersionVector
+     * ----------------------
+     * Returns: The dispersion vector of the locations
+     * holded by locationManager
+     */
+    static const DistanceVector& getDispersionVector()
+    {
+        return locationManager.getDispersionVector();
+    }
+
+    /**
+     * Method: getLocation
+     * ---------------
+     * Description: Gets the location associated to the node
+     * @return the node's location
+     */
+    Location getLocation() const
+    {
+        NodeName name = this->getName();
+        return locationManager.getLocation(name);
+    }
+
+    /**
+     * Method: distanceTo
+     * ----------------------
+     * Returns: The distance to a node
+     */
+    Distance distanceTo(const LocationAspect<T>* node) const
+    {
+        return locationManager.distance(this, node);
+    }
+
+protected:
+    /**
+     * Class: LocationManager
+     * ----------------------
+     * Description: Class that contains data structures associated with
+     * locations and distances
+     */
+    class LocationManager
+    {
+
+    public:
+
+        void validate()
         {
-            locationManager.clear();
-        }            
+            //TODO
+            //check if valid is neccessary, or if this method could
+            //directly return a bool value
+            valid = validateNodes() && validateDistances();
+        }
+
+        void clear()
+        {
+            nodeLocationSet.clear();
+            locationIdSet.clear();
+            valid = false;
+            for (unsigned int i = 0; i < locationsDistances.size(); i++)
+            {
+                locationsDistances[i].clear();
+            }
+            locationsDistances.clear();
+        }
 
         /**
          * Method: addLocation
          * ----------------------
          * Description: Add a new location and node mapping
          */
-        static void addLocation( const Location& location, const NodeName& nodeName )
+        void addLocation(const Location& location, const NodeName& name)
         {
-            locationManager.addLocation(location, nodeName);                      
+            LocationId id = getLocationId(location);
+
+            size_t generatedId = id == LOCATION_NOT_FOUND ? getLocationsCount() + 1 : id;
+            //consistent if location already exists
+
+            nodeLocationSet.insert(name, location);
+            locationIdSet.insert(location, generatedId);
         }
-        
+
         /**
-         * Method: addDistances
+         * Method: getLocation
+         * ----------------------
+         * Returns: The location of the node or empty if no location
+         * is set for that node
+         */
+        Location getLocation(const NodeName& name) const
+        {
+            Location location;
+            try
+            {
+                location = nodeLocationSet.get_element<Location>(name);
+            }
+            catch (const BadElementName&)
+            {
+                location = "";
+            }
+            return location;
+        }
+
+        /**
+         * Method: addDistance
          * ----------------------
          * Description: Add a new distance from one location to another
          * The distance is not bidirectional
          */
-        static void addDistance( 
-        const Distance distance, 
-        const Location& locationFrom, 
-        const Location& locationTo )
+        void addDistance(
+            const Distance distance,
+            const Location& locationFrom,
+            const Location& locationTo)
         {
-            locationManager.addDistance(distance, locationFrom, locationTo);        
+            LocationId idFrom = getLocationId(locationFrom);
+            LocationId idTo = getLocationId(locationTo);
+
+            if (idFrom <= 0 || idTo <= 0)
+            {
+                throw InvalidLocation();
+            }
+
+            if (locationsDistances.empty())
+            {
+                size_t locationsCount = getLocationsCount();
+                initializeDistancesMatrix(locationsCount);
+            }
+
+            locationsDistances[idFrom - 1][idTo - 1] = distance;
         }
-        
+
+        /**
+         * Method: distance
+         * ----------------------
+         * Returns: The distance from one node to another
+         */
+        Distance distance(
+            const LocationAspect<T>* nodeFrom,
+            const LocationAspect<T>* nodeTo) const
+        {
+            LocationId idFrom = getLocationId(nodeFrom);
+            LocationId idTo = getLocationId(nodeTo);
+
+            //TODO: Check if locationsDistances is initialized
+            if (idFrom <= 0 || idTo <= 0)
+            {
+                throw InvalidNodeName();
+            }
+
+            return locationsDistances[idFrom - 1][idTo - 1];
+        }
+
         /**
          * Method: getDispersionVector
          * ----------------------
          * Returns: The dispersion vector of the locations
          * holded by locationManager
          */
-        static const DistanceVector& getDispersionVector()
+        const DistanceVector& getDispersionVector()
         {
-            return locationManager.getDispersionVector();
+            calculateDispersionVector();
+            return dispersionVector;
         }
-        
+
+        //TODO: Make these private, first resolve propagator initialization
         /**
-         * Method: getLocation
-         * ---------------
-         * Description: Gets the location associated to the node
-         * @return the node's location
-         */
-        Location getLocation() const
-        {             
-            NodeName name = this->getName();
-            return locationManager.getLocation(name);
-        }
-        
-        /**
-         * Method: distanceTo
+         * Method: getLocationId
          * ----------------------
-         * Returns: The distance to a node
+         * Description: Look for the id mapped to a location
+         * Returns: Cero if the id is not defined.
          */
-        Distance distanceTo(const LocationAspect<T>* node) const
+        LocationId getLocationId(const Location& location) const
         {
-            return locationManager.distance(this, node);                      
-        }  
-        
+            LocationId id;
+            try
+            {
+                id = locationIdSet.get_element<LocationId>(location);
+            }
+            catch (const BadElementName&)
+            {
+                id = LOCATION_NOT_FOUND;
+            }
+            return id;
+        }
+
+        /**
+         * Method: getLocationId
+         * ----------------------
+         * Description: Look for the id mapped to a location
+         * Returns: Cero if the id is not defined.
+         */
+        LocationId getLocationId(const LocationAspect<T>* node) const
+        {
+            return getNameLocationId(node->getName());
+        }
+
+        /**
+         * Method: getLocationId
+         * ----------------------
+         * Description: Look for the id mapped to a location
+         * Returns: Cero if the id is not defined.
+         */
+        LocationId getNameLocationId(const NodeName& name) const
+        {
+            Location location = getLocation(name);
+            return getLocationId(location);
+        }
+
+        /**
+         * Method: getLocationsCount
+         * ----------------------
+         * Returns: The number of locations stored
+         */
+        size_t getLocationsCount() const
+        {
+            return locationIdSet.size();
+        }
     protected:
-        /**
-         * Class: LocationManager
-         * ----------------------
-         * Description: Class that contains data structures associated with
-         * locations and distances
-         */                  
-        class LocationManager
+        bool isValid() const
         {
-            
-        public:
-            
-            void validate()
+            return valid;
+        }
+    private:
+
+        VariantsSet nodeLocationSet;
+        VariantsSet locationIdSet;
+        std::vector<std::vector<Distance> > locationsDistances;
+        DistanceVector dispersionVector;
+        bool valid;
+
+        //check that every node != "" has a location
+        bool validateNodes() const
+        {
+            bool continueIterating = true;
+
+            VariantsSet::iterator it = nodeLocationSet.begin();
+
+            while (continueIterating && it != nodeLocationSet.end())
             {
+                if (!it->first.empty())
+                    continueIterating = !it->second.empty();
+                //else not needed
 
-                bool continueIterating = true;
+                it++;
+            }
+            return continueIterating;
+        }
 
-                VariantsSet::iterator it = nodeLocationSet.begin();
+        //check thay every location has a distance to every location
+        bool validateDistances() const
+        {
+            bool continueIterating = true;
 
-                //check that every node != "" has a location
-                for (; continueIterating && it != nodeLocationSet.end(); it++)
+            size_t locationsNumber = getLocationsCount();
+
+            unsigned int i = 0;
+            while (continueIterating && i < locationsNumber)
+            {
+                unsigned int j = 0;
+                while (continueIterating && j < locationsNumber)
                 {
-                    continueIterating = (!it->first.empty()) ? !it->second.empty() : true;
+                    if (i != j)
+                        continueIterating = locationsDistances[i][j] != 0.0f;
+                    //else not needed
+                    j++;
                 }
+                i++;
+            }
+            return continueIterating;
+        }
 
-                //check thay every location has a distance to every location
-                size_t locationsNumber = getLocationsCount();
-                for(unsigned int i = 0; continueIterating && i < locationsNumber; i++)
+        /**
+         * Method: InitializeDistancesMatrix
+         * ----------------------
+         * Description: Reserve locations in the matrix
+         */
+        void initializeDistancesMatrix(size_t locationsNumber)
+        {
+            locationsDistances.resize(locationsNumber);
+            for (unsigned int i = 0; i < locationsNumber; i++)
+            {
+                locationsDistances[i].resize(locationsNumber, 0);
+            }
+        }
+
+        /**
+         * Method: CalculateDispersionVector
+         * ----------------------
+         * Description: calculates de vector of dispersion factors
+         */
+        void calculateDispersionVector()
+        {
+            size_t locationsNumber = getLocationsCount();
+
+            if (locationsNumber > 0)
+            {
+                dispersionVector.clear();
+                dispersionVector.resize(locationsNumber, 0);
+                Distance distancesSum = 0.0f;
+
+                for (unsigned int i = 0; i < locationsNumber; i++)
                 {
-                    for(unsigned int j = 0; j < locationsNumber; j++)
+                    Distance locationDistancesSum = 0.0f;
+
+                    for (unsigned int j = 0; j < locationsNumber; j++)
                     {
-                        continueIterating = (i != j) ? locationsDistances[i][j] != 0.0f : true;
+                        locationDistancesSum += locationsDistances[i][j];
                     }
+                    dispersionVector[i] = locationDistancesSum / Distance(locationsNumber);
+                    distancesSum += locationDistancesSum;
                 }
 
-                valid = continueIterating;
-            }
-
-            void clear()
-            {
-                nodeLocationSet.clear();
-                locationIdSet.clear();
-                valid = false;
-                for(unsigned int i = 0; i < locationsDistances.size(); i++) 
+                //As we added the whole distance matrix, to get the average distance
+                // we must divide by twice the locationsNumber, because the matrix
+                //is assymetrical, so we are summing each distance twice.
+                Distance distancesAverage = distancesSum / (2.0f * Distance(locationsNumber));
+                for (unsigned int i = 0; i < locationsNumber; i++)
                 {
-                    locationsDistances[i].clear();
-                }   
-                locationsDistances.clear();
-            }
-
-            /**
-             * Method: addLocation
-             * ----------------------
-             * Description: Add a new location and node mapping
-             */
-            void addLocation(const Location& location, const NodeName& name )
-            {
-                LocationId id = getLocationId(location);
-
-                size_t generatedId = id == LOCATION_NOT_FOUND ? getLocationsCount() + 1 : id;
-                //consistent if location already exists
-
-                nodeLocationSet.insert(name, location);                
-                locationIdSet.insert(location, generatedId);
-            }
-            
-            /**
-             * Method: getLocation
-             * ----------------------
-             * Returns: The location of the node or empty if no location
-             * is set for that node
-             */
-            Location getLocation(const NodeName& name) const
-            { 
-                Location location; 
-                try
-                {
-                    location = nodeLocationSet.get_element<Location>(name);
-                }
-                catch(const BadElementName&)
-                {
-                    location = "";
-                }
-                return location;
-            }                
-            
-            /**
-             * Method: addDistance
-             * ----------------------
-             * Description: Add a new distance from one location to another
-             * The distance is not bidirectional
-             */
-            void addDistance( 
-            const Distance distance, 
-            const Location& locationFrom, 
-            const Location& locationTo )
-            {
-                LocationId idFrom = getLocationId(locationFrom);
-                LocationId idTo = getLocationId(locationTo);
-                
-                if (idFrom <= 0 || idTo <= 0)
-                {
-                    throw InvalidLocation();
-                }                
-                
-                if (locationsDistances.empty())
-                {
-                    size_t locationsCount = getLocationsCount();
-                    initializeDistancesMatrix(locationsCount);
-                }                
-                
-                locationsDistances[idFrom - 1][idTo - 1] = distance;
-            }
-            
-            /**
-             * Method: distance
-             * ----------------------
-             * Returns: The distance from one node to another
-             */
-            Distance distance( 
-            const LocationAspect<T>* nodeFrom, 
-            const LocationAspect<T>* nodeTo ) const
-            {
-                LocationId idFrom = getLocationId(nodeFrom);
-                LocationId idTo = getLocationId(nodeTo);
-                
-                //TODO: Check if locationsDistances is initialized
-                if (idFrom <= 0 || idTo <= 0)
-                {
-                    throw InvalidNodeName();
-                }
-                
-                return locationsDistances[idFrom - 1][idTo - 1];                                    
-            }            
-            
-            /**
-             * Method: getDispersionVector
-             * ----------------------
-             * Returns: The dispersion vector of the locations
-             * holded by locationManager
-             */
-            const DistanceVector& getDispersionVector()
-            {
-                calculateDispersionVector();
-                return dispersionVector;
-            }
-            
-            //TODO: Make these private, first resolve propagator initialization
-            /**
-             * Method: getLocationId
-             * ----------------------
-             * Description: Look for the id mapped to a location
-             * Returns: Cero if the id is not defined. 
-             */
-            LocationId getLocationId(const Location& location) const
-            {
-                LocationId id;
-                try
-                {
-                    id = locationIdSet.get_element<LocationId>(location);
-                }
-                catch (const BadElementName&)
-                {
-                    id = LOCATION_NOT_FOUND;
-                }
-                return id;
-            }
-            
-            /**
-             * Method: getLocationId
-             * ----------------------
-             * Description: Look for the id mapped to a location
-             * Returns: Cero if the id is not defined. 
-             */
-            LocationId getLocationId(const LocationAspect<T>* node) const
-            {
-                return getNameLocationId(node->getName());                
-            }
-            
-            /**
-             * Method: getLocationId
-             * ----------------------
-             * Description: Look for the id mapped to a location
-             * Returns: Cero if the id is not defined. 
-             */
-            LocationId getNameLocationId(const NodeName& name) const
-            {
-                Location location = getLocation(name);
-                return getLocationId(location);
-            }
-            
-            /**
-             * Method: getLocationsCount
-             * ----------------------
-             * Returns: The number of locations stored
-             */
-            size_t getLocationsCount() const
-            {
-                return locationIdSet.size();
-            }
-        protected:
-            bool isValid() const
-            {
-                return valid;
-            }
-        private:
-            
-            VariantsSet nodeLocationSet;
-            VariantsSet locationIdSet;
-            std::vector<std::vector<Distance> > locationsDistances;
-            DistanceVector dispersionVector;
-            bool valid;
-            
-            /**
-             * Method: InitializeDistancesMatrix
-             * ----------------------
-             * Description: Reserve locations in the matrix
-             */
-            void initializeDistancesMatrix(size_t locationsNumber)
-            {
-                locationsDistances.resize(locationsNumber);                
-                for(unsigned int i = 0; i < locationsNumber; i++) 
-                {
-                    locationsDistances[i].resize(locationsNumber, 0);
-                } 
-            }
-            
-            /**
-             * Method: CalculateDispersionVector
-             * ----------------------
-             * Description: calculates de vector of dispersion factors
-             */
-            void calculateDispersionVector()
-            {
-                size_t locationsNumber = getLocationsCount();
-                
-                if(locationsNumber > 0)
-                {
-                    dispersionVector.clear();
-                    dispersionVector.resize(locationsNumber, 0);
-                    Distance distancesSum = 0.0f;
-                    
-                    for(unsigned int i = 0; i < locationsNumber; i++)
-                    {
-                        Distance locationDistancesSum = 0.0f;
-                        
-                        for(unsigned int j = 0; j < locationsNumber; j++)
-                        {
-                            locationDistancesSum += locationsDistances[i][j];
-                        }
-                        dispersionVector[i] = locationDistancesSum / Distance(locationsNumber);
-                        distancesSum += locationDistancesSum;
-                    }
-                    
-                    //As we added the whole distance matrix, to get the average distance
-                    // we must divide by twice the locationsNumber, because the matrix
-                    //is assymetrical, so we are summing each distance twice.
-                    Distance distancesAverage = distancesSum / (2.0f * Distance(locationsNumber));
-                    for(unsigned int i = 0; i < locationsNumber; i++)
-                    {
-                        Distance locationAverage = dispersionVector[i];
-                        dispersionVector[i] = 1.0f - locationAverage / distancesAverage;
-                    }
+                    Distance locationAverage = dispersionVector[i];
+                    dispersionVector[i] = 1.0f - locationAverage / distancesAverage;
                 }
             }
+        }
 
-            
-        }; // End of Class LocationManager
 
-        // Used for identify locations and distances between locations 
-        static LocationManager locationManager;
-        
-    };
-    
-    template <class T> typename 
-    LocationAspect<T>::LocationManager LocationAspect<T>::locationManager;
-    
+    }; // End of Class LocationManager
+
+    // Used for identify locations and distances between locations
+    static LocationManager locationManager;
+
+};
+
+template <class T> typename
+LocationAspect<T>::LocationManager LocationAspect<T>::locationManager;
+
 } // End of Namespace Location
 
 #endif

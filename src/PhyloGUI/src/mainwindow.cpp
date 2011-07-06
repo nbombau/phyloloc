@@ -69,7 +69,7 @@ void MainWindow::loadTree(const FilesInfo& info)
     {
         fileDataSource.load(info, trees);
 
-        ListIterator< ITree<GuiNode> > iter = trees.getIterator();
+        ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
 
         for (; !iter.end(); iter.next())
         {

@@ -22,6 +22,7 @@ class ITreeCollection
 
 public:
 
+    typedef ListIterator<ITree<T> > iterator;
     /*
     * Method: addTree
     * ---------------
@@ -42,7 +43,7 @@ public:
     * trees of the collection.
     * @return trees iterator
     */
-    ListIterator<ITree<T> > getIterator() const
+    iterator getIterator() const
     {
         ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
         return iter;
@@ -58,7 +59,7 @@ public:
     {
         unsigned int i = 0;
         ITree<T>* ret = NULL;
-        ListIterator<ITree<T> > it = this->getIterator();
+        iterator it = this->getIterator();
 
         while (i < index && !it.end())
         {
@@ -81,7 +82,7 @@ public:
      */
     void clear()
     {
-         delete_container(trees);
+        delete_container(trees);
     }
 
     //Destructor
