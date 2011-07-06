@@ -15,7 +15,7 @@ namespace Domain
 * Type Parameter T: T is the object that conforms the collection
 * to be iterated
 */
-template <class T, class K = T>
+template < class T, class K = T >
 class ListIterator
 {
 public:

@@ -17,7 +17,8 @@ public:
     {
         std::ofstream os(fname.c_str());
 
-        for (Domain::ListIterator< Domain::ITree<T> > iter = trees.getIterator(); !iter.end(); iter.next())
+        typename TreeCollection::iterator iter = trees.getIterator();
+        for (; !iter.end(); iter.next())
         {
             Domain::ITree<T>* tree = iter.get();
             saveTree(tree->getRoot(), os);
@@ -27,6 +28,8 @@ public:
 
 private:
 
+    typedef Domain::ITreeCollection<T> TreeCollection;
+
     static void saveTree(const T* node, std::ostream& os)
     {
 
@@ -35,16 +38,17 @@ private:
             os << '(';
             Domain::ListIterator<T, Domain::Node> iter = node->template getChildrenIterator<T>();
 
-            while (!iter.end())
+            //the first node does not have to be preceded by ','
+            if (!iter.end())
             {
                 saveTree(iter.get(), os);
-
                 iter.next();
+            }
 
-                if (!iter.end())
-                {
-                    os << ',';
-                }
+            for (; !iter.end(); iter.next())
+            {
+                os << ',';
+                saveTree(iter.get(), os);
             }
             os << ')';
 

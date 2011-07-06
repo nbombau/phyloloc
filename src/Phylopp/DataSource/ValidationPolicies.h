@@ -16,7 +16,7 @@ class ForbidMissinbgDataPolicy
 public:
     template <class T>
     bool validate(const T* node) const
-    {        
+    {
         return node->isLeaf() ? !node->getName().empty() : true;
     }
 };
