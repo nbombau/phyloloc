@@ -37,7 +37,7 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidNodeName,
 */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidLocation,
                                LocationExceptionHierarchy,
-                               "The location its not defined");
+                               "The location is not defined");
 
 template <class T>
 class LocationAspect : public T
@@ -118,19 +118,11 @@ protected:
 
     public:
 
-        void validate()
-        {
-            //TODO
-            //check if valid is neccessary, or if this method could
-            //directly return a bool value
-            valid = validateNodes() && validateDistances();
-        }
-
         void clear()
         {
             nodeLocationSet.clear();
             locationIdSet.clear();
-            valid = false;
+
             for (unsigned int i = 0; i < locationsDistances.size(); i++)
             {
                 locationsDistances[i].clear();
@@ -145,9 +137,9 @@ protected:
          */
         void addLocation(const Location& location, const NodeName& name)
         {
-            LocationId id = getLocationId(location);
+            const LocationId id = getLocationId(location);
 
-            size_t generatedId = id == LOCATION_NOT_FOUND ? getLocationsCount() + 1 : id;
+            size_t generatedId = (id == LOCATION_NOT_FOUND) ? getLocationsCount() + 1 : id;
             //consistent if location already exists
 
             nodeLocationSet.insert(name, location);
@@ -163,14 +155,12 @@ protected:
         Location getLocation(const NodeName& name) const
         {
             Location location;
-            try
-            {
-                location = nodeLocationSet.get_element<Location>(name);
-            }
-            catch (const BadElementName&)
-            {
-                location = "";
-            }
+
+            bool ret = nodeLocationSet.get_element<Location>(name, location, std::nothrow);
+
+            if (!ret)
+                location.clear();
+
             return location;
         }
 
@@ -185,13 +175,10 @@ protected:
             const Location& locationFrom,
             const Location& locationTo)
         {
-            LocationId idFrom = getLocationId(locationFrom);
-            LocationId idTo = getLocationId(locationTo);
+            const LocationId idFrom = getLocationId(locationFrom);
+            const LocationId idTo = getLocationId(locationTo);
 
-            if (idFrom <= 0 || idTo <= 0)
-            {
-                throw InvalidLocation();
-            }
+            checkLocations(idFrom, idTo);
 
             if (locationsDistances.empty())
             {
@@ -215,10 +202,7 @@ protected:
             LocationId idTo = getLocationId(nodeTo);
 
             //TODO: Check if locationsDistances is initialized
-            if (idFrom <= 0 || idTo <= 0)
-            {
-                throw InvalidNodeName();
-            }
+            checkLocations(idFrom, idTo);
 
             return locationsDistances[idFrom - 1][idTo - 1];
         }
@@ -291,7 +275,7 @@ protected:
     protected:
         bool isValid() const
         {
-            return valid;
+            return validateNodes() && validateDistances();
         }
     private:
 
@@ -299,47 +283,50 @@ protected:
         VariantsSet locationIdSet;
         std::vector<std::vector<Distance> > locationsDistances;
         DistanceVector dispersionVector;
-        bool valid;
+
+        static void checkLocations(const LocationId idFrom, const LocationId idTo)
+        {
+            if (idFrom == LOCATION_NOT_FOUND || idTo == LOCATION_NOT_FOUND)
+            {
+                throw InvalidLocation();
+            }
+        }
 
         //check that every node != "" has a location
         bool validateNodes() const
         {
-            bool continueIterating = true;
+            bool valid = true;
 
             VariantsSet::iterator it = nodeLocationSet.begin();
 
-            while (continueIterating && it != nodeLocationSet.end())
+            while (valid && it != nodeLocationSet.end())
             {
-                if (!it->first.empty())
-                    continueIterating = !it->second.empty();
-                //else not needed
+                valid = implies(!it->first.empty(), !it->second.empty());
 
                 it++;
             }
-            return continueIterating;
+            return valid;
         }
 
         //check thay every location has a distance to every location
         bool validateDistances() const
         {
-            bool continueIterating = true;
+            bool valid = true;
 
-            size_t locationsNumber = getLocationsCount();
+            size_t locationsCount = getLocationsCount();
 
             unsigned int i = 0;
-            while (continueIterating && i < locationsNumber)
+            while (valid && i < locationsCount)
             {
                 unsigned int j = 0;
-                while (continueIterating && j < locationsNumber)
+                while (valid && j < locationsCount)
                 {
-                    if (i != j)
-                        continueIterating = locationsDistances[i][j] != 0.0f;
-                    //else not needed
+                    valid = implies(i != j, locationsDistances[i][j] != 0.0f);
                     j++;
                 }
                 i++;
             }
-            return continueIterating;
+            return valid;
         }
 
         /**
@@ -347,12 +334,12 @@ protected:
          * ----------------------
          * Description: Reserve locations in the matrix
          */
-        void initializeDistancesMatrix(size_t locationsNumber)
+        void initializeDistancesMatrix(size_t locationsCount)
         {
-            locationsDistances.resize(locationsNumber);
-            for (unsigned int i = 0; i < locationsNumber; i++)
+            locationsDistances.resize(locationsCount);
+            for (unsigned int i = 0; i < locationsCount; i++)
             {
-                locationsDistances[i].resize(locationsNumber, 0);
+                locationsDistances[i].resize(locationsCount, 0);
             }
         }
 
@@ -363,31 +350,31 @@ protected:
          */
         void calculateDispersionVector()
         {
-            size_t locationsNumber = getLocationsCount();
+            size_t locationsCount = getLocationsCount();
 
-            if (locationsNumber > 0)
+            if (locationsCount > 0)
             {
                 dispersionVector.clear();
-                dispersionVector.resize(locationsNumber, 0);
+                dispersionVector.resize(locationsCount, 0);
                 Distance distancesSum = 0.0f;
 
-                for (unsigned int i = 0; i < locationsNumber; i++)
+                for (unsigned int i = 0; i < locationsCount; i++)
                 {
                     Distance locationDistancesSum = 0.0f;
 
-                    for (unsigned int j = 0; j < locationsNumber; j++)
+                    for (unsigned int j = 0; j < locationsCount; j++)
                     {
                         locationDistancesSum += locationsDistances[i][j];
                     }
-                    dispersionVector[i] = locationDistancesSum / Distance(locationsNumber);
+                    dispersionVector[i] = locationDistancesSum / Distance(locationsCount);
                     distancesSum += locationDistancesSum;
                 }
 
                 //As we added the whole distance matrix, to get the average distance
-                // we must divide by twice the locationsNumber, because the matrix
+                // we must divide by twice the locationsCount, because the matrix
                 //is assymetrical, so we are summing each distance twice.
-                Distance distancesAverage = distancesSum / (2.0f * Distance(locationsNumber));
-                for (unsigned int i = 0; i < locationsNumber; i++)
+                const Distance distancesAverage = distancesSum / (2.0f * Distance(locationsCount));
+                for (unsigned int i = 0; i < locationsCount; i++)
                 {
                     Distance locationAverage = dispersionVector[i];
                     dispersionVector[i] = 1.0f - locationAverage / distancesAverage;

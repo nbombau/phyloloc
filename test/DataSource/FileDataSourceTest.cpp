@@ -249,7 +249,7 @@ protected:
 
     }
 
-    static void assertTreeCollectionsEquals(ITreeCollection<TestNode>& expectedTrees, ITreeCollection<TestNode>& actualTrees)
+    static void assertTreeCollectionsEquals(const ITreeCollection<TestNode>& expectedTrees, const ITreeCollection<TestNode>& actualTrees)
     {
 
         ITreeCollection<TestNode>::iterator iterExpected = expectedTrees.getIterator();
@@ -265,7 +265,7 @@ protected:
         }
     }
 
-    static void assertLocationsEquals(ITreeCollection<TestNode>& actualTrees, LocationsMap& expectedLocationsMap)
+    static void assertLocationsEquals(const ITreeCollection<TestNode>& actualTrees, LocationsMap& expectedLocationsMap)
     {
         ITreeCollection<TestNode>::iterator treesIterator = actualTrees.getIterator();
 
@@ -312,7 +312,7 @@ private:
         }
     }
 
-    static void assertTreesEquals(ITree<TestNode>* expectedTree, ITree<TestNode>* actualTree)
+    static void assertTreesEquals(const ITree<TestNode>* expectedTree, const ITree<TestNode>* actualTree)
     {
         assertNodesEquals(expectedTree->getRoot(), actualTree->getRoot());
     }
