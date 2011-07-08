@@ -17,7 +17,7 @@
 #include "NewickWriter.h"
 #include "DistancesParser.h"
 #include "LocationsParser.h"
-#include "ValidationPolicies.h"
+#include "TreeValidationPolicies.h"
 
 namespace DataSource
 {

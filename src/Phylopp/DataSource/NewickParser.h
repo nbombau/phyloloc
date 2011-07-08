@@ -6,7 +6,7 @@
 #include <mili/mili.h>
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
-#include "ValidationPolicies.h"
+#include "TreeValidationPolicies.h"
 
 class TreeFileExceptionHierarchy {};
 
