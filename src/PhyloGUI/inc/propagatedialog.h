@@ -7,6 +7,9 @@
 #include <QPushButton>
 #include <QDialog>
 
+namespace PhyloGUI
+{
+
 class PropagateDialog : public QDialog
 {
     Q_OBJECT
@@ -36,5 +39,7 @@ private:
 private slots:
     void acceptInput();
 };
+
+}
 
 #endif // FILEDIALOG_H

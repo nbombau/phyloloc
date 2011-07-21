@@ -3,21 +3,18 @@
 
 #include <QGraphicsItem>
 #include <Qt>
-#include "graphwidget.h"
-#include "../../Domain/INode.h"
+#include "PhyloGUI/inc/graphwidget.h"
+#include "Domain/INode.h"
 #include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
 
 using namespace Domain;
+using namespace PhyloGUI;
 typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
-
-
-namespace Ui
+namespace PhyloGUI
 {
-class Edge;
-}
 
 class Edge : public QGraphicsItem
 {
@@ -48,5 +45,7 @@ private:
     QPointF destPoint;
     bool selected;
 };
+
+}
 
 #endif

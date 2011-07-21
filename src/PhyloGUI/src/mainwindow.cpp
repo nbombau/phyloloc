@@ -2,6 +2,7 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QInputDialog>
+
 #include "PhyloGUI/inc/mainwindow.h"
 #include "PhyloGUI/ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
@@ -15,6 +16,7 @@
 using namespace DataSource;
 using namespace Propagation;
 using namespace Searching;
+using namespace PhyloGUI;
 
 
 MainWindow::MainWindow(QWidget* parent) :
@@ -167,6 +169,8 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
+    actualTree->getRoot()->setVisible(!actualTree->getRoot()->isVisible());
+    graph->update();
     PropagateDialog propagate;
     if (propagate.exec())
         Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());

@@ -4,6 +4,8 @@
 #include <QDoubleValidator>
 #include "PhyloGUI/inc/propagatedialog.h"
 
+using namespace PhyloGUI;
+
 PropagateDialog::PropagateDialog(QWidget* parent)
     : QDialog(parent)
 {

@@ -2,6 +2,8 @@
 
 #include "PhyloGUI/inc/edge.h"
 
+using namespace PhyloGUI;
+
 Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     : color(Qt::black), selected(false)
 {
