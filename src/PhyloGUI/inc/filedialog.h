@@ -8,6 +8,9 @@
 #include <QDialog>
 #include "Phylopp/DataSource/FilesInfo.h"
 
+namespace PhyloGUI
+{
+
 class FileDialog : public QDialog
 {
     Q_OBJECT
@@ -41,5 +44,7 @@ private slots:
     void treesButtonAction();
     void loadButtonAction();
 };
+
+}
 
 #endif // FILEDIALOG_H

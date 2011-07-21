@@ -19,23 +19,30 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QContextMenuEvent>
 #include <QMessageBox>
+#include <QGraphicsItem>
 
-#include "../Domain/INode.h"
 #include "PhyloGUI/inc/graphwidget.h"
+#include "PhyloGUI/inc/edge.h"
+#include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 
-namespace Ui
+namespace PhyloGUI
 {
-class GuiAspect;
-}
 
-class Edge;
-class GraphWidget;
 using namespace std;
+class Edge;
 
 template <class T>
 class GuiAspect : public T, public QGraphicsItem
 {
+
+private:
+    bool selected;
+    bool expanded;
+    QColor color;
+    QList<Edge*> edgeListFrom;
+    QList<Edge*> edgeListTo;
+
 public:
 
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
@@ -117,6 +124,17 @@ public:
         path.addEllipse(-10, -10, 20, 20);
         return path;
     }
+    void setVisible(bool visible)
+    {
+        QGraphicsItem::setVisible(visible);
+        QListIterator<Edge*> i(edgeListTo);
+        while (i.hasNext())
+        {
+            Edge* edge = i.next();
+            //edge->setVisible(visible);
+            //edge->adjust();
+        }
+    }
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
     {
@@ -150,22 +168,22 @@ public:
         if (!this->isLeaf())
         {
             if (this->isExpanded())
-            {
                 menu.addAction("Collapse");
-            }
             else
-            {
                 menu.addAction("Expand");
-            }
+
             QAction* a = menu.exec(event->screenPos());
             if (a != NULL)
             {
                 if (a->text().compare("Collapse") || a->text().compare("Expand"))
                 {
-                    setExpanded(!isExpanded());
-                    //QGraphicsView * qgv=this->scene()->views().takeLast();
-                    //GraphWidget * gw = static_cast<GraphWidget *>(qgv);
-                    //gw->draw();
+                    QListIterator<Edge*> i(edgeListTo);
+
+                    while (i.hasNext())
+                    {
+                        Edge* edge = i.next();
+                        //edge->setVisible(!edge->isVisible());
+                    }
                 }
             }
         }
@@ -192,6 +210,7 @@ protected:
             description.append("No information available.");
         else
             description.append(this->getName().c_str());
+
         description.append("\n\nLocation: ");
         if (this->getName().empty())
             description.append("No information available.");
@@ -208,18 +227,15 @@ protected:
             }
             description.append(" ]");
         }
+
         QMessageBox msgBox;
         msgBox.setText(description);
         msgBox.exec();
     }
 
-private:
-    bool selected;
-    bool expanded;
-    QColor color;
-    QList<Edge*> edgeListFrom;
-    QList<Edge*> edgeListTo;
+
 };
 
+}
 
 #endif

@@ -5,6 +5,9 @@
 using namespace Traversal;
 using namespace Domain;
 using namespace std;
+using namespace PhyloGUI;
+
+//typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 struct AlwaysTruePredicate
 {
@@ -221,7 +224,7 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     }
 
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
-    scene->addItem(node);
+
     if (node->isLeaf())
     {
         text = new QGraphicsTextItem(QString(node->getName().c_str()));
@@ -231,15 +234,23 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     }
 
     it.restart();
+
     for (; !it.end(); it.next())
     {
-        GuiNode* const auxNode = it.get();
+        GuiNode* auxNode = it.get();
         edge = new Edge(node, auxNode);
 
+
+        auxNode->setParentItem(edge);
+        edge->setParentItem(node);
+
         scene->addItem(edge);
+
         auxNode->addEdgeFrom(edge);
         node->addEdgeTo(edge);
     }
+    scene->addItem(node);
+
     return nodeCoord;
 }
 

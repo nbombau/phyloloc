@@ -4,6 +4,8 @@
 
 static QString lastDialogDir;
 
+using namespace PhyloGUI;
+
 FileDialog::FileDialog(QWidget* parent)
     : QDialog(parent)
 {

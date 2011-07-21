@@ -13,18 +13,17 @@
 #include "Domain/ITree.h"
 #include "PhyloGUI/inc/edge.h"
 #include "Domain/INode.h"
-#include "Domain/ITree.h"
+#include "Domain/ITreeCollection.h"
 #include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
 
 using namespace Domain;
+using namespace PhyloGUI;
 typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
-namespace Ui
+namespace PhyloGUI
 {
-class GraphWidget;
-}
 
 class GraphWidget : public QGraphicsView
 {
@@ -55,5 +54,7 @@ private:
     QPointF drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber);
     void reScaleScene();
 };
+
+}
 
 #endif
