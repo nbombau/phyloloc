@@ -66,7 +66,13 @@ FileDialog::FileDialog(QWidget* parent)
     treesButton->setGeometry(leftMargin + lineWidth + 5, top, buttonWidth, height);
     treesButton->setText("Select...");
 
-    top += height + 25;
+    top += height + 15;
+
+    missingDataCheckBox = new QCheckBox(this);
+    missingDataCheckBox->setGeometry(leftMargin, top, 200, height);
+    missingDataCheckBox->setText("Allow missing data");
+
+    top += height + 10;
 
     loadButton = new QPushButton(this);
     loadButton->setGeometry((width() - 2 * loadButtonWidth - 15) / 2, top, loadButtonWidth, height);
@@ -75,6 +81,7 @@ FileDialog::FileDialog(QWidget* parent)
     cancelButton = new QPushButton(this);
     cancelButton->setGeometry((width() + 15) / 2, top, loadButtonWidth, height);
     cancelButton->setText("Cancel");
+
 
     connect(distancesButton, SIGNAL(clicked()), this, SLOT(distancesButtonAction()));
     connect(locationsButton, SIGNAL(clicked()), this, SLOT(locationsButtonAction()));
@@ -180,18 +187,22 @@ void FileDialog::loadButtonAction()
     }
 }
 
-std::string FileDialog::getLocationsFile()
+std::string FileDialog::getLocationsFile() const
 {
     return locationsLine->text().toStdString();
 }
 
-std::string FileDialog::getDistancesFile()
+std::string FileDialog::getDistancesFile() const
 {
     return distancesLine->text().toStdString();
 }
 
-std::string FileDialog::getTreesFile()
+std::string FileDialog::getTreesFile() const
 {
     return treesLine->text().toStdString();
 }
 
+bool FileDialog::isMissingDataCheckBoxChecked() const
+{
+    return missingDataCheckBox->isChecked();
+}

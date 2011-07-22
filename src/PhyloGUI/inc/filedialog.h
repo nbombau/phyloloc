@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QLineEdit>
+#include <QCheckBox>
 #include <QPushButton>
 #include <QDialog>
 #include "Phylopp/DataSource/FilesInfo.h"
@@ -19,9 +20,10 @@ public:
     FileDialog(QWidget* parent = NULL);
     ~FileDialog();
 
-    std::string getLocationsFile();
-    std::string getDistancesFile();
-    std::string getTreesFile();
+    std::string getLocationsFile() const;
+    std::string getDistancesFile() const;
+    std::string getTreesFile() const;
+    bool isMissingDataCheckBoxChecked() const;
 private:
     QLabel* distancesLabel;
     QLineEdit* distancesLine;
@@ -37,6 +39,7 @@ private:
 
     QPushButton* loadButton;
     QPushButton* cancelButton;
+    QCheckBox* missingDataCheckBox;
 
 private slots:
     void distancesButtonAction();

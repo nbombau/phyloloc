@@ -54,7 +54,7 @@ protected:
     void loadTreeFromFile(std::string treesFile, std::string placesFile, ITreeCollection<TestNode>& trees)
     {
         FilesInfo info(treesFile, placesFile, "TestTrees/distances1.dist");
-        fileDataSource.load(info, trees);
+        fileDataSource.load(info, trees, true);
     }
 
     void saveTreeToFile(std::string treesFile, ITreeCollection<TestNode>& trees)

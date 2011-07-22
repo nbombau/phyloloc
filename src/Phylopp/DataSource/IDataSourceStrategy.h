@@ -27,9 +27,10 @@ public:
     * ---------------
     * Description: Loads a tree collection from a particular data source
     * @param info information to access the datasource
+    * @param allowMissingData true if nameless nodes are allowed
     * @return loaded tree collection
     */
-    virtual void load(const K& info, Domain::ITreeCollection<T>& trees) = 0;
+    virtual void load(const K& info, Domain::ITreeCollection<T>& trees, bool allowMissingData) = 0;
 
     /**
     * Method: load

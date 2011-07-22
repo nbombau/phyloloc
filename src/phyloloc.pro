@@ -26,3 +26,5 @@ HEADERS  += PhyloGUI/inc/mainwindow.h \
     PhyloGUI/inc/propagatedialog.h
 
 FORMS    += PhyloGUI/forms/mainwindow.ui
+
+QMAKE_CXXFLAGS += -pedantic -Wextra -ansi -Wno-long-long -ggdb3
