@@ -58,18 +58,18 @@ void MainWindow::on_actionOpen_triggered()
 
         FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
-        loadTree(filesInfo);
+        loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked());
     }
     //else not needed: user closed or canceled the dialog
 }
 
-void MainWindow::loadTree(const FilesInfo& info)
+void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData)
 {
     FileDataSource<GuiNode>fileDataSource;
 
     try
     {
-        fileDataSource.load(info, trees);
+        fileDataSource.load(info, trees, allowMissingData);
 
         ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
 

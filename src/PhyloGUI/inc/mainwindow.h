@@ -30,7 +30,7 @@ private:
     Ui::MainWindow* ui;
     GraphWidget* graph;
     ITree<GuiNode>* actualTree;
-    void loadTree(const DataSource::FilesInfo& info);
+    void loadTree(const DataSource::FilesInfo& info, bool allowMissingData);
     ITreeCollection<GuiNode> trees;
 
 public slots:
