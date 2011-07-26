@@ -223,12 +223,12 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
     }
 
-    node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
+    node->setPos(nodeCoord.x() /*+ 200*/, nodeCoord.y() /*+ 200*/);
 
     if (node->isLeaf())
     {
         text = new QGraphicsTextItem(QString(node->getName().c_str()));
-        text->setPos(nodeCoord.x() + 200 + 10, nodeCoord.y() + 200 + 20);
+        text->setPos(nodeCoord.x() /*+ 200*/ + 10, nodeCoord.y() /*+ 200*/ + 20);
         text->rotate(90);
         scene->addItem(text);
     }
@@ -239,10 +239,6 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     {
         GuiNode* auxNode = it.get();
         edge = new Edge(node, auxNode);
-
-
-        auxNode->setParentItem(edge);
-        edge->setParentItem(node);
 
         scene->addItem(edge);
 

@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSelect_descendants->setEnabled(false);
     ui->actionSelect_Ancestors->setEnabled(false);
     ui->actionProcess_tree->setEnabled(false);
+    ui->actionSave_As->setEnabled(false);
     ui->actionSearch_terminal_nodes->setEnabled(false);
     ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
@@ -169,8 +170,6 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
-    actualTree->getRoot()->setVisible(!actualTree->getRoot()->isVisible());
-    graph->update();
     PropagateDialog propagate;
     if (propagate.exec())
         Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());

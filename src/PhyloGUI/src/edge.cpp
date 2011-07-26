@@ -10,7 +10,7 @@ Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     setAcceptedMouseButtons(0);
     source = sourceNode;
     dest = destNode;
-    setZValue(-1);
+    setZValue(-1000);
     adjust();
 }
 
@@ -74,7 +74,7 @@ QRectF Edge::boundingRect() const
         //qreal penWidth = 1;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
-               .normalized();
+               /*.normalized()*/;
         /*qreal extra = (penWidth + arrowSize) / 2.0;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
@@ -89,16 +89,24 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     if (source != NULL && dest != NULL)
     {
         //Union between the two parts of the line
-        QPointF point(destPoint.x(), sourcePoint.y());
+        QPointF sourcePointNew = sourcePoint;
+        sourcePointNew.setY(sourcePoint.y() - 9);
+        QPointF destPointNew = destPoint;
+        if (destPoint.x() < sourcePoint.x())
+            destPointNew.setX(destPoint.x() - 4);
+        else if (destPoint.x() > sourcePoint.x())
+            destPointNew.setX(destPoint.x() + 3);
+
+        QPointF point(destPointNew.x(), sourcePointNew.y());
 
         // Draw the horizontal part of the line
-        QLineF line(sourcePoint, point);
-        painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        QLineF line(sourcePointNew, point);
+        painter->setPen(QPen(selected ? Qt::red : color, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->drawLine(line);
 
         // Draw the vertical part of the line
-        line.setPoints(point, destPoint);
-        painter->setPen(QPen(selected ? Qt::red : color, 7, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        line.setPoints(point, destPointNew);
+        painter->setPen(QPen(selected ? Qt::red : color, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->drawLine(line);
     }
 }
