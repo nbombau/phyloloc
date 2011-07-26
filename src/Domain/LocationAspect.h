@@ -186,11 +186,13 @@ protected:
 
             checkLocations(idFrom, idTo);
 
-            if (locationsDistances.empty())
+            size_t locationsCount = getLocationsCount();
+
+            if (locationsDistances.size() < locationsCount)
             {
-                size_t locationsCount = getLocationsCount();
-                initializeDistancesMatrix(locationsCount);
+                resizeDistancesMatrix(locationsCount);
             }
+            //else not needed
 
             locationsDistances[idFrom - 1][idTo - 1] = distance;
         }
@@ -311,6 +313,8 @@ protected:
 
                 it++;
             }
+
+            std::cout << "ValidateNodes: " << valid;
             return valid;
         }
 
@@ -332,15 +336,16 @@ protected:
                 }
                 i++;
             }
+            std::cout << "ValidateDistances: " << valid;
             return valid;
         }
 
         /**
-         * Method: InitializeDistancesMatrix
+         * Method: resizeDistancesMatrix
          * ----------------------
          * Description: Reserve locations in the matrix
          */
-        void initializeDistancesMatrix(size_t locationsCount)
+        void resizeDistancesMatrix(size_t locationsCount)
         {
             locationsDistances.resize(locationsCount);
             for (unsigned int i = 0; i < locationsCount; i++)
