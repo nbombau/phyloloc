@@ -83,6 +83,12 @@ public:
     {
         return locationManager.getDispersionVector();
     }
+    
+    //TODO: Remove this method, as well as LocationManager from the aspect
+    static bool isValid()
+    {
+        return locationManager.isValid();
+    }
 
     /**
      * Method: getLocation
@@ -272,7 +278,7 @@ protected:
         {
             return locationIdSet.size();
         }
-    protected:
+   
         bool isValid() const
         {
             return validateNodes() && validateDistances();
@@ -297,7 +303,7 @@ protected:
         {
             bool valid = true;
 
-            VariantsSet::iterator it = nodeLocationSet.begin();
+            VariantsSet::const_iterator it = nodeLocationSet.begin();
 
             while (valid && it != nodeLocationSet.end())
             {
