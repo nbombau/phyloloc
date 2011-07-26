@@ -130,7 +130,7 @@ public:
         QListIterator<Edge*> i(edgeListTo);
         while (i.hasNext())
         {
-            Edge* edge = i.next();
+            /*Edge* edge =*/ i.next();
             //edge->setVisible(visible);
             //edge->adjust();
         }
@@ -181,7 +181,7 @@ public:
 
                     while (i.hasNext())
                     {
-                        Edge* edge = i.next();
+                        /*Edge* edge = */i.next();
                         //edge->setVisible(!edge->isVisible());
                     }
                 }

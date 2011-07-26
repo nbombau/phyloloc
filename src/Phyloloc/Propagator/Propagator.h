@@ -27,7 +27,7 @@ namespace Propagation
                               Weight branchLengthFactorWeight
                              )
         {
-            if(T::isValid())
+            if(T::isValid() && (geographicFactorWeight+branchLengthFactorWeight <= 1.0f))
             {
                 BranchLength branchLenghtSum = calculateBranchLengthSum(tree->getRoot());
                 
