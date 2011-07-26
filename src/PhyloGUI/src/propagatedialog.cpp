@@ -2,9 +2,11 @@
 #include <QMessageBox>
 #include <QIntValidator>
 #include <QDoubleValidator>
+#include <limits>
 #include "PhyloGUI/inc/propagatedialog.h"
 
 using namespace PhyloGUI;
+using namespace std;
 
 PropagateDialog::PropagateDialog(QWidget* parent)
     : QDialog(parent)
@@ -67,7 +69,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
     passLine->setGeometry(leftMargin, top, lineWidth, height);
     passLine->setValue(1);
     passLine->setMinimum(1);
-    passLine->setMaximum(INT_MAX);
+    passLine->setMaximum(numeric_limits<int>::max());
     top += height + 5;
 
     top += height + 25;
@@ -101,7 +103,7 @@ PropagateDialog::~PropagateDialog()
 
 void PropagateDialog::acceptInput()
 {
-    if (GCFLine->value()+BCFLLine->value() > 1.0)
+    if (GCFLine->value() + BCFLLine->value() > 1.0)
     {
         QMessageBox msg(QMessageBox::Information, "Input error", "BCLF Weight + GCF Weight must be <= 1.0", QMessageBox::NoButton, this);
         msg.exec();

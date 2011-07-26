@@ -48,6 +48,7 @@ public:
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
     {
         setCacheMode(DeviceCoordinateCache);
+        setZValue(1000);
     }
 
     ~GuiAspect()
@@ -112,9 +113,9 @@ public:
 
     QRectF boundingRect() const
     {
-        qreal adjust = 2;
+        qreal adjust = 0;
         QRectF rect(-10 - adjust, -10 - adjust,
-                    23 + adjust, 23 + adjust);
+                    20 + adjust, 20 + adjust);
         return rect;
     }
 
