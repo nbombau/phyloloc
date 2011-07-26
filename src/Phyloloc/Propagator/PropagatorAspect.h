@@ -116,14 +116,22 @@ namespace Propagation
     
         void initProbabilities()
         {
-            if(probabilities.empty())
+            size_t locationCount = this->locationManager.getLocationsCount();
+            
+            //If probabilities vector not initialized yet, initialize
+            //as vector of zeros
+            if(locationCount > 0)
             {
-                size_t locationCount = this->locationManager.getLocationsCount();
-                
-                if(locationCount > 0)
+                if(probabilities.empty())
                 {
                     probabilities.resize(locationCount, 0);
                 }
+                else
+                {
+                    probabilities.clear();
+                    probabilities.resize(locationCount, 0);
+                }    
+             
                 if(this->isLeaf())
                 {
                     Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());    
