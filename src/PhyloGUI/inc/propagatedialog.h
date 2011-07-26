@@ -6,6 +6,8 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QDialog>
+#include <QDoubleSpinBox>
+#include <QSpinBox>
 
 namespace PhyloGUI
 {
@@ -21,17 +23,15 @@ public:
     double getGCF();
     int getPasses();
 private:
-    QLabel* BCFLerror;
+
     QLabel* BCFLLabel;
-    QLineEdit* BCFLLine;
+    QDoubleSpinBox* BCFLLine;
 
-    QLabel* GCFerror;
     QLabel* GCFLabel;
-    QLineEdit* GCFLine;
+    QDoubleSpinBox* GCFLine;
 
-    QLabel* passerror;
     QLabel* passLabel;
-    QLineEdit* passLine;
+    QSpinBox* passLine;
 
     QPushButton* propagateButton;
     QPushButton* cancelButton;
