@@ -186,7 +186,7 @@ protected:
 
             checkLocations(idFrom, idTo);
 
-            size_t locationsCount = getLocationsCount();
+            const size_t locationsCount = getLocationsCount();
 
             if (locationsDistances.size() < locationsCount)
             {

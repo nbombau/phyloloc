@@ -45,6 +45,9 @@ public:
         {
             if (allowMissingData)
             {
+                //map nameless nodes, to the common ? location
+                LocationAspect<Domain::Node>::addLocation("?", "");
+
                 NewickParser<T> newickParser;
                 newickParser.loadNewickFile(info.getTreesFilePath(), trees);
             }

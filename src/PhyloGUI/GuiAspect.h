@@ -212,7 +212,7 @@ protected:
             description.append(this->getName().c_str());
 
         description.append("\n\nLocation: ");
-        if (this->getName().empty())
+        if (this->getLocation().empty())
             description.append("No information available.");
         else
             description.append(this->getLocation().c_str());
