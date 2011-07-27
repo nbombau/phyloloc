@@ -48,6 +48,8 @@ private slots:
     void on_actionOpen_triggered();
     void on_actionQuit_triggered();
     void on_actionSearch_terminal_nodes_triggered();
+    void on_actionZoom_triggered();
+    void on_actionZoom_2_triggered();
 };
 
 #endif

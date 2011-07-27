@@ -39,12 +39,12 @@ public:
     void selectAllNodes(ITree<GuiNode>* tree);
     void selectNodeDescendants(ITree<GuiNode>* tree);
     void selectNodeAncestors(ITree<GuiNode>*tree);
+    void scaleView(qreal scaleFactor);
     QSize sizeHint() const;
 
 protected:
     void wheelEvent(QWheelEvent* event);
-    void drawBackground(QPainter* painter, const QRectF& rect);
-    void scaleView(qreal scaleFactor);
+    void drawBackground(QPainter* painter, const QRectF& rect);    
     void resizeEvent(QResizeEvent* event);
 
 private:
