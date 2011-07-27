@@ -67,7 +67,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
 
     passLine = new QSpinBox(this);
     passLine->setGeometry(leftMargin, top, lineWidth, height);
-    passLine->setValue(1);
+    passLine->setValue(2);
     passLine->setMinimum(1);
     passLine->setMaximum(numeric_limits<int>::max());
     top += height + 5;
