@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionProcess_tree->setEnabled(false);
     ui->actionSave_As->setEnabled(false);
     ui->actionSearch_terminal_nodes->setEnabled(false);
+    ui->actionZoom->setEnabled(false);
+    ui->actionZoom_2->setEnabled(false);
     ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
@@ -184,7 +186,19 @@ void MainWindow::drawTree()
     ui->actionSelect_Ancestors->setEnabled(true);
     ui->actionProcess_tree->setEnabled(true);
     ui->actionSearch_terminal_nodes->setEnabled(true);
+    ui->actionZoom->setEnabled(true);
+    ui->actionZoom_2->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
 
+
+void MainWindow::on_actionZoom_triggered()
+{
+    graph->scaleView(1.2);
+}
+
+void MainWindow::on_actionZoom_2_triggered()
+{
+    graph->scaleView(0.8);
+}
