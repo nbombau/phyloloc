@@ -223,7 +223,7 @@ protected:
             description.append("\n\nProbabilities vector: [ ");
             for (unsigned int i = 0; i < this->probabilities.size(); i++)
             {
-                description.append(QString().setNum(this->probabilities[i], 'g', 3));
+                description.append(QString().setNum(this->probabilities[i], 'f', 3));
                 description.append(" ");
             }
             description.append(" ]");
