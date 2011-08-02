@@ -165,7 +165,6 @@ GraphWidget::GraphWidget(QWidget* parent)
     //Properties
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
-    setRenderHint(QPainter::Antialiasing);
     setTransformationAnchor(AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
@@ -185,10 +184,6 @@ void GraphWidget::drawBackground(QPainter* painter, const QRectF& rect)
 
 void GraphWidget::scaleView(qreal scaleFactor)
 {
-    qreal factor = transform().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
-    if (factor < 0.07 || factor > 100)
-        return;
-
     scale(scaleFactor, scaleFactor);
 }
 
