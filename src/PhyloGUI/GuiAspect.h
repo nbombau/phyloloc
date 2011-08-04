@@ -21,16 +21,13 @@
 #include <QMessageBox>
 #include <QGraphicsItem>
 
-#include "PhyloGUI/inc/graphwidget.h"
 #include "PhyloGUI/inc/edge.h"
 #include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
+#include "Domain/LocationAspect.h"
 
 namespace PhyloGUI
 {
-
-using namespace std;
-class Edge;
 
 template <class T>
 class GuiAspect : public T, public QGraphicsItem
@@ -42,10 +39,11 @@ private:
     QColor color;
     QList<Edge*> edgeListFrom;
     QList<Edge*> edgeListTo;
+    QGraphicsTextItem* graphicsName;
 
 public:
 
-    GuiAspect() : selected(false), expanded(true), color(Qt::yellow)
+    GuiAspect() : selected(false), expanded(true), color(Qt::yellow), graphicsName(NULL)
     {
         setCacheMode(DeviceCoordinateCache);
         setZValue(1000);
@@ -59,6 +57,16 @@ public:
             delete *it;
         }
         */
+    }
+
+    void setGraphicsName(QGraphicsTextItem* graphicsName)
+    {
+        this->graphicsName = graphicsName;
+    }
+
+    bool hasGraphicsName() const
+    {
+        return graphicsName != NULL;
     }
 
     bool isSelected() const
@@ -131,9 +139,12 @@ public:
         QListIterator<Edge*> i(edgeListTo);
         while (i.hasNext())
         {
-            /*Edge* edge =*/ i.next();
-            //edge->setVisible(visible);
-            //edge->adjust();
+            Edge* edge = i.next();
+            edge->setVisible(visible);
+        }
+        if (hasGraphicsName())
+        {
+            graphicsName->setVisible(visible);
         }
     }
 
@@ -142,9 +153,6 @@ public:
         Q_UNUSED(option);
         Q_UNUSED(widget);
         QRect rect(-7, -7, 20, 20);
-        //painter->setPen(Qt::NoPen);
-        //painter->setBrush(Qt::darkGray);
-        //painter->drawEllipse(rect);
 
         QRadialGradient gradient(-3, -3, 10);
 
@@ -157,7 +165,7 @@ public:
             gradient.setColorAt(0, color);
         }
         painter->setBrush(gradient);
-        painter->setPen(QPen(Qt::black, 0));
+        painter->setPen(QPen(isExpanded() ? Qt::black : Qt::green, isExpanded() ? 0 : 3));
         rect = QRect(-7, -7, 20, 20);
         painter->drawEllipse(-10, -10, 20, 20);
     }
@@ -178,14 +186,17 @@ public:
             {
                 if (a->text().compare("Collapse") || a->text().compare("Expand"))
                 {
+                    setExpanded(!isExpanded());
                     QListIterator<Edge*> i(edgeListTo);
 
                     while (i.hasNext())
                     {
-                        /*Edge* edge = */i.next();
-                        //edge->setVisible(!edge->isVisible());
+                        Edge* edge = i.next();
+                        edge->setVisible(!edge->isVisible());
+
                     }
                 }
+                this->update();
             }
         }
     }
@@ -236,6 +247,8 @@ protected:
 
 
 };
+
+typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 }
 

@@ -18,6 +18,9 @@ namespace Ui
 class MainWindow;
 }
 
+namespace PhyloGUI
+{
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -28,10 +31,10 @@ public:
 
 private:
     Ui::MainWindow* ui;
-    GraphWidget* graph;
-    ITree<GuiNode>* actualTree;
+    PhyloGUI::GraphWidget* graph;
+    Domain::ITree<PhyloGUI::GuiNode>* actualTree;
     void loadTree(const DataSource::FilesInfo& info, bool allowMissingData);
-    ITreeCollection<GuiNode> trees;
+    Domain::ITreeCollection<PhyloGUI::GuiNode> trees;
 
 public slots:
     void drawTree();
@@ -43,7 +46,6 @@ private slots:
     void on_actionSelect_all_nodes_triggered();
     void on_actionClear_selection_triggered();
     void on_actionColor_nodes_triggered();
-    void on_actionOptions_triggered();
     void on_actionSave_As_triggered();
     void on_actionOpen_triggered();
     void on_actionQuit_triggered();
@@ -52,4 +54,5 @@ private slots:
     void on_actionZoom_2_triggered();
 };
 
+}
 #endif

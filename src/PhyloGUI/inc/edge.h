@@ -3,18 +3,17 @@
 
 #include <QGraphicsItem>
 #include <Qt>
-#include "PhyloGUI/inc/graphwidget.h"
-#include "Domain/INode.h"
-#include "PhyloGUI/GuiAspect.h"
+//#include "PhyloGUI/inc/graphwidget.h"
+//#include "Domain/INode.h"
+//#include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
 
-using namespace Domain;
-using namespace PhyloGUI;
-typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
-
 namespace PhyloGUI
 {
+
+template<class T> class GuiAspect;
+typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 class Edge : public QGraphicsItem
 {
@@ -26,6 +25,7 @@ public:
     void setColor(const QColor c);
     void setSelected(const bool s);
     bool isSelected() const;
+    void setVisible(bool visible);
     void adjust();
 
     enum { Type = UserType + 2 };

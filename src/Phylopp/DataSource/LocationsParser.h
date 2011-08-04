@@ -53,7 +53,7 @@ public:
             if (values.size() != 2)
                 throw MalformedFile(getLineNumberText());
 
-            NodeName name = trim(values[0]);
+            Domain::NodeName name = trim(values[0]);
             Location location = trim(values[1]);
 
             addLocation(name, location);
@@ -65,7 +65,7 @@ public:
 
 private:
 
-    void addLocation(const NodeName nodeName, const Location& location)
+    void addLocation(const Domain::NodeName nodeName, const Location& location)
     {
         LocationAspect<Domain::Node>::addLocation(location, nodeName);
     }
