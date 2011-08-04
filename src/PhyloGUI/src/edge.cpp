@@ -1,5 +1,6 @@
 #include <QPainter>
 
+#include "PhyloGUI/GuiAspect.h"
 #include "PhyloGUI/inc/edge.h"
 
 using namespace PhyloGUI;
@@ -39,6 +40,11 @@ void Edge::setSelected(const bool s)
 bool Edge::isSelected() const
 {
     return selected;
+}
+void Edge::setVisible(bool visible)
+{
+    QGraphicsItem::setVisible(visible);
+    dest->setVisible(visible);
 }
 void Edge::adjust()
 {

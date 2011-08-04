@@ -185,6 +185,7 @@ void GraphWidget::drawBackground(QPainter* painter, const QRectF& rect)
 void GraphWidget::scaleView(qreal scaleFactor)
 {
     scale(scaleFactor, scaleFactor);
+    this->scene()->update();
 }
 
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
@@ -197,7 +198,7 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     QPointF last;
     QGraphicsTextItem* text;
     Edge* edge;
-    if (node->isLeaf() || !node->isExpanded())
+    if (node->isLeaf())
     {
         nodeCoord.setX((*leafNumber) * 100);
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
@@ -218,13 +219,14 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
     }
 
-    node->setPos(nodeCoord.x() /*+ 200*/, nodeCoord.y() /*+ 200*/);
+    node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
 
     if (node->isLeaf())
     {
         text = new QGraphicsTextItem(QString(node->getName().c_str()));
-        text->setPos(nodeCoord.x() /*+ 200*/ + 10, nodeCoord.y() /*+ 200*/ + 20);
+        text->setPos(nodeCoord.x() + 200 + 10, nodeCoord.y() + 200 + 20);
         text->rotate(90);
+        node->setGraphicsName(text);
         scene->addItem(text);
     }
 
@@ -234,6 +236,14 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
     {
         GuiNode* auxNode = it.get();
         edge = new Edge(node, auxNode);
+        if (!node->isExpanded() || !node->isVisible())
+        {
+            edge->setVisible(false);
+        }
+
+
+        //auxNode->setParentItem(edge);
+        //edge->setParentItem(node);
 
         scene->addItem(edge);
 

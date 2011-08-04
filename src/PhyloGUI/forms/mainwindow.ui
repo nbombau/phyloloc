@@ -60,13 +60,12 @@
     <property name="title">
      <string>Node</string>
     </property>
+    <addaction name="actionSelect_all_nodes"/>
     <addaction name="actionClear_selection"/>
     <addaction name="actionSelect_descendants"/>
     <addaction name="actionSelect_Ancestors"/>
-    <addaction name="actionExpand"/>
-    <addaction name="actionCollapse"/>
+    <addaction name="separator"/>
     <addaction name="actionColor_nodes"/>
-    <addaction name="actionSelect_all_nodes"/>
     <addaction name="separator"/>
     <addaction name="actionZoom"/>
     <addaction name="actionZoom_2"/>
@@ -80,17 +79,9 @@
     <addaction name="actionProcess_tree"/>
     <addaction name="actionConcense_trees"/>
    </widget>
-   <widget class="QMenu" name="menuConfiguration">
-    <property name="title">
-     <string>Configuration</string>
-    </property>
-    <addaction name="actionParameters"/>
-    <addaction name="actionOptions"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuNode"/>
    <addaction name="menuTools"/>
-   <addaction name="menuConfiguration"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -141,19 +132,6 @@
     <string>Concense trees...</string>
    </property>
   </action>
-  <action name="actionParameters">
-   <property name="text">
-    <string>Parameters...</string>
-   </property>
-  </action>
-  <action name="actionOptions">
-   <property name="text">
-    <string>Options...</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+O</string>
-   </property>
-  </action>
   <action name="actionClear_selection">
    <property name="text">
     <string>Clear selection</string>
@@ -169,34 +147,25 @@
     <string>Select ancestors</string>
    </property>
   </action>
-  <action name="actionExpand">
-   <property name="text">
-    <string>Expand (not working)</string>
-   </property>
-  </action>
-  <action name="actionCollapse">
-   <property name="text">
-    <string>Collapse (not working)</string>
-   </property>
-  </action>
   <action name="actionColor_nodes">
    <property name="text">
     <string>Color nodes...</string>
-   </property>
-  </action>
-  <action name="actionNode_details">
-   <property name="text">
-    <string>Node details...</string>
    </property>
   </action>
   <action name="actionSelect_all_nodes">
    <property name="text">
     <string>Select all nodes</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+A</string>
+   </property>
   </action>
   <action name="actionSearch_terminal_nodes">
    <property name="text">
     <string>Search terminal nodes...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
   <action name="actionZoom">

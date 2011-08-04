@@ -37,10 +37,6 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSearch_terminal_nodes->setEnabled(false);
     ui->actionZoom->setEnabled(false);
     ui->actionZoom_2->setEnabled(false);
-    ui->actionExpand->setEnabled(false);
-    ui->actionCollapse->setEnabled(false);
-    ui->actionParameters->setEnabled(false);
-    ui->actionOptions->setEnabled(false);
     ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
@@ -121,11 +117,6 @@ void MainWindow::on_actionSave_As_triggered()
             ;
         }
     }
-}
-
-void MainWindow::on_actionOptions_triggered()
-{
-
 }
 
 void MainWindow::on_actionColor_nodes_triggered()

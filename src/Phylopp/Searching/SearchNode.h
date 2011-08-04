@@ -29,7 +29,7 @@ public:
 
     VisitAction visitNode(T* n)
     {
-        if (n->getLocation().find(regExp, 0) != string::npos)
+        if (n->getLocation().find(regExp, 0) != std::string::npos)
         {
             n->setSelected(true);
             n->update();

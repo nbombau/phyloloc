@@ -7,7 +7,6 @@
 
 namespace Locations
 {
-using namespace Domain;
 
 static const unsigned int LOCATION_NOT_FOUND = 0;
 
@@ -54,7 +53,7 @@ public:
      * ----------------------
      * Description: Add a new location and node mapping
      */
-    static void addLocation(const Location& location, const NodeName& nodeName)
+    static void addLocation(const Location& location, const Domain::NodeName& nodeName)
     {
         locationManager.addLocation(location, nodeName);
     }
@@ -83,7 +82,7 @@ public:
     {
         return locationManager.getDispersionVector();
     }
-    
+
     //TODO: Remove this method, as well as LocationManager from the aspect
     static bool isValid()
     {
@@ -98,7 +97,7 @@ public:
      */
     Location getLocation() const
     {
-        NodeName name = this->getName();
+        Domain::NodeName name = this->getName();
         return locationManager.getLocation(name);
     }
 
@@ -141,7 +140,7 @@ protected:
          * ----------------------
          * Description: Add a new location and node mapping
          */
-        void addLocation(const Location& location, const NodeName& name)
+        void addLocation(const Location& location, const Domain::NodeName& name)
         {
             const LocationId id = getLocationId(location);
 
@@ -158,7 +157,7 @@ protected:
          * Returns: The location of the node or empty if no location
          * is set for that node
          */
-        Location getLocation(const NodeName& name) const
+        Location getLocation(const Domain::NodeName& name) const
         {
             Location location;
 
@@ -265,7 +264,7 @@ protected:
          * Description: Look for the id mapped to a location
          * Returns: Cero if the id is not defined.
          */
-        LocationId getNameLocationId(const NodeName& name) const
+        LocationId getNameLocationId(const Domain::NodeName& name) const
         {
             Location location = getLocation(name);
             return getLocationId(location);
@@ -280,7 +279,7 @@ protected:
         {
             return locationIdSet.size();
         }
-   
+
         bool isValid() const
         {
             return validateNodes() && validateDistances();
