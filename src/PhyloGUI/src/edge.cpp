@@ -12,9 +12,9 @@ Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     source = sourceNode;
     dest = destNode;
     setZValue(-1000);
-    //sourcePoint = source->pos();
-    //destPoint = dest->pos();
-    adjust();
+    sourcePoint = source->pos();
+    destPoint = dest->pos();
+    //adjust();
 }
 
 GuiNode* Edge::sourceNode() const
@@ -82,7 +82,7 @@ QRectF Edge::boundingRect() const
         //qreal penWidth = 1;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
-               /*.normalized()*/;
+               .normalized();
         /*qreal extra = (penWidth + arrowSize) / 2.0;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
@@ -96,24 +96,25 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (source != NULL && dest != NULL)
     {
+        if(selected)
+            this->setZValue(1000);
+        else
+            this->setZValue(-1000);
         //Union between the two parts of the line
-        QPointF sourcePointNew = sourcePoint;
-        sourcePointNew.setY(sourcePoint.y() - 9);
-        QPointF destPointNew = destPoint;
-        if (destPoint.x() < sourcePoint.x())
-            destPointNew.setX(destPoint.x() - 4);
-        else if (destPoint.x() > sourcePoint.x())
-            destPointNew.setX(destPoint.x() + 3);
+        /* QPointF sourcePointNew = sourcePoint;
+         QPointF destPointNew = destPoint;
+         sourcePointNew.setY(sourcePoint.y());
+         destPointNew.setX(destPoint.x());*/
 
-        QPointF point(destPointNew.x(), sourcePointNew.y());
+        QPointF point(destPoint.x(), sourcePoint.y());
 
         // Draw the horizontal part of the line
-        QLineF line(sourcePointNew, point);
+        QLineF line(sourcePoint, point);
         painter->setPen(QPen(selected ? Qt::red : color, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->drawLine(line);
 
         // Draw the vertical part of the line
-        line.setPoints(point, destPointNew);
+        line.setPoints(point, destPoint);
         painter->setPen(QPen(selected ? Qt::red : color, 6, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         painter->drawLine(line);
     }
