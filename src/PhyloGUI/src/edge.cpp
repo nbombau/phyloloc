@@ -97,15 +97,10 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     if (source != NULL && dest != NULL)
     {
         if(selected)
-            this->setZValue(1000);
+            this->setZValue(0);
         else
             this->setZValue(-1000);
         //Union between the two parts of the line
-        /* QPointF sourcePointNew = sourcePoint;
-         QPointF destPointNew = destPoint;
-         sourcePointNew.setY(sourcePoint.y());
-         destPointNew.setX(destPoint.x());*/
-
         QPointF point(destPoint.x(), sourcePoint.y());
 
         // Draw the horizontal part of the line
