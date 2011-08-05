@@ -162,7 +162,7 @@ public:
         {
             gradient.setColorAt(0, Qt::red);
         }
-        else if (!isSelected())
+        else
         {
             gradient.setColorAt(0, color);
         }
@@ -233,7 +233,7 @@ protected:
 
         if (this->probabilities.size() != 0)
         {
-            description.append("\n\nProbabilities vector: [ ");
+            description.append("\n\nPlausibility vector: [ ");
             for (unsigned int i = 0; i < this->probabilities.size(); i++)
             {
                 description.append(QString().setNum(this->probabilities[i], 'f', 3));
