@@ -12,6 +12,8 @@ Edge::Edge(GuiNode* sourceNode, GuiNode* destNode)
     source = sourceNode;
     dest = destNode;
     setZValue(-1000);
+    //sourcePoint = source->pos();
+    //destPoint = dest->pos();
     adjust();
 }
 

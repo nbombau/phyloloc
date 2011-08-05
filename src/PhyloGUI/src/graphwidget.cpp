@@ -241,10 +241,6 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
             edge->setVisible(false);
         }
 
-
-        //auxNode->setParentItem(edge);
-        //edge->setParentItem(node);
-
         scene->addItem(edge);
 
         auxNode->addEdgeFrom(edge);

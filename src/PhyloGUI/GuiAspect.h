@@ -137,6 +137,8 @@ public:
     {
         QGraphicsItem::setVisible(visible);
         QListIterator<Edge*> i(edgeListTo);
+        if(visible)
+            this->setExpanded(visible);
         while (i.hasNext())
         {
             Edge* edge = i.next();
