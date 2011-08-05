@@ -170,6 +170,15 @@ public:
         painter->setPen(QPen(isExpanded() ? Qt::black : Qt::green, isExpanded() ? 0 : 3));
         rect = QRect(-7, -7, 20, 20);
         painter->drawEllipse(-10, -10, 20, 20);
+
+        if (this->probabilities.size() != 0)
+        {
+            gradient.setColorAt(0,Qt::black);
+            painter->setBrush(gradient);
+            painter->setPen(QPen(Qt::black, 2));
+            rect = QRect(-7, -7, 20, 20);
+            painter->drawEllipse(-1, -1, 2, 2);
+        }
     }
 
     void contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
@@ -242,8 +251,10 @@ protected:
             description.append(" ]");
         }
 
-        QMessageBox msgBox;
-        msgBox.setText(description);
+        QMessageBox msgBox(QMessageBox::Information
+                           ,this->getName().empty()?"Node name not available":this->getName().c_str()
+                           ,description, QMessageBox::NoButton
+                           ,(QWidget *)scene()->parent()->parent()->parent()->parent());
         msgBox.exec();
     }
 

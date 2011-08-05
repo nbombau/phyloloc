@@ -167,9 +167,19 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
-    PropagateDialog propagate;
+    PropagateDialog propagate(this);
     if (propagate.exec())
+    {
         Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
+        QListIterator<QGraphicsItem*> items(graph->scene()->items());
+        while(items.hasNext()) {
+            items.next()->update();
+        }
+        QMessageBox msg(QMessageBox::Information,"Propagation finished"
+                        ,"The propagation has ended.\n\nPausibility vector is now available in the node's detail."
+                        , QMessageBox::NoButton, this);
+        msg.exec();
+    }
 }
 
 void MainWindow::drawTree()
