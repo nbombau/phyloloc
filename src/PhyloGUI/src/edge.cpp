@@ -115,3 +115,18 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
     }
 }
 
+void Edge::selectSourceNode()
+{
+    setSelected(true);
+    if(source!=NULL)
+        sourceNode()->selectAncestors();
+    update();
+}
+
+void Edge::selectDestNode()
+{
+    setSelected(true);
+    if(dest!=NULL)
+        destNode()->selectDescandants();
+    update();
+}

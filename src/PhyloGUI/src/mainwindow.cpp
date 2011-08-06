@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //nodesSelectedCount = 0;
     actualTree = NULL;
     graph = new GraphWidget(ui->splitter);
     graph->setAttribute(Qt::WA_DeleteOnClose, true);
@@ -123,9 +124,7 @@ void MainWindow::on_actionColor_nodes_triggered()
 {
     QColor color = QColorDialog::getColor();
     if (color.isValid())
-    {
         graph->paintNode(color, actualTree);
-    }
 }
 
 
@@ -176,7 +175,7 @@ void MainWindow::on_actionProcess_tree_triggered()
             items.next()->update();
         }
         QMessageBox msg(QMessageBox::Information,"Propagation finished"
-                        ,"The propagation has ended.\n\nPausibility vector is now available in the node's detail."
+                        ,"The propagation has ended.\n\nPlausibility vector is now available in the node's detail."
                         , QMessageBox::NoButton, this);
         msg.exec();
     }
@@ -207,3 +206,23 @@ void MainWindow::on_actionZoom_2_triggered()
 {
     graph->scaleView(0.8);
 }
+/*
+void MainWindow::nodeSelected(int nodeAction)
+{
+    if(nodeAction==0)
+        ++nodesSelectedCount;
+    else
+        --nodesSelectedCount;
+
+    if(nodesSelectedCount>0)
+        activateMenuItems(true);
+    else
+        activateMenuItems(false);
+}
+
+void MainWindow::activateMenuItems(bool activate)
+{
+    ui->actionColor_nodes->setEnabled(activate);
+    ui->actionSelect_descendants->setEnabled(activate);
+    ui->actionSelect_Ancestors->setEnabled(activate);
+}*/

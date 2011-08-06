@@ -344,3 +344,4 @@ QSize GraphWidget::sizeHint() const
 {
     return QSize(600, 300);
 }
+
