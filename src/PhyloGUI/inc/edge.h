@@ -27,7 +27,8 @@ public:
     bool isSelected() const;
     void setVisible(bool visible);
     void adjust();
-
+    void selectSourceNode();
+    void selectDestNode();
     enum { Type = UserType + 2 };
     int type() const
     {
@@ -37,6 +38,7 @@ public:
 protected:
     QRectF boundingRect() const;
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
+
 
 private:
     GuiNode* source, *dest;

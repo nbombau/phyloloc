@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
+#include <QColorDialog>
 #include <QStyleOption>
 #include <QTimer>
 #include <Qt>
@@ -28,10 +29,10 @@
 
 namespace PhyloGUI
 {
-
 template <class T>
 class GuiAspect : public T, public QGraphicsItem
 {
+
 
 private:
     bool selected;
@@ -145,9 +146,7 @@ public:
             edge->setVisible(visible);
         }
         if (hasGraphicsName())
-        {
             graphicsName->setVisible(visible);
-        }
     }
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
@@ -159,19 +158,16 @@ public:
         QRadialGradient gradient(-3, -3, 10);
 
         if (isSelected())
-        {
             gradient.setColorAt(0, Qt::red);
-        }
         else
-        {
             gradient.setColorAt(0, color);
-        }
+
         painter->setBrush(gradient);
         painter->setPen(QPen(isExpanded() ? Qt::black : Qt::green, isExpanded() ? 0 : 3));
         rect = QRect(-7, -7, 20, 20);
         painter->drawEllipse(-10, -10, 20, 20);
 
-        if (this->probabilities.size() != 0)
+        if (!this->probabilities.empty())
         {
             gradient.setColorAt(0,Qt::black);
             painter->setBrush(gradient);
@@ -191,26 +187,76 @@ public:
                 menu.addAction("Collapse");
             else
                 menu.addAction("Expand");
+            menu.addSeparator();
+        }
+        menu.addAction("Set color...");
+        menu.addSeparator();
+        if(!this->isLeaf())
+            menu.addAction("Select descendants");
+        menu.addAction("Select ancestors");
+        menu.addSeparator();
+        if(!isSelected())
+            menu.addAction("Select node");
+        else
+            menu.addAction("Unselect node");
+        QAction* a = menu.exec(event->screenPos());
+        if (a != NULL)
+        {
+            if (a->text()=="Collapse" || a->text()=="Expand")
+                expandCollapseAction();
+            else if(a->text()=="Set color...")
+                selectNodeColor();
+            else if(a->text()=="Select ancestors")
+                selectAncestors();
+            else if(a->text()=="Select descendants")
+                selectDescandants();
+            else if(a->text()=="Select node" || a->text()=="Unselect node")
+                setSelected(!isSelected());
+            //else not needed
 
-            QAction* a = menu.exec(event->screenPos());
-            if (a != NULL)
-            {
-                if (a->text().compare("Collapse") || a->text().compare("Expand"))
-                {
-                    setExpanded(!isExpanded());
-                    QListIterator<Edge*> i(edgeListTo);
-
-                    while (i.hasNext())
-                    {
-                        Edge* edge = i.next();
-                        edge->setVisible(!edge->isVisible());
-
-                    }
-                }
-                this->update();
-            }
+            this->update();
         }
     }
+
+    void selectDescandants()
+    {
+        setSelected(true);
+        QListIterator<Edge*> it(edgeListTo);
+        while(it.hasNext())
+            it.next()->selectDestNode();
+        update();
+    }
+
+    void selectAncestors()
+    {
+        setSelected(true);
+        if(!edgeListFrom.empty())
+            edgeListFrom.first()->selectSourceNode();
+        update();
+    }
+
+private:
+
+    void selectNodeColor()
+    {
+        QColor color = QColorDialog::getColor();
+        if (color.isValid())
+            setColor(color);
+    }
+
+    void expandCollapseAction()
+    {
+        setExpanded(!isExpanded());
+        QListIterator<Edge*> i(edgeListTo);
+
+        while (i.hasNext())
+        {
+            Edge* edge = i.next();
+            edge->setVisible(!edge->isVisible());
+
+        }
+    }
+
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event)
@@ -240,7 +286,7 @@ protected:
         else
             description.append(this->getLocation().c_str());
 
-        if (this->probabilities.size() != 0)
+        if (!this->probabilities.empty())
         {
             description.append("\n\nPlausibility vector: [ ");
             for (unsigned int i = 0; i < this->probabilities.size(); i++)

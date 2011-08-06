@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget* parent = NULL);
     ~MainWindow();
+    void activateMenuItems(bool activate);
 
 private:
     Ui::MainWindow* ui;
@@ -35,9 +36,11 @@ private:
     Domain::ITree<PhyloGUI::GuiNode>* actualTree;
     void loadTree(const DataSource::FilesInfo& info, bool allowMissingData);
     Domain::ITreeCollection<PhyloGUI::GuiNode> trees;
+    //unsigned int nodesSelectedCount;
 
 public slots:
     void drawTree();
+    //void nodeSelected(int nodeAction);
 
 private slots:
     void on_actionProcess_tree_triggered();
