@@ -3,30 +3,35 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <mili/mili.h>
 
 namespace {
     void produce_random_tree_rec(std::vector<int>::const_iterator beg,
 				 std::vector<int>::const_iterator end,
 				 std::ostream &os)
     {
-	if (end - beg == 1)
+        const size_t size = end - beg;
+        if (size == 1)
 	    os << *beg;
 	else
 	    {
-		int size = end - beg;
-		int split = rand() % (size-1) + 1;
+                Randomizer<unsigned int> rnd(1, size - 1);
+
+                unsigned int split = rnd.get();
 		
 		std::vector<int>::const_iterator m = beg + split;
-		
+
 		os << '(';
 		produce_random_tree_rec(beg, m, os);
 		os << ',';
 		produce_random_tree_rec(m, end, os);
 		os << ')';
 	    }
+        Randomizer<unsigned int> rnd(1, 5);
+        os << ":" << rnd.get();
     }
     
-    void produce_random_tree(int size, std::ostream &os)
+    void produce_random_tree(size_t size, std::ostream &os)
     {
 	std::vector<int> labels(size);
 	for (int i = 0; i < size; ++i) 
@@ -40,22 +45,19 @@ namespace {
 
 int
 main(int argc,char * argv[])
-{
-	
-	srand(time(0));
-	
-    int size;
+{	
+    unsigned int size;
     if (argc<2)
     {
-    	size = rand() % 100000;
+        Randomizer<unsigned int> rnd(0, 10000);
+        size = rnd.get();
     }
     else{
-		size = atoi(argv[1]);	
+        from_string(argv[1],size);
     }
 
     std::ofstream os("tmp.nwk");
     produce_random_tree(size, os);
 
-
-    return 0;
+    return EXIT_SUCCESS;
 }
