@@ -7,32 +7,32 @@
 
 namespace Propagation
 {
-    //TODO: add more specific methods that use this general methods
-    class VectorHelper
+//TODO: add more specific methods that use this general methods
+class VectorHelper
+{
+public:
+    template <typename T, typename Operation>
+    static void vectorialOperation(const std::vector<T>& a,
+                                   const std::vector<T>& b,
+                                   std::vector<T>& result)
     {
-    public:
-        template <typename T, typename Operation>
-        static void vectorialOperation(const std::vector<T>& a, 
-                                       const std::vector<T>& b, 
-                                       std::vector<T>& result)
-        {
-            assert(a.size() == b.size());
-            
-            result.reserve(a.size());
-            
-            std::transform(a.begin(), a.end(), b.begin(),
-                           result.begin(), Operation());
-        }
-        
-        template <typename T, typename Operation>
-        static void scalarOperation(std::vector<T>& a, 
-                                    T scalar)
-        {
-            std::transform(a.begin(), a.end(), a.begin(),
-                           std::bind1st(Operation(), scalar));
-        }
-        
-    };
+        assert(a.size() == b.size());
+
+        result.reserve(a.size());
+
+        std::transform(a.begin(), a.end(), b.begin(),
+                       result.begin(), Operation());
+    }
+
+    template <typename T, typename Operation>
+    static void scalarOperation(std::vector<T>& a,
+                                T scalar)
+    {
+        std::transform(a.begin(), a.end(), a.begin(),
+                       std::bind1st(Operation(), scalar));
+    }
+
+};
 }
 
 #endif

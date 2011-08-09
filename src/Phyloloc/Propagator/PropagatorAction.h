@@ -7,93 +7,93 @@
 
 namespace Propagation
 {
-    template <class T>
-    struct IsNotRootPredicate
+template <class T>
+struct IsNotRootPredicate
+{
+    bool operator()(T* node) const
     {
-        bool operator()(T* node) const
-        {
-            return !node->isRoot();
-        }
-    };
-    
-    template <class T>
-    struct IsNotLeafPredicate
+        return !node->isRoot();
+    }
+};
+
+template <class T>
+struct IsNotLeafPredicate
+{
+    bool operator()(T* node) const
     {
-        bool operator()(T* node) const
-        {
-            return !node->isLeaf();
-        }
-    };
-    
-    template <class T>
-    struct AlwaysTruePredicate
+        return !node->isLeaf();
+    }
+};
+
+template <class T>
+struct AlwaysTruePredicate
+{
+    bool operator()(T* /*node*/) const
     {
-        bool operator()(T* /*node*/) const
-        {
-            return true;
-        }
-    };
-    
-    template <class T>
-    class PropagateFromChildrenAction
+        return true;
+    }
+};
+
+template <class T>
+class PropagateFromChildrenAction
+{
+public:
+    PropagateFromChildrenAction(Domain::BranchLength blSum,
+                                const Locations::DistanceVector& dispersal,
+                                Weight geographic,
+                                Weight branch)
+        : branchLengthSum(blSum),
+          geographicFactorWeight(geographic),
+          branchLenghtFactorWeight(branch),
+          dispersalVector(dispersal)
+
+    {}
+
+    VisitAction visitNode(T* n)
     {
-    public:
-        PropagateFromChildrenAction(Domain::BranchLength blSum, 
-                                    const Locations::DistanceVector& dispersal, 
-                                    Weight geographic, 
-                                    Weight branch) 
-            : branchLengthSum(blSum),
-            geographicFactorWeight(geographic),
-            branchLenghtFactorWeight(branch),
-            dispersalVector(dispersal)
-            
-        {}
-        
-        VisitAction visitNode(T* n)
-        {
-            n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
-            
-            return ContinueTraversing;
-        }
-        
-    private:
-        
-        Domain::BranchLength branchLengthSum;
-        Weight geographicFactorWeight;
-        Weight branchLenghtFactorWeight;
-        const Locations::DistanceVector& dispersalVector;
-    };
-    
-    template <class T>
-    class PropagateFromParentAction
+        n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
+
+        return ContinueTraversing;
+    }
+
+private:
+
+    Domain::BranchLength branchLengthSum;
+    Weight geographicFactorWeight;
+    Weight branchLenghtFactorWeight;
+    const Locations::DistanceVector& dispersalVector;
+};
+
+template <class T>
+class PropagateFromParentAction
+{
+public:
+    PropagateFromParentAction(Domain::BranchLength blSum,
+                              const Locations::DistanceVector& dispersal,
+                              Weight geographic,
+                              Weight branch)
+        : branchLengthSum(blSum),
+          geographicFactorWeight(geographic),
+          branchLenghtFactorWeight(branch),
+          dispersalVector(dispersal)
+
+    {}
+
+    VisitAction visitNode(T* n)
     {
-    public:
-        PropagateFromParentAction(Domain::BranchLength blSum, 
-                                  const Locations::DistanceVector& dispersal, 
-                                  Weight geographic, 
-                                  Weight branch) 
-            : branchLengthSum(blSum),
-            geographicFactorWeight(geographic),
-            branchLenghtFactorWeight(branch),
-            dispersalVector(dispersal)
-        
-        {}
-        
-        VisitAction visitNode(T* n)
-        {
-            n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
-            
-            return ContinueTraversing;
-        }
-        
-    private:
-        
-        Domain::BranchLength branchLengthSum;
-        Weight geographicFactorWeight;
-        Weight branchLenghtFactorWeight;
-        const Locations::DistanceVector& dispersalVector;
-    };
-    
+        n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
+
+        return ContinueTraversing;
+    }
+
+private:
+
+    Domain::BranchLength branchLengthSum;
+    Weight geographicFactorWeight;
+    Weight branchLenghtFactorWeight;
+    const Locations::DistanceVector& dispersalVector;
+};
+
 }
 
 

@@ -13,6 +13,8 @@ namespace {
     using namespace Locations;
     using namespace Domain;
     
+    typedef Propagation::PropagatorAspect<Locations::LocationAspect<Domain::Node> > PropNode;
+    
     class PropagatorTest : public Test 
     {
     protected:
@@ -24,7 +26,7 @@ namespace {
         
         virtual void SetUp() 
         {
-            
+            Propagator<PropNode>::correctRoundMode();   
         }
         
         virtual void TearDown() 
@@ -32,9 +34,6 @@ namespace {
             
         }        
     };
-    
-    typedef Propagation::PropagatorAspect<Locations::LocationAspect<Domain::Node> > PropNode;
-    
     
     TEST_F(PropagatorTest, TwoPassPropagatorTest) 
     {        
@@ -114,5 +113,20 @@ namespace {
         PropNode::clear();
     }    
     
+    TEST_F(PropagatorTest, invalidFactors) 
+    {
+        ITree<PropNode> t;
+        
+        ASSERT_THROW(Propagator<PropNode>::propagate(&t, 2, 0.51, 0.5), InvalidArgumentsException);
+    }
     
+    TEST_F(PropagatorTest, validFactors) 
+    {
+        ITree<PropNode> t;
+        
+        double geographicFactor = 0.80;
+        double branchLengthFactor = 0.20;
+                          
+        ASSERT_NO_THROW(Propagator<PropNode>::propagate(&t, 2, geographicFactor, branchLengthFactor));
+    }
 }

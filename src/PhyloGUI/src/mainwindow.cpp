@@ -40,6 +40,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionZoom_2->setEnabled(false);
     ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
+
+    Propagator<GuiNode>::correctRoundMode();
 }
 
 MainWindow::~MainWindow()
@@ -169,15 +171,24 @@ void MainWindow::on_actionProcess_tree_triggered()
     PropagateDialog propagate(this);
     if (propagate.exec())
     {
-        Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
-        QListIterator<QGraphicsItem*> items(graph->scene()->items());
-        while(items.hasNext()) {
-            items.next()->update();
+        try
+        {
+            Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
+            QListIterator<QGraphicsItem*> items(graph->scene()->items());
+            while (items.hasNext())
+            {
+                items.next()->update();
+            }
+            QMessageBox msg(QMessageBox::Information, "Propagation finished"
+                            , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail."
+                            , QMessageBox::NoButton, this);
+            msg.exec();
         }
-        QMessageBox msg(QMessageBox::Information,"Propagation finished"
-                        ,"The propagation has ended.\n\nPlausibility vector is now available in the node's detail."
-                        , QMessageBox::NoButton, this);
-        msg.exec();
+        catch (const PropagationException& ex)
+        {
+            QMessageBox msg(QMessageBox::Information, "Propagation error", ex.what(), QMessageBox::NoButton, this);
+            msg.exec();
+        }
     }
 }
 
