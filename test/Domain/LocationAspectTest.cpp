@@ -9,7 +9,7 @@ namespace {
     using ::testing::Test;
 
     typedef LocationAspect<Domain::Node> TestNode;
-    
+    typedef std::string NodeName;
     
     class LocationAspectTest : public Test 
     {
