@@ -96,7 +96,7 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (source != NULL && dest != NULL)
     {
-        if(selected)
+        if (selected)
             this->setZValue(0);
         else
             this->setZValue(-1000);
@@ -118,7 +118,7 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 void Edge::selectSourceNode()
 {
     setSelected(true);
-    if(source!=NULL)
+    if (source != NULL)
         sourceNode()->selectAncestors();
     update();
 }
@@ -126,7 +126,7 @@ void Edge::selectSourceNode()
 void Edge::selectDestNode()
 {
     setSelected(true);
-    if(dest!=NULL)
+    if (dest != NULL)
         destNode()->selectDescandants();
     update();
 }
