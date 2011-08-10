@@ -16,5 +16,8 @@ set(test_src TestMain.cpp
 INCLUDE_DIRECTORIES(../src)
 
 add_executable(tests ${test_src})
-target_link_libraries (tests gtest_main pthread gmock)
+
+add_definitions(-fprofile-arcs -ftest-coverage)
+
+target_link_libraries (tests gtest_main pthread gmock -fprofile-arcs)
 
