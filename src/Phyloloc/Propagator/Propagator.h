@@ -1,7 +1,6 @@
 #ifndef PROPAGATOR_H
 #define PROPAGATOR_H
 
-#include <fenv.h>
 #include "Domain/ITree.h"
 #include "Domain/LocationAspect.h"
 #include "PropagatorAspect.h"
@@ -43,12 +42,6 @@ class Propagator
 {
 public:
     Propagator() {}
-
-    //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
-    static void correctRoundMode()
-    {
-        fesetround(FE_TOWARDZERO);
-    }
 
     static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,

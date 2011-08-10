@@ -6,10 +6,8 @@
 #include "PhyloGUI/inc/mainwindow.h"
 #include "PhyloGUI/ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
-#include "Domain/ITree.h"
 #include "PhyloGUI/inc/filedialog.h"
 #include "PhyloGUI/inc/propagatedialog.h"
-#include "Phyloloc/Propagator/Propagator.h"
 #include "Phylopp/Searching/SearchNode.h"
 
 
@@ -40,8 +38,6 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionZoom_2->setEnabled(false);
     ui->splitter->addWidget(graph);
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
-
-    Propagator<GuiNode>::correctRoundMode();
 }
 
 MainWindow::~MainWindow()
@@ -79,13 +75,18 @@ void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData)
 
         ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
 
+        unsigned int treeNumber = 1;
+
         for (; !iter.end(); iter.next())
         {
             QListWidgetItem* newItem = new QListWidgetItem;
-            QString path(info.getTreesFilePath().c_str());
-            newItem->setToolTip(path);
-            newItem->setText(path);
+
+            std:: stringstream itemText;
+            itemText << "Tree " << treeNumber;
+            newItem->setText(QString(itemText.str().c_str()));
+
             ui->listWidget->addItem(newItem);
+            treeNumber++;
         }
     }
     catch (const DataFileException& ex)
@@ -168,12 +169,13 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
-    PropagateDialog propagate(this);
-    if (propagate.exec())
+    PropagateDialog propagateDialog(this);
+    if (propagateDialog.exec())
     {
         try
         {
-            Propagator<GuiNode>::propagate(actualTree, propagate.getPasses(), propagate.getGCF(), propagate.getBCLF());
+            propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF());
+
             QListIterator<QGraphicsItem*> items(graph->scene()->items());
             while (items.hasNext())
             {
