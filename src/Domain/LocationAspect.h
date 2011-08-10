@@ -313,7 +313,6 @@ protected:
                 it++;
             }
 
-            //std::cerr << "ValidateNodes: " << valid;
             return valid;
         }
 
@@ -335,7 +334,7 @@ protected:
                 }
                 i++;
             }
-            //std::cerr << "ValidateDistances: " << valid;
+
             return valid;
         }
 
