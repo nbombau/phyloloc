@@ -1,6 +1,7 @@
 #ifndef PROPAGATOR_H
 #define PROPAGATOR_H
 
+#include <fenv.h>
 #include "Domain/ITree.h"
 #include "Domain/LocationAspect.h"
 #include "PropagatorAspect.h"
@@ -29,6 +30,15 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidArgumentsException,
                                PropagationExceptionHierarchy,
                                "Invalid arguments. Please check that geographic factor and branch length factor are correct");
 
+/**
+* RoundingModeException
+* --------------------
+* Description: Exception used when setting new round mode is not sucessfull
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(RoundingModeException,
+                               PropagationExceptionHierarchy,
+                               "Error in propagation. Could not set new rounding mode");
+
 namespace Propagation
 {
 using namespace Domain;
@@ -42,6 +52,28 @@ class Propagator
 {
 public:
     Propagator() {}
+
+    static void propagate(Domain::ITree<T>* tree,
+                          unsigned int passesCount,
+                          double geographicFactorWeight,
+                          double branchLengthFactorWeight
+                         )
+    {
+        //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
+        int defaultRoundingMode = setRoundingMode(FE_TOWARDZERO);
+
+        try
+        {
+            propagate(tree, passesCount, (Weight)geographicFactorWeight, (Weight)branchLengthFactorWeight);
+        }
+        catch (const PropagationException& ex)
+        {
+            setRoundingMode(defaultRoundingMode);
+            throw;
+        }
+
+        setRoundingMode(defaultRoundingMode);
+    }
 
     static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,
@@ -79,6 +111,17 @@ public:
     }
 
 private:
+
+    static int setRoundingMode(int roundingMode)
+    {
+        int currentRoundingMode = fegetround();
+
+        if (fesetround(roundingMode) != 0)
+        {
+            throw new RoundingModeException();
+        }
+        return currentRoundingMode;
+    }
 
     static void assertPropagationPremises(const Weight geographicFactorWeight, const Weight branchLengthFactorWeight)
     {
