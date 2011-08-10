@@ -60,11 +60,11 @@ public:
                          )
     {
         //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
-        int defaultRoundingMode = setRoundingMode(FE_TOWARDZERO);
+        const int defaultRoundingMode = setRoundingMode(FE_TOWARDZERO);
 
         try
         {
-            propagate(tree, passesCount, (Weight)geographicFactorWeight, (Weight)branchLengthFactorWeight);
+            propagate(tree, passesCount, Weight(geographicFactorWeight), Weight(branchLengthFactorWeight));
         }
         catch (const PropagationException& ex)
         {
@@ -114,11 +114,11 @@ private:
 
     static int setRoundingMode(int roundingMode)
     {
-        int currentRoundingMode = fegetround();
+        const int currentRoundingMode = fegetround();
 
         if (fesetround(roundingMode) != 0)
         {
-            throw new RoundingModeException();
+            throw RoundingModeException();
         }
         return currentRoundingMode;
     }
