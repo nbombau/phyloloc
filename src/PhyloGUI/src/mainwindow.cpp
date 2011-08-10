@@ -174,7 +174,7 @@ void MainWindow::on_actionProcess_tree_triggered()
     {
         try
         {
-            propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF());
+            Propagator<GuiNode>::propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF());
 
             QListIterator<QGraphicsItem*> items(graph->scene()->items());
             while (items.hasNext())
