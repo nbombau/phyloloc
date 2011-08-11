@@ -1,6 +1,7 @@
 #ifndef SEARCHNODE_H
 #define SEARCHNODE_H
 
+#include "Domain/LocationManager.h"
 #include "Phylopp/Traversal/Traverser.h"
 #include "Phylopp/Traversal/NodeVisitor.h"
 
@@ -22,14 +23,16 @@ template <class T>
 class SelectNodeAction
 {
 public:
-    SelectNodeAction(const std::string& searchString)
+    SelectNodeAction(const std::string& searchString, const Locations::LocationManager locationManager)
     {
         regExp = searchString;
+        this->locationManager = locationManager;
     }
 
     VisitAction visitNode(T* n)
     {
-        if (n->getLocation().find(regExp, 0) != std::string::npos)
+        Location location = locationManager.getLocation(n->getName());
+        if (!location.empty() && location.find(regExp, 0) != std::string::npos)
         {
             n->setSelected(true);
             n->update();
@@ -38,6 +41,7 @@ public:
     }
 private:
     std::string regExp;
+    Locations::LocationManager locationManager;
 };
 
 
@@ -50,10 +54,10 @@ public:
         node = root;
     }
 
-    void search(const std::string& expression)
+    void search(const std::string& expression, Locations::LocationManager locationManager)
     {
         Traverser<T, SelectNodeAction<T> , IsLeafPredicate<T> > t;
-        SelectNodeAction<T> a(expression);
+        SelectNodeAction<T> a(expression, locationManager);
 
         t.traverseDescendants(node, a);
     }

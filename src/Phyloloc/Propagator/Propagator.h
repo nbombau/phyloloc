@@ -3,7 +3,7 @@
 
 #include <fenv.h>
 #include "Domain/ITree.h"
-#include "Domain/LocationAspect.h"
+#include "Domain/LocationManager.h"
 #include "PropagatorAspect.h"
 #include "PropagatorAction.h"
 #include "Phylopp/Traversal/Traverser.h"
@@ -56,7 +56,8 @@ public:
     static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,
                           double geographicFactorWeight,
-                          double branchLengthFactorWeight
+                          double branchLengthFactorWeight,
+                          Locations::LocationManager locationManager
                          )
     {
         //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
@@ -64,7 +65,7 @@ public:
 
         try
         {
-            propagate(tree, passesCount, Weight(geographicFactorWeight), Weight(branchLengthFactorWeight));
+            propagate(tree, passesCount, Weight(geographicFactorWeight), Weight(branchLengthFactorWeight), locationManager);
         }
         catch (const PropagationException& ex)
         {
@@ -78,19 +79,21 @@ public:
     static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,
                           Weight geographicFactorWeight,
-                          Weight branchLengthFactorWeight
+                          Weight branchLengthFactorWeight,
+                          Locations::LocationManager locationManager
                          )
     {
-        assertPropagationPremises(geographicFactorWeight, branchLengthFactorWeight);
+        assertPropagationPremises(geographicFactorWeight, branchLengthFactorWeight, locationManager);
 
         BranchLength branchLenghtSum = calculateBranchLengthSum(tree->getRoot());
 
-        const DistanceVector& dispersalVector = T::getDispersionVector();
+        const DistanceVector& dispersalVector = locationManager.getDispersionVector();
 
         PropagateFromChildrenAction<T> childrenAction(branchLenghtSum,
                 dispersalVector,
                 geographicFactorWeight,
-                branchLengthFactorWeight);
+                branchLengthFactorWeight,
+                locationManager);
         PropagateFromParentAction<T> parentAction(branchLenghtSum,
                 dispersalVector,
                 geographicFactorWeight,
@@ -123,9 +126,9 @@ private:
         return currentRoundingMode;
     }
 
-    static void assertPropagationPremises(const Weight geographicFactorWeight, const Weight branchLengthFactorWeight)
+    static void assertPropagationPremises(const Weight geographicFactorWeight, const Weight branchLengthFactorWeight, LocationManager locationManager)
     {
-        if (!(T::isValid()))
+        if (!(locationManager.isValid()))
         {
             throw InvalidTreeException();
         }

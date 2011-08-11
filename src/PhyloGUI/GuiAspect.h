@@ -275,16 +275,27 @@ protected:
     {
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
+
         if (this->getName().empty())
             description.append("No information available.");
         else
             description.append(this->getName().c_str());
 
         description.append("\n\nLocation: ");
+
+        // This will be temporary commented, until we find a 
+        // solution to the passing locationManager instance
+        // to the event problem
+        // "No information available" will be shown instead
+        //TODO: Use locationManager unique instance in order to get
+        //the location name for the node
+        /*
         if (this->getLocation().empty())
             description.append("No information available.");
         else
             description.append(this->getLocation().c_str());
+        */
+        description.append("No information available.");
 
         if (!this->probabilities.empty())
         {

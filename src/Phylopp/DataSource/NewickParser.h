@@ -6,6 +6,7 @@
 #include <mili/mili.h>
 #include "Domain/ITree.h"
 #include "Domain/ListIterator.h"
+#include "Domain/LocationManager.h"
 #include "TreeValidationPolicies.h"
 
 class TreeFileExceptionHierarchy {};
@@ -57,7 +58,7 @@ public:
 
     NewickParser(const ValidationPolicy& validationPolicy = ValidationPolicy()) : validationPolicy(validationPolicy) {}
 
-    void loadNewickFile(const std::string& fname, Domain::ITreeCollection<T>& trees)
+    void loadNewickFile(const std::string& fname, const Locations::LocationManager locationManager, Domain::ITreeCollection<T>& trees)
     {
         std::ifstream f(fname.c_str());
 
@@ -76,7 +77,7 @@ public:
             do
             {
                 Domain::ITree<T>* tree = trees.addTree();
-                load_node(tree->getRoot());
+                load_node(locationManager, tree->getRoot());
                 consume_whitespace();
                 if (*character != ';')
                     throw MissingTreeSeparator(getLineNumberText());
@@ -109,11 +110,11 @@ private:
     }
     /****************************************************/
 
-    void load_node(T* node)
+    void load_node(const Locations::LocationManager locationManager, T* node)
     {
         std::string name;
         float branchLength = 0.0f;
-
+        Locations::LocationId locationId;
         // Output: either ',' or ')' (depending on the node type)
         consume_whitespace();
 
@@ -122,15 +123,13 @@ private:
             case '(':
                 // We are nonleaf. Load new child.
                 ++character;
-                load_children(node); // leaves in a parent
+                load_children(locationManager, node); // leaves in a parent
                 character++;
-
                 name = consume_name();
                 node->setName(name);
                 branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);
-                // Set location, if exists, for the node
-
+                
                 break;
             case ',':
             case ')':
@@ -146,13 +145,19 @@ private:
                 node->setName(name);
                 branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);
-                // Set location, if exists, for the node
+                // Set location id, if exists, for the node
+                locationId = locationManager.getNameLocationId(name);
+                if (locationId != Locations::LOCATION_NOT_FOUND)
+                {                                
+                    node->setLocationId(locationId);
+                }
+                //else no location is set for that node
         }
         if (!validationPolicy.validate(node))
             throw MissingDataException(getLineNumberText());
     }
 
-    void load_children(T* parent)
+    void load_children(const Locations::LocationManager locationManager, T* parent)
     {
         T* child;
         bool keep_reading = true;
@@ -162,7 +167,7 @@ private:
         do
         {
             child = parent->template addChild<T>();
-            load_node(child);
+            load_node(locationManager, child);
             consume_whitespace();
             switch (*character)
             {

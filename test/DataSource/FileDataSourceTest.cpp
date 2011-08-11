@@ -7,6 +7,7 @@
 #include "Domain/ITreeCollection.h"
 #include "Domain/INode.h"
 #include "Phylopp/DataSource/FileDataSource.h"
+#include "Domain/LocationAspect.h"
 
 namespace
 {
@@ -39,22 +40,23 @@ protected:
 
     virtual void TearDown()
     {
-        LocationAspect<Domain::Node>::clear();
+        //This is not necesary since locationmanager is not a singleton anymore
+        //LocationAspect<Domain::Node>::clear();
     }
 
 
-    static inline void setNodeAttrs(TestNode* node, NodeName name, BranchLength length, Location location)
+    static inline void setNodeAttrs(TestNode* node, NodeName name, BranchLength length, Location location, Locations::LocationManager& locationManager)
     {
         node->setName(name);
         node->setBranchLength(length);
-        LocationAspect<Domain::Node>::addLocation(location, name);
+        locationManager.addLocation(location, name);
     }
 
     //TODO update tests to support distances file
-    void loadTreeFromFile(std::string treesFile, std::string placesFile, ITreeCollection<TestNode>& trees)
+    void loadTreeFromFile(std::string treesFile, std::string placesFile, ITreeCollection<TestNode>& trees, Locations::LocationManager& locationManager)
     {
         FilesInfo info(treesFile, placesFile, "TestTrees/distances1.dist");
-        fileDataSource.load(info, trees, true);
+        fileDataSource.load(info, trees, locationManager, true);
     }
 
     void saveTreeToFile(std::string treesFile, ITreeCollection<TestNode>& trees)
@@ -64,192 +66,196 @@ protected:
     }
 
     // (,,(,));    no nodes are named
-    static void loadTree1(ITree< TestNode >* tree)
+    static void loadTree1(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
+
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "", 0.0f, "");
+        setNodeAttrs(root, "", 0.0f, "", locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "", 0.0f, "");
+        setNodeAttrs(child1, "", 0.0f, "", locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "", 0.0f, "");
+        setNodeAttrs(child2, "", 0.0f, "", locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "", 0.0f, "");
+        setNodeAttrs(child3, "", 0.0f, "", locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "", 0.0f, "");
+        setNodeAttrs(child4, "", 0.0f, "", locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "", 0.0f, "");
+        setNodeAttrs(child5, "", 0.0f, "", locationManager);
 
     }
 
     // (A,B,(C,D)); leaf nodes are named
-    static void loadTree2(ITree< TestNode >* tree)
+    static void loadTree2(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "", 0.0f, "");
+        setNodeAttrs(root, "", 0.0f, "", locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "A", 0.0f, "");
+        setNodeAttrs(child1, "A", 0.0f, "", locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "B", 0.0f, "");
+        setNodeAttrs(child2, "B", 0.0f, "", locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "", 0.0f, "");
+        setNodeAttrs(child3, "", 0.0f, "", locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "C", 0.0f, "");
+        setNodeAttrs(child4, "C", 0.0f, "", locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "D", 0.0f, "");
+        setNodeAttrs(child5, "D", 0.0f, "", locationManager);
 
     }
 
     // (A,B,(C,D)E)F; all nodes are named
-    static void loadTree3(ITree< TestNode >* tree)
+    static void loadTree3(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "F", 0.0f, "");
+        setNodeAttrs(root, "F", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "A", 0.0f, "");
+        setNodeAttrs(child1, "A", 0.0f, "",locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "B", 0.0f, "");
+        setNodeAttrs(child2, "B", 0.0f, "",locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "E", 0.0f, "");
+        setNodeAttrs(child3, "E", 0.0f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "C", 0.0f, "");
+        setNodeAttrs(child4, "C", 0.0f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "D", 0.0f, "");
+        setNodeAttrs(child5, "D", 0.0f, "",locationManager);
 
     }
 
 
     // (:0.1,:0.2,(:0.3,:0.4):0.5);  all but root node have a distance to parent
-    static void loadTree4(ITree< TestNode >* tree)
+    static void loadTree4(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "", 0.0f, "");
+        setNodeAttrs(root, "", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "", 0.1f, "");
+        setNodeAttrs(child1, "", 0.1f, "",locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "", 0.2f, "");
+        setNodeAttrs(child2, "", 0.2f, "",locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "", 0.5f, "");
+        setNodeAttrs(child3, "", 0.5f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "", 0.3f, "");
+        setNodeAttrs(child4, "", 0.3f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "", 0.4f, "");
+        setNodeAttrs(child5, "", 0.4f, "",locationManager);
 
     }
 
 
     // (:0.1,:0.2,(:0.3,:0.4):0.5):0.0;       all have a distance to parent
-    static void loadTree5(ITree< TestNode >* tree)
+    static void loadTree5(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "", 0.0f, "");
+        setNodeAttrs(root, "", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "", 0.1f, "");
+        setNodeAttrs(child1, "", 0.1f, "",locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "", 0.2f, "");
+        setNodeAttrs(child2, "", 0.2f, "",locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "", 0.5f, "");
+        setNodeAttrs(child3, "", 0.5f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "", 0.3f, "");
+        setNodeAttrs(child4, "", 0.3f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "", 0.4f, "");
+        setNodeAttrs(child5, "", 0.4f, "",locationManager);
 
     }
 
     // (A:0.1,B:0.2,(C:0.3,D:0.4):0.5);  distances and leaf names
-    static void loadTree6(ITree< TestNode >* tree)
+    static void loadTree6(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "", 0.0f, "");
+        setNodeAttrs(root, "", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "A", 0.1f, "");
+        setNodeAttrs(child1, "A", 0.1f, "",locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "B", 0.2f, "");
+        setNodeAttrs(child2, "B", 0.2f, "",locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "", 0.5f, "");
+        setNodeAttrs(child3, "", 0.5f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "C", 0.3f, "");
+        setNodeAttrs(child4, "C", 0.3f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "D", 0.4f, "");
+        setNodeAttrs(child5, "D", 0.4f, "",locationManager);
 
     }
 
     // (A:0.1,B:0.2,(C:0.3,D:0.4)E:0.5)F;     distances and all names
-    static void loadTree7(ITree< TestNode >* tree)
+    static void loadTree7(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "F", 0.0f, "");
+        setNodeAttrs(root, "F", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "A", 0.1f, "");
+        setNodeAttrs(child1, "A", 0.1f, "",locationManager);
 
         TestNode* child2 = root->addChild<TestNode>();
-        setNodeAttrs(child2, "B", 0.2f, "");
+        setNodeAttrs(child2, "B", 0.2f, "",locationManager);
 
         TestNode* child3 = root->addChild<TestNode>();
-        setNodeAttrs(child3, "E", 0.5f, "");
+        setNodeAttrs(child3, "E", 0.5f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "C", 0.3f, "");
+        setNodeAttrs(child4, "C", 0.3f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "D", 0.4f, "");
+        setNodeAttrs(child5, "D", 0.4f, "",locationManager);
 
     }
 
     // ((B:0.2,(C:0.3,D:0.4)E:0.5)F:0.1)A;    a tree rooted on a leaf node
-    static void loadTree8(ITree< TestNode >* tree)
+    static void loadTree8(ITree< TestNode >* tree, Locations::LocationManager& locationManager)
     {
         TestNode* root = tree->getRoot();
-        setNodeAttrs(root, "A", 0.0f, "");
+        setNodeAttrs(root, "A", 0.0f, "",locationManager);
 
         TestNode* child1 = root->addChild<TestNode>();
-        setNodeAttrs(child1, "F", 0.1f, "");
+        setNodeAttrs(child1, "F", 0.1f, "",locationManager);
 
         TestNode* child2 = child1->addChild<TestNode>();
-        setNodeAttrs(child2, "B", 0.2f, "");
+        setNodeAttrs(child2, "B", 0.2f, "",locationManager);
 
         TestNode* child3 = child1->addChild<TestNode>();
-        setNodeAttrs(child3, "E", 0.5f, "");
+        setNodeAttrs(child3, "E", 0.5f, "",locationManager);
 
         TestNode* child4 = child3->addChild<TestNode>();
-        setNodeAttrs(child4, "C", 0.3f, "");
+        setNodeAttrs(child4, "C", 0.3f, "",locationManager);
 
         TestNode* child5 = child3->addChild<TestNode>();
-        setNodeAttrs(child5, "D", 0.4f, "");
+        setNodeAttrs(child5, "D", 0.4f, "",locationManager);
 
     }
 
-    static void assertTreeCollectionsEquals(const ITreeCollection<TestNode>& expectedTrees, const ITreeCollection<TestNode>& actualTrees)
+    static void assertTreeCollectionsEquals(
+        const ITreeCollection<TestNode>& expectedTrees, 
+        const ITreeCollection<TestNode>& actualTrees, 
+        const Locations::LocationManager locationManager)
     {
 
         ITreeCollection<TestNode>::iterator iterExpected = expectedTrees.getIterator();
@@ -259,45 +265,45 @@ protected:
 
         while (!iterExpected.end())
         {
-            assertTreesEquals(iterExpected.get(), iterActual.get());
+            assertTreesEquals(iterExpected.get(), iterActual.get(), locationManager);
             iterExpected.next();
             iterActual.next();
         }
     }
 
-    static void assertLocationsEquals(const ITreeCollection<TestNode>& actualTrees, LocationsMap& expectedLocationsMap)
+    static void assertLocationsEquals(const ITreeCollection<TestNode>& actualTrees, const Locations::LocationManager locationManager, LocationsMap& expectedLocationsMap)
     {
         ITreeCollection<TestNode>::iterator treesIterator = actualTrees.getIterator();
 
         for (; !treesIterator.end(); treesIterator.next())
         {
             ITree<TestNode>* tree = treesIterator.get();
-            assertNodeLocationsEquals(tree->getRoot(), expectedLocationsMap);
+            assertNodeLocationsEquals(tree->getRoot(), locationManager, expectedLocationsMap);
         }
     }
 
 private:
 
-    static void assertNodeLocationsEquals(const TestNode* actualNode, LocationsMap& expectedLocationsMap)
+    static void assertNodeLocationsEquals(const TestNode* actualNode, const Locations::LocationManager locationManager, LocationsMap& expectedLocationsMap)
     {
-        ASSERT_EQ(expectedLocationsMap[actualNode->getName()], actualNode->getLocation());
+        ASSERT_EQ(expectedLocationsMap[actualNode->getName()], locationManager.getLocation(actualNode->getName()));
 
         ListIterator<TestNode, Domain::Node> iterNode = actualNode->getChildrenIterator<TestNode>();
 
         for (; !iterNode.end() ; iterNode.next())
         {
-            assertNodeLocationsEquals(iterNode.get(), expectedLocationsMap);
+            assertNodeLocationsEquals(iterNode.get(), locationManager, expectedLocationsMap);
         }
     }
 
-    static void assertNodesEquals(const TestNode* expectedNode, const TestNode* actualNode)
+    static void assertNodesEquals(const TestNode* expectedNode, const TestNode* actualNode, const Locations::LocationManager locationManager)
     {
 
         ASSERT_EQ(expectedNode->getName(), actualNode->getName());
 
         ASSERT_EQ(expectedNode->getBranchLength(), actualNode->getBranchLength());
 
-        ASSERT_EQ(expectedNode->getLocation(), actualNode->getLocation());
+        ASSERT_EQ(locationManager.getLocation(expectedNode->getName()), locationManager.getLocation(actualNode->getName()));
 
         ListIterator<TestNode, Domain::Node> iterExpected = expectedNode->getChildrenIterator<TestNode>();
         ListIterator<TestNode, Domain::Node> iterActual = actualNode->getChildrenIterator<TestNode>();
@@ -306,138 +312,157 @@ private:
 
         while (!iterExpected.end())
         {
-            assertNodesEquals(iterExpected.get(), iterActual.get());
+            assertNodesEquals(iterExpected.get(), iterActual.get(), locationManager);
             iterExpected.next();
             iterActual.next();
         }
     }
 
-    static void assertTreesEquals(const ITree<TestNode>* expectedTree, const ITree<TestNode>* actualTree)
+    static void assertTreesEquals(const ITree<TestNode>* expectedTree, const ITree<TestNode>* actualTree, const Locations::LocationManager locationManager)
     {
-        assertNodesEquals(expectedTree->getRoot(), actualTree->getRoot());
+        assertNodesEquals(expectedTree->getRoot(), actualTree->getRoot(), locationManager);
     }
 };
 
 
 TEST_F(FileDataSourceTest, loadTest1)
 {
+    Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> myTrees;
-    loadTree1(myTrees.addTree());
+    loadTree1(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest2)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree2(myTrees.addTree());
+    loadTree2(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest3)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree3(myTrees.addTree());
+    loadTree3(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest4)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree4(myTrees.addTree());
+    loadTree4(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest5)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree5(myTrees.addTree());
+    loadTree5(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest6)
 {
+    Locations::LocationManager locationManager;    
+
     ITreeCollection<TestNode> myTrees;
-    loadTree6(myTrees.addTree());
+    loadTree6(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest7)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree7(myTrees.addTree());
+    loadTree7(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTest8)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree8(myTrees.addTree());
+    loadTree8(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 
 TEST_F(FileDataSourceTest, loadTest9)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> myTrees;
-    loadTree1(myTrees.addTree());
-    loadTree2(myTrees.addTree());
-    loadTree3(myTrees.addTree());
-    loadTree4(myTrees.addTree());
-    loadTree5(myTrees.addTree());
-    loadTree6(myTrees.addTree());
-    loadTree7(myTrees.addTree());
-    loadTree8(myTrees.addTree());
+    loadTree1(myTrees.addTree(), locationManager);
+    loadTree2(myTrees.addTree(), locationManager);
+    loadTree3(myTrees.addTree(), locationManager);
+    loadTree4(myTrees.addTree(), locationManager);
+    loadTree5(myTrees.addTree(), locationManager);
+    loadTree6(myTrees.addTree(), locationManager);
+    loadTree7(myTrees.addTree(), locationManager);
+    loadTree8(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees);
-    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees);
+    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees, locationManager);
 
-    assertTreeCollectionsEquals(myTrees, trees);
+    assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/locations1.dat", trees), MissingTreeSeparator);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/locations1.dat", trees, locationManager), MissingTreeSeparator);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -445,8 +470,10 @@ TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
 
 TEST_F(FileDataSourceTest, loadMalformedTree)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/locations1.dat", trees), MalformedExpression);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/locations1.dat", trees, locationManager), MalformedExpression);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -454,14 +481,18 @@ TEST_F(FileDataSourceTest, loadMalformedTree)
 
 TEST_F(FileDataSourceTest, loadMissingTree)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk", "TestTrees/locations1.dat", trees), TreeFileNotFound);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk", "TestTrees/locations1.dat", trees, locationManager), TreeFileNotFound);
 }
 
 TEST_F(FileDataSourceTest, saveTest1)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTree1(trees.addTree());
+    loadTree1(trees.addTree(), locationManager);
 
     saveTreeToFile("TestTrees/outTree.nwk", trees);
 
@@ -474,15 +505,17 @@ TEST_F(FileDataSourceTest, saveTest1)
 
 TEST_F(FileDataSourceTest, saveTest2)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTree1(trees.addTree());
-    loadTree2(trees.addTree());
-    loadTree3(trees.addTree());
-    loadTree4(trees.addTree());
-    loadTree5(trees.addTree());
-    loadTree6(trees.addTree());
-    loadTree7(trees.addTree());
-    loadTree8(trees.addTree());
+    loadTree1(trees.addTree(), locationManager);
+    loadTree2(trees.addTree(), locationManager);
+    loadTree3(trees.addTree(), locationManager);
+    loadTree4(trees.addTree(), locationManager);
+    loadTree5(trees.addTree(), locationManager);
+    loadTree6(trees.addTree(), locationManager);
+    loadTree7(trees.addTree(), locationManager);
+    loadTree8(trees.addTree(), locationManager);
 
     saveTreeToFile("TestTrees/outTree.nwk", trees);
 
@@ -509,29 +542,35 @@ TEST_F(FileDataSourceTest, saveTest2)
 // Empty file. Three with no places loaded.
 TEST_F(FileDataSourceTest, loadLocations1)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", trees);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", trees, locationManager);
     LocationsMap map;
 
-    assertLocationsEquals(trees, map);
+    assertLocationsEquals(trees, locationManager, map);
 }
 
 // Single location.
 TEST_F(FileDataSourceTest, loadLocations2)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations2.dat", trees);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations2.dat", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA";
-    assertLocationsEquals(trees, map);
+    assertLocationsEquals(trees, locationManager, map);
 }
 
 // Correctly formed file, with a location per node
 TEST_F(FileDataSourceTest, loadLocations3)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations3.dat", trees);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations3.dat", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA";
@@ -541,26 +580,30 @@ TEST_F(FileDataSourceTest, loadLocations3)
     map["e"] = "placeE";
     map["f"] = "placeF";
 
-    assertLocationsEquals(trees, map);
+    assertLocationsEquals(trees, locationManager, map);
 }
 
 // Multiple locations for a node
 TEST_F(FileDataSourceTest, loadLocations4)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations4.dat", trees);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations4.dat", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA2";
 
-    assertLocationsEquals(trees, map);
+    assertLocationsEquals(trees, locationManager, map);
 }
 
 // More associations node/location than nodes in the tree
 TEST_F(FileDataSourceTest, loadLocations5)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations5.dat", trees);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations5.dat", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "place";
@@ -580,15 +623,17 @@ TEST_F(FileDataSourceTest, loadLocations5)
     map["i"] = "place";
     map["j"] = "place";
 
-    assertLocationsEquals(trees, map);
+    assertLocationsEquals(trees, locationManager, map);
 }
 
 // Try to load a malformed file
 TEST_F(FileDataSourceTest, loadLocations6)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
 
-    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", trees), MalformedFile);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", trees, locationManager), MalformedFile);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -597,8 +642,11 @@ TEST_F(FileDataSourceTest, loadLocations6)
 // Try to load non existent file
 TEST_F(FileDataSourceTest, loadLocations7)
 {
+    Locations::LocationManager locationManager;
+
     ITreeCollection<TestNode> trees;
 
-    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", trees), DataFileNotFound);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", trees, locationManager), DataFileNotFound);
 }
+
 }

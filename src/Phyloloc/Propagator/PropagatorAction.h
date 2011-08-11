@@ -4,6 +4,7 @@
 #include "PropagatorAspect.h"
 #include "Phylopp/Traversal/NodeVisitor.h"
 #include "Phylopp/Traversal/Traverser.h"
+#include "Domain/LocationManager.h"
 
 namespace Propagation
 {
@@ -41,27 +42,31 @@ public:
     PropagateFromChildrenAction(Domain::BranchLength blSum,
                                 const Locations::DistanceVector& dispersal,
                                 Weight geographic,
-                                Weight branch)
+                                Weight branch,
+                                Locations::LocationManager locationManager)
         : branchLengthSum(blSum),
           geographicFactorWeight(geographic),
           branchLenghtFactorWeight(branch),
           dispersalVector(dispersal)
 
-    {}
+    {
+        this->locationManager = locationManager;
+    }
 
     VisitAction visitNode(T* n)
     {
-        n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
+        n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight, locationManager);
 
         return ContinueTraversing;
     }
 
 private:
-
+    Locations::LocationManager locationManager;
     Domain::BranchLength branchLengthSum;
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
     const Locations::DistanceVector& dispersalVector;
+    
 };
 
 template <class T>

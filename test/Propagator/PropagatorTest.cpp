@@ -1,4 +1,3 @@
-
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "../../src/Phyloloc/Propagator/Propagator.h"
@@ -48,6 +47,7 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
      */
 
     const float epsilon = 0.001f;
+    Locations::LocationManager locationManager;
 
     ITree<PropNode> t;
 
@@ -69,26 +69,22 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
     c4->setBranchLength(4);
 
 
-    PropNode::addLocation("A", "A");
-    PropNode::addLocation("B", "B");
-    PropNode::addLocation("C", "C");
+    locationManager.addLocation("A", "A");
+    locationManager.addLocation("B", "B");
+    locationManager.addLocation("C", "C");
 
-    PropNode::addDistance(0, "A", "A");
-    PropNode::addDistance(0, "B", "B");
-    PropNode::addDistance(0, "C", "C");
+    locationManager.addDistance(0, "A", "A");
+    locationManager.addDistance(0, "B", "B");
+    locationManager.addDistance(0, "C", "C");
 
-    PropNode::addDistance(2, "A", "B");
-    PropNode::addDistance(2, "A", "C");
-    PropNode::addDistance(3, "B", "A");
-    PropNode::addDistance(3, "B", "C");
-    PropNode::addDistance(2, "C", "A");
-    PropNode::addDistance(4, "C", "B");
+    locationManager.addDistance(2, "A", "B");
+    locationManager.addDistance(2, "A", "C");
+    locationManager.addDistance(3, "B", "A");
+    locationManager.addDistance(3, "B", "C");
+    locationManager.addDistance(2, "C", "A");
+    locationManager.addDistance(4, "C", "B");
 
-
-
-    Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4);
-
-
+    Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4, locationManager);
 
     ASSERT_TRUE(fabs(root->probabilities[0] - 0.533) < epsilon);
     ASSERT_TRUE(fabs(root->probabilities[1] - 0.233) < epsilon);
@@ -109,25 +105,25 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
     ASSERT_TRUE(fabs(c4->probabilities[0] - 0.301176) < epsilon);
     ASSERT_TRUE(fabs(c4->probabilities[1] - 0.111176) < epsilon);
     ASSERT_TRUE(fabs(c4->probabilities[2] - 0.587647) < epsilon);
-
-
-    PropNode::clear();
 }
 
 TEST_F(PropagatorTest, invalidFactors)
 {
+    Locations::LocationManager locationManager;
     ITree<PropNode> t;
 
-    ASSERT_THROW(Propagator<PropNode>::propagate(&t, 2, 0.51, 0.5), InvalidArgumentsException);
+    ASSERT_THROW(Propagator<PropNode>::propagate(&t, 2, 0.51, 0.5, locationManager), InvalidArgumentsException);
 }
 
 TEST_F(PropagatorTest, validFactors)
 {
+    Locations::LocationManager locationManager;
     ITree<PropNode> t;
 
     double geographicFactor = 0.80;
     double branchLengthFactor = 0.20;
 
-    ASSERT_NO_THROW(Propagator<PropNode>::propagate(&t, 2, geographicFactor, branchLengthFactor));
+    ASSERT_NO_THROW(Propagator<PropNode>::propagate(&t, 2, geographicFactor, branchLengthFactor, locationManager));
 }
 }
+

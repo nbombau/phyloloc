@@ -1,4 +1,3 @@
-
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 #include "../../src/Phyloloc/Propagator/PropagatorAspect.h"
@@ -38,6 +37,8 @@ typedef Propagation::PropagatorAspect<Locations::LocationAspect<Domain::Node> > 
 TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
 {
     const float epsilon = 0.001f;
+    Locations::LocationManager locationManager;    
+
 
     PropNode root;
 
@@ -57,28 +58,28 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
     c3->setBranchLength(3);
     c4->setBranchLength(4);
 
-    PropNode::addLocation("A", "A");
-    PropNode::addLocation("B", "B");
-    PropNode::addLocation("C", "C");
+    locationManager.addLocation("A", "A");
+    locationManager.addLocation("B", "B");
+    locationManager.addLocation("C", "C");
 
-    PropNode::addDistance(0, "A", "A");
-    PropNode::addDistance(0, "B", "B");
-    PropNode::addDistance(0, "C", "C");
+    locationManager.addDistance(0, "A", "A");
+    locationManager.addDistance(0, "B", "B");
+    locationManager.addDistance(0, "C", "C");
 
-    PropNode::addDistance(2, "A", "B");
-    PropNode::addDistance(2, "A", "C");
-    PropNode::addDistance(3, "B", "A");
-    PropNode::addDistance(3, "B", "C");
-    PropNode::addDistance(2, "C", "A");
-    PropNode::addDistance(4, "C", "B");
+    locationManager.addDistance(2, "A", "B");
+    locationManager.addDistance(2, "A", "C");
+    locationManager.addDistance(3, "B", "A");
+    locationManager.addDistance(3, "B", "C");
+    locationManager.addDistance(2, "C", "A");
+    locationManager.addDistance(4, "C", "B");
 
-    const std::vector<float>& dispersalVector = PropNode::getDispersionVector();
+    const std::vector<float>& dispersalVector = locationManager.getDispersionVector();
 
-    c1->propagateFromChildren(10, dispersalVector, 0, 0);
-    c2->propagateFromChildren(10, dispersalVector, 0, 0);
-    c3->propagateFromChildren(10, dispersalVector, 0, 0);
-    c4->propagateFromChildren(10, dispersalVector, 0, 0);
-    root.propagateFromChildren(10, dispersalVector, 0, 0);
+    c1->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
+    c2->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
+    c3->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
+    c4->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
+    root.propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
     ASSERT_TRUE(fabs(root.probabilities[0] - 0.5) < epsilon);
     ASSERT_TRUE(fabs(root.probabilities[1] - 0.25) < epsilon);
     ASSERT_TRUE(fabs(root.probabilities[2] - 0.25) < epsilon);
@@ -109,8 +110,6 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
     delete c2;
     delete c3;
     delete c4;
-
-    PropNode::clear();
 }
 
 TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
@@ -125,6 +124,7 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
      */
 
     const float epsilon = 0.001f;
+    Locations::LocationManager locationManager;
 
     PropNode root;
 
@@ -143,28 +143,28 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     c3->setBranchLength(3);
     c4->setBranchLength(4);
 
-    PropNode::addLocation("A", "A");
-    PropNode::addLocation("B", "B");
-    PropNode::addLocation("C", "C");
+    locationManager.addLocation("A", "A");
+    locationManager.addLocation("B", "B");
+    locationManager.addLocation("C", "C");
 
-    PropNode::addDistance(0, "A", "A");
-    PropNode::addDistance(0, "B", "B");
-    PropNode::addDistance(0, "C", "C");
+    locationManager.addDistance(0, "A", "A");
+    locationManager.addDistance(0, "B", "B");
+    locationManager.addDistance(0, "C", "C");
 
-    PropNode::addDistance(2, "A", "B");
-    PropNode::addDistance(2, "A", "C");
-    PropNode::addDistance(3, "B", "A");
-    PropNode::addDistance(3, "B", "C");
-    PropNode::addDistance(2, "C", "A");
-    PropNode::addDistance(4, "C", "B");
+    locationManager.addDistance(2, "A", "B");
+    locationManager.addDistance(2, "A", "C");
+    locationManager.addDistance(3, "B", "A");
+    locationManager.addDistance(3, "B", "C");
+    locationManager.addDistance(2, "C", "A");
+    locationManager.addDistance(4, "C", "B");
 
-    const std::vector<float>& dispersalVector = PropNode::getDispersionVector();
+    const std::vector<float>& dispersalVector = locationManager.getDispersionVector();
 
-    c1->propagateFromChildren(10, dispersalVector, 0.4, 0.4);
-    c2->propagateFromChildren(10, dispersalVector, 0.4, 0.4);
-    c3->propagateFromChildren(10, dispersalVector, 0.4, 0.4);
-    c4->propagateFromChildren(10, dispersalVector, 0.4, 0.4);
-    root.propagateFromChildren(10, dispersalVector, 0.4, 0.4);
+    c1->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
+    c2->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
+    c3->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
+    c4->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
+    root.propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
 
     ASSERT_TRUE(fabs(root.probabilities[0] - 0.533) < epsilon);
     ASSERT_TRUE(fabs(root.probabilities[1] - 0.233) < epsilon);
@@ -192,9 +192,8 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     delete c2;
     delete c3;
     delete c4;
-
-    PropNode::clear();
 }
 
 
 }
+

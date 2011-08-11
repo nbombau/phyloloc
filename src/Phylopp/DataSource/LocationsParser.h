@@ -6,7 +6,7 @@
 #include <iostream>
 #include <mili/mili.h>
 #include "Domain/INode.h"
-#include "Domain/LocationAspect.h"
+#include "Domain/LocationManager.h"
 
 using namespace Locations;
 
@@ -37,7 +37,7 @@ class LocationsParser
 {
 public:
 
-    void loadLocationsFile(const std::string& fname)
+    void loadLocationsFile(const std::string& fname, Locations::LocationManager& locationManager)
     {
         std::ifstream f(fname.c_str());
 
@@ -56,7 +56,7 @@ public:
             Domain::NodeName name = trim(values[0]);
             Location location = trim(values[1]);
 
-            addLocation(name, location);
+            addLocation(name, location, locationManager);
 
             values.clear();
             currentLineNumber++;
@@ -65,9 +65,9 @@ public:
 
 private:
 
-    void addLocation(const Domain::NodeName nodeName, const Location& location)
+    void addLocation(const Domain::NodeName nodeName, const Location& location, Locations::LocationManager& locationManager)
     {
-        LocationAspect<Domain::Node>::addLocation(location, nodeName);
+        locationManager.addLocation(location, nodeName);
     }
 
     /****************************************************

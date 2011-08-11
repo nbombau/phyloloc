@@ -33,28 +33,28 @@ public:
     * Description: Load multiples tree structures from a text file
     * an associate each node with a location.
     */
-    void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees, bool allowMissingData)
+    void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees, Locations::LocationManager& locationManager, bool allowMissingData)
     {
         LocationsParser locationsParser;
-        locationsParser.loadLocationsFile(info.getLocationsFilePath());
+        locationsParser.loadLocationsFile(info.getLocationsFilePath(), locationManager);
 
         DistancesParser distancesParser;
-        distancesParser.loadDistancesFile(info.getDistancesFilePath());
+        distancesParser.loadDistancesFile(info.getDistancesFilePath(), locationManager);
 
         try
         {
             if (allowMissingData)
             {
                 //map nameless nodes, to the common ? location
-                LocationAspect<Domain::Node>::addLocation("?", "");
+                locationManager.addLocation("?", "");
 
                 NewickParser<T> newickParser;
-                newickParser.loadNewickFile(info.getTreesFilePath(), trees);
+                newickParser.loadNewickFile(info.getTreesFilePath(), locationManager, trees);
             }
             else
             {
                 NewickParser<T, ForbidMissinbgDataPolicy> newickParser;
-                newickParser.loadNewickFile(info.getTreesFilePath(), trees);
+                newickParser.loadNewickFile(info.getTreesFilePath(), locationManager, trees);
             }
         }
         catch (const TreeFileException& ex)

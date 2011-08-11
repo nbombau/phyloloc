@@ -3,7 +3,7 @@
 
 #include "Domain/INode.h"
 #include "Domain/ListIterator.h"
-#include "Domain/LocationAspect.h"
+#include "Domain/LocationManager.h"
 #include "VectorHelper.h"
 
 namespace Propagation
@@ -24,10 +24,11 @@ public:
     void propagateFromChildren(Domain::BranchLength branchLengthSum,
                                const Locations::DistanceVector& dispersalVector,
                                Weight geographicFactorWeight,
-                               Weight branchLenghtFactorWeight)
+                               Weight branchLenghtFactorWeight,
+                               Locations::LocationManager locationManager)
     {
 
-        initProbabilities();
+        initProbabilities(locationManager);
 
         //if it's leaf, theres nothing to propagate
         if (!this->isLeaf())
@@ -114,9 +115,9 @@ public:
 
 private:
 
-    void initProbabilities()
+    void initProbabilities(Locations::LocationManager locationManager)
     {
-        size_t locationCount = this->locationManager.getLocationsCount();
+        size_t locationCount = locationManager.getLocationsCount();
 
         //If probabilities vector not initialized yet, initialize
         //as vector of zeros
@@ -134,7 +135,7 @@ private:
 
             if (this->isLeaf())
             {
-                Locations::LocationId id = this->locationManager.getNameLocationId(this->getName());
+                Locations::LocationId id = locationManager.getNameLocationId(this->getName());
 
                 if (id > 0)
                     probabilities[id - 1] = 1.0f;
