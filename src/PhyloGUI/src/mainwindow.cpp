@@ -60,18 +60,18 @@ void MainWindow::on_actionOpen_triggered()
 
         FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
-        loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked());
+        loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
     }
     //else not needed: user closed or canceled the dialog
 }
 
-void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData)
+void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, LocationManager& locationManager)
 {
     FileDataSource<GuiNode>fileDataSource;
 
     try
     {
-        fileDataSource.load(info, trees, allowMissingData);
+        fileDataSource.load(info, trees, locationManager, allowMissingData);
 
         ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
 
@@ -162,7 +162,7 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
         const std::string searchString = text.toStdString();
         SearchNode<GuiNode> sn;
         sn.setRoot(actualTree->getRoot());
-        sn.search(searchString);
+        sn.search(searchString, locationManager);
     }
     //else not needed
 }
@@ -174,7 +174,7 @@ void MainWindow::on_actionProcess_tree_triggered()
     {
         try
         {
-            Propagator<GuiNode>::propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF());
+            Propagator<GuiNode>::propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF(), locationManager);
 
             QListIterator<QGraphicsItem*> items(graph->scene()->items());
             while (items.hasNext())

@@ -5,6 +5,7 @@
 #include "Domain/ITreeCollection.h"
 #include "Domain/INode.h"
 #include "IDataSourceInfo.h"
+#include "Domain/LocationManager.h"
 
 namespace DataSource
 {
@@ -30,7 +31,7 @@ public:
     * @param allowMissingData true if nameless nodes are allowed
     * @return loaded tree collection
     */
-    virtual void load(const K& info, Domain::ITreeCollection<T>& trees, bool allowMissingData) = 0;
+    virtual void load(const K& info, Domain::ITreeCollection<T>& trees, Locations::LocationManager& locationManager, bool allowMissingData) = 0;
 
     /**
     * Method: load

@@ -5,8 +5,8 @@
 #include <vector>
 #include <iostream>
 #include <mili/mili.h>
-#include "Domain/LocationAspect.h"
 #include "Domain/INode.h"
+#include "Domain/LocationManager.h"
 
 using namespace Locations;
 
@@ -37,7 +37,7 @@ class DistancesParser
 {
 public:
 
-    void loadDistancesFile(const std::string& fname)
+    void loadDistancesFile(const std::string& fname, Locations::LocationManager& locationManager)
     {
         std::ifstream f(fname.c_str());
 
@@ -60,7 +60,7 @@ public:
             if (!from_string(values[2], distance))
                 throw MalformedDistancesFile(getLineNumberText());
 
-            addDistance(distance, location1, location2);
+            addDistance(distance, location1, location2, locationManager);
 
             values.clear();
 
@@ -70,11 +70,11 @@ public:
 
 private:
 
-    void addDistance(const float distance, const Location& location1, const Location& location2)
+    void addDistance(const float distance, const Location& location1, const Location& location2, Locations::LocationManager& locationManager)
     {
         try
         {
-            LocationAspect<Domain::Node>::addDistance(distance, location1, location2);
+            locationManager.addDistance(distance, location1, location2);
         }
         catch (InvalidLocation)
         {

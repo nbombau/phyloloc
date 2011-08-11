@@ -36,8 +36,9 @@ private:
     Ui::MainWindow* ui;
     PhyloGUI::GraphWidget* graph;
     Domain::ITree<PhyloGUI::GuiNode>* actualTree;
-    void loadTree(const DataSource::FilesInfo& info, bool allowMissingData);
+    void loadTree(const DataSource::FilesInfo& info, bool allowMissingData, LocationManager& locationManager);
     Domain::ITreeCollection<PhyloGUI::GuiNode> trees;
+    Locations::LocationManager locationManager;
 
 public slots:
     void drawTree();
