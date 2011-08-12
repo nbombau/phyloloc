@@ -53,9 +53,9 @@ protected:
     }
 
     //TODO update tests to support distances file
-    void loadTreeFromFile(std::string treesFile, std::string placesFile, ITreeCollection<TestNode>& trees, Locations::LocationManager& locationManager)
+    void loadTreeFromFile(std::string treesFile, std::string placesFile, std::string distancesFile, ITreeCollection<TestNode>& trees, Locations::LocationManager& locationManager)
     {
-        FilesInfo info(treesFile, placesFile, "TestTrees/distances1.dist");
+        FilesInfo info(treesFile, placesFile, distancesFile);
         fileDataSource.load(info, trees, locationManager, true);
     }
 
@@ -333,7 +333,7 @@ TEST_F(FileDataSourceTest, loadTest1)
     loadTree1(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -346,7 +346,7 @@ TEST_F(FileDataSourceTest, loadTest2)
     loadTree2(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -359,7 +359,7 @@ TEST_F(FileDataSourceTest, loadTest3)
     loadTree3(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -372,7 +372,7 @@ TEST_F(FileDataSourceTest, loadTest4)
     loadTree4(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -385,7 +385,7 @@ TEST_F(FileDataSourceTest, loadTest5)
     loadTree5(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -398,7 +398,7 @@ TEST_F(FileDataSourceTest, loadTest6)
     loadTree6(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -411,7 +411,7 @@ TEST_F(FileDataSourceTest, loadTest7)
     loadTree7(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -424,7 +424,7 @@ TEST_F(FileDataSourceTest, loadTest8)
     loadTree8(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -445,14 +445,14 @@ TEST_F(FileDataSourceTest, loadTest9)
     loadTree8(myTrees.addTree(), locationManager);
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", trees, locationManager);
-    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree2.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree3.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree4.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree5.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree6.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree7.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
+    loadTreeFromFile("TestTrees/tree8.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     assertTreeCollectionsEquals(myTrees, trees, locationManager);
 }
@@ -462,7 +462,7 @@ TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/locations1.dat", trees, locationManager), MissingTreeSeparator);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MissingTreeSeparator);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -473,7 +473,7 @@ TEST_F(FileDataSourceTest, loadMalformedTree)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/locations1.dat", trees, locationManager), MalformedExpression);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -484,9 +484,8 @@ TEST_F(FileDataSourceTest, loadMalformedTree2)
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
     
-    FilesInfo info("TestTrees/tree13.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree13.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
     
-    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedExpression);
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
 }
@@ -495,10 +494,9 @@ TEST_F(FileDataSourceTest, invalidBranchLength)
 {
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
+     
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree12.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
     
-    FilesInfo info("TestTrees/tree12.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
-    
-    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedExpression);
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
 }
@@ -508,7 +506,7 @@ TEST_F(FileDataSourceTest, loadMissingTree)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk", "TestTrees/locations1.dat", trees, locationManager), TreeFileNotFound);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), TreeFileNotFound);
 }
 
 TEST_F(FileDataSourceTest, saveTest1)
@@ -563,13 +561,13 @@ TEST_F(FileDataSourceTest, saveTest2)
     EXPECT_EQ(expected_str, tree_str);
 }
 
-// Empty file. Three with no places loaded.
+// Empty file. Tree with no places loaded.
 TEST_F(FileDataSourceTest, loadLocations1)
 {
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations1.dat", "TestTrees/distances2.dist", trees, locationManager);
     LocationsMap map;
 
     assertLocationsEquals(trees, locationManager, map);
@@ -581,7 +579,7 @@ TEST_F(FileDataSourceTest, loadLocations2)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations2.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations2.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA";
@@ -594,7 +592,7 @@ TEST_F(FileDataSourceTest, loadLocations3)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations3.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations3.dat", "TestTrees/distances3.dist", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA";
@@ -613,7 +611,7 @@ TEST_F(FileDataSourceTest, loadLocations4)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations4.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations4.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "placeA2";
@@ -627,7 +625,7 @@ TEST_F(FileDataSourceTest, loadLocations5)
     Locations::LocationManager locationManager;
 
     ITreeCollection<TestNode> trees;
-    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations5.dat", trees, locationManager);
+    loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations5.dat", "TestTrees/distances2.dist", trees, locationManager);
 
     LocationsMap map;
     map["a"] = "place";
@@ -657,7 +655,7 @@ TEST_F(FileDataSourceTest, loadLocations6)
 
     ITreeCollection<TestNode> trees;
 
-    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", trees, locationManager), MalformedFile);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedFile);
 
     ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
@@ -670,7 +668,7 @@ TEST_F(FileDataSourceTest, loadLocations7)
 
     ITreeCollection<TestNode> trees;
 
-    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", trees, locationManager), DataFileNotFound);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", "TestTrees/distances2.dist", trees, locationManager), DataFileNotFound);
 }
 
 // Try to load missing data trees with resctrected policy
@@ -679,7 +677,7 @@ TEST_F(FileDataSourceTest, loadMissingData)
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
     
-    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
+    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist");
     
     ASSERT_THROW(fileDataSource.load(info, trees, locationManager, false), MissingDataException);
 }
@@ -690,9 +688,7 @@ TEST_F(FileDataSourceTest, loadMissingDistances)
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
     
-    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/nonexistantdistances.dist");
-    
-    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), DistancesFileNotFound);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/nonexistantdistances.dist", trees, locationManager), DistancesFileNotFound);
 }
 
 // Try to load malformed distances file
@@ -701,9 +697,7 @@ TEST_F(FileDataSourceTest, loadMalformedDistancesFile)
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
     
-    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances.dist");
-    
-    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedDistancesFile);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances.dist", trees, locationManager), MalformedDistancesFile);
 }
 
 // Try to load malformed distances file
@@ -712,9 +706,16 @@ TEST_F(FileDataSourceTest, loadMalformedDistancesFile2)
     Locations::LocationManager locationManager;
     ITreeCollection<TestNode> trees;
     
-    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances2.dist");
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances2.dist", trees, locationManager), MalformedDistancesFile);
+}
+
+// Try to load distances form inexistant locations 
+TEST_F(FileDataSourceTest, loadInexistantLocationDistances)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
     
-    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedDistancesFile);
+    ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/locations1.dat", "TestTrees/distances1.dist", trees, locationManager), InvalidLocation);
 }
 
 }
