@@ -56,8 +56,6 @@ void MainWindow::on_actionOpen_triggered()
 
     if (fileDialog.exec())
     {
-        ui->listWidget->clear();
-
         FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
         loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
@@ -72,22 +70,6 @@ void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, Location
     try
     {
         fileDataSource.load(info, trees, locationManager, allowMissingData);
-
-        ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
-
-        unsigned int treeNumber = 1;
-
-        for (; !iter.end(); iter.next())
-        {
-            QListWidgetItem* newItem = new QListWidgetItem;
-
-            std:: stringstream itemText;
-            itemText << "Tree " << treeNumber;
-            newItem->setText(QString(itemText.str().c_str()));
-
-            ui->listWidget->addItem(newItem);
-            treeNumber++;
-        }
     }
     catch (const DataFileException& ex)
     {
@@ -103,6 +85,29 @@ void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, Location
     {
         QMessageBox msg(QMessageBox::Information, "Load distances file error", ex.what(), QMessageBox::NoButton, this);
         msg.exec();
+    }
+    catch (const InvalidLocation& ex)
+    {
+        QMessageBox msg(QMessageBox::Information, "Load distances file error", ex.what(), QMessageBox::NoButton, this);
+        msg.exec();
+    }
+
+    ui->listWidget->clear();
+
+    ITreeCollection<GuiNode>::iterator iter = trees.getIterator();
+
+    unsigned int treeNumber = 1;
+
+    for (; !iter.end(); iter.next())
+    {
+        QListWidgetItem* newItem = new QListWidgetItem;
+
+        std:: stringstream itemText;
+        itemText << "Tree " << treeNumber;
+        newItem->setText(QString(itemText.str().c_str()));
+
+        ui->listWidget->addItem(newItem);
+        treeNumber++;
     }
 }
 

@@ -76,8 +76,9 @@ private:
         {
             locationManager.addDistance(distance, location1, location2);
         }
-        catch (InvalidLocation)
+        catch (const InvalidLocation& ex)
         {
+            throw InvalidLocation(getLineNumberText());
         }
     }
 
