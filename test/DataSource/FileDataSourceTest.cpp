@@ -479,6 +479,30 @@ TEST_F(FileDataSourceTest, loadMalformedTree)
     EXPECT_TRUE(treesIterator.end()); //check trees to be empty
 }
 
+TEST_F(FileDataSourceTest, loadMalformedTree2)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree13.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedExpression);
+    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
+    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+}
+
+TEST_F(FileDataSourceTest, invalidBranchLength)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree12.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedExpression);
+    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
+    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+}
+
 TEST_F(FileDataSourceTest, loadMissingTree)
 {
     Locations::LocationManager locationManager;
@@ -647,6 +671,50 @@ TEST_F(FileDataSourceTest, loadLocations7)
     ITreeCollection<TestNode> trees;
 
     ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", trees, locationManager), DataFileNotFound);
+}
+
+// Try to load missing data trees with resctrected policy
+TEST_F(FileDataSourceTest, loadMissingData)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances1.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, false), MissingDataException);
+}
+
+// Try to load non existant distances file
+TEST_F(FileDataSourceTest, loadMissingDistances)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/nonexistantdistances.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), DistancesFileNotFound);
+}
+
+// Try to load malformed distances file
+TEST_F(FileDataSourceTest, loadMalformedDistancesFile)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedDistancesFile);
+}
+
+// Try to load malformed distances file
+TEST_F(FileDataSourceTest, loadMalformedDistancesFile2)
+{
+    Locations::LocationManager locationManager;
+    ITreeCollection<TestNode> trees;
+    
+    FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances2.dist");
+    
+    ASSERT_THROW(fileDataSource.load(info, trees, locationManager, true), MalformedDistancesFile);
 }
 
 }
