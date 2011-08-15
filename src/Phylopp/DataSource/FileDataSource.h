@@ -35,11 +35,32 @@ public:
     */
     void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees, Locations::LocationManager& locationManager, bool allowMissingData)
     {
-        LocationsParser locationsParser;
-        locationsParser.loadLocationsFile(info.getLocationsFilePath(), locationManager);
+        try
+        {
+            LocationsParser locationsParser;
+            locationsParser.loadLocationsFile(info.getLocationsFilePath(), locationManager);
 
-        DistancesParser distancesParser;
-        distancesParser.loadDistancesFile(info.getDistancesFilePath(), locationManager);
+            DistancesParser distancesParser;
+            distancesParser.loadDistancesFile(info.getDistancesFilePath(), locationManager);
+        }
+        catch(const LocationException& ex)
+        {
+            trees.clear();
+            locationManager.clear();
+            throw;
+        }
+        catch (const DistancesFileException& ex)
+        {
+            trees.clear();
+            locationManager.clear();
+            throw;
+        }
+        catch (const DataFileException& ex)
+        {
+            trees.clear();
+            locationManager.clear();
+            throw;
+        }
 
         try
         {
@@ -60,6 +81,7 @@ public:
         catch (const TreeFileException& ex)
         {
             trees.clear();
+            locationManager.clear();
             throw;
         }
     }
