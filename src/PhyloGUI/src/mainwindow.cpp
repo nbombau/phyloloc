@@ -109,6 +109,9 @@ void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, Location
         ui->listWidget->addItem(newItem);
         treeNumber++;
     }
+
+    if(ui->listWidget->count()!=0)
+        ui->actionProcess_tree->setEnabled(true);
 }
 
 void MainWindow::on_actionSave_As_triggered()
@@ -175,16 +178,24 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 void MainWindow::on_actionProcess_tree_triggered()
 {
     PropagateDialog propagateDialog(this);
+    unsigned int i=0;
     if (propagateDialog.exec())
     {
         try
         {
-            Propagator<GuiNode>::propagate(actualTree, propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF(), locationManager);
-
-            QListIterator<QGraphicsItem*> items(graph->scene()->items());
-            while (items.hasNext())
+            ListIterator<ITree<GuiNode> > it = trees.getIterator();
+            for(;!it.end();it.next())
             {
-                items.next()->update();
+                Propagator<GuiNode>::propagate(it.get(), propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF(), locationManager);
+                ++i;
+            }
+            if(actualTree!=NULL)
+            {
+                QListIterator<QGraphicsItem*> items(graph->scene()->items());
+                while (items.hasNext())
+                {
+                    items.next()->update();
+                }
             }
             QMessageBox msg(QMessageBox::Information, "Propagation finished"
                             , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail."
@@ -206,7 +217,6 @@ void MainWindow::drawTree()
     ui->actionSelect_all_nodes->setEnabled(true);
     ui->actionSelect_descendants->setEnabled(true);
     ui->actionSelect_Ancestors->setEnabled(true);
-    ui->actionProcess_tree->setEnabled(true);
     ui->actionSearch_terminal_nodes->setEnabled(true);
     ui->actionZoom->setEnabled(true);
     ui->actionZoom_2->setEnabled(true);
