@@ -281,6 +281,14 @@ protected:
             assertNodeLocationsEquals(tree->getRoot(), locationManager, expectedLocationsMap);
         }
     }
+    
+    static void assertConsistency (const ITreeCollection<TestNode>& trees, const Locations::LocationManager& locationManager)
+    {
+        //check trees and locationManager to be empty
+        ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
+        EXPECT_TRUE(treesIterator.end()); 
+        EXPECT_TRUE(locationManager.isEmpty());
+    }
 
 private:
 
@@ -464,8 +472,7 @@ TEST_F(FileDataSourceTest, loadTreesWithNoSeparator)
     ITreeCollection<TestNode> trees;
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree9.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MissingTreeSeparator);
 
-    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
-    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+    assertConsistency(trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadMalformedTree)
@@ -474,9 +481,8 @@ TEST_F(FileDataSourceTest, loadMalformedTree)
 
     ITreeCollection<TestNode> trees;
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree10.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
-
-    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
-    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+    
+    assertConsistency(trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadMalformedTree2)
@@ -486,8 +492,7 @@ TEST_F(FileDataSourceTest, loadMalformedTree2)
     
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree13.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
     
-    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
-    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+    assertConsistency(trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, invalidBranchLength)
@@ -497,8 +502,7 @@ TEST_F(FileDataSourceTest, invalidBranchLength)
      
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree12.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedExpression);
     
-    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
-    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+    assertConsistency(trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, loadMissingTree)
@@ -507,6 +511,8 @@ TEST_F(FileDataSourceTest, loadMissingTree)
 
     ITreeCollection<TestNode> trees;
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree11.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist", trees, locationManager), TreeFileNotFound);
+    
+    assertConsistency(trees, locationManager);
 }
 
 TEST_F(FileDataSourceTest, saveTest1)
@@ -657,8 +663,7 @@ TEST_F(FileDataSourceTest, loadLocations6)
 
     ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations6.dat", "TestTrees/distances2.dist", trees, locationManager), MalformedFile);
 
-    ITreeCollection<TestNode>::iterator treesIterator = trees.getIterator();
-    EXPECT_TRUE(treesIterator.end()); //check trees to be empty
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load non existent file
@@ -669,6 +674,8 @@ TEST_F(FileDataSourceTest, loadLocations7)
     ITreeCollection<TestNode> trees;
 
     ASSERT_THROW(loadTreeFromFile("TestTrees/fullTree.nwk", "TestTrees/locations7.dat", "TestTrees/distances2.dist", trees, locationManager), DataFileNotFound);
+
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load missing data trees with resctrected policy
@@ -680,6 +687,8 @@ TEST_F(FileDataSourceTest, loadMissingData)
     FilesInfo info("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/distances2.dist");
     
     ASSERT_THROW(fileDataSource.load(info, trees, locationManager, false), MissingDataException);
+    
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load non existant distances file
@@ -689,6 +698,7 @@ TEST_F(FileDataSourceTest, loadMissingDistances)
     ITreeCollection<TestNode> trees;
     
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/nonexistantdistances.dist", trees, locationManager), DistancesFileNotFound);
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load malformed distances file
@@ -698,6 +708,7 @@ TEST_F(FileDataSourceTest, loadMalformedDistancesFile)
     ITreeCollection<TestNode> trees;
     
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances.dist", trees, locationManager), MalformedDistancesFile);
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load malformed distances file
@@ -707,6 +718,7 @@ TEST_F(FileDataSourceTest, loadMalformedDistancesFile2)
     ITreeCollection<TestNode> trees;
     
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/trees.dat", "TestTrees/malformeddistances2.dist", trees, locationManager), MalformedDistancesFile);
+    assertConsistency(trees, locationManager);
 }
 
 // Try to load distances form inexistant locations 
@@ -716,6 +728,7 @@ TEST_F(FileDataSourceTest, loadInexistantLocationDistances)
     ITreeCollection<TestNode> trees;
     
     ASSERT_THROW(loadTreeFromFile("TestTrees/tree1.nwk", "TestTrees/locations1.dat", "TestTrees/distances1.dist", trees, locationManager), InvalidLocation);
+    assertConsistency(trees, locationManager);
 }
 
 }

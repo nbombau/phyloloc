@@ -19,16 +19,6 @@ typedef std::string Location;
 typedef unsigned int LocationId;
 
 /**
-* InvalidNodeName
-* --------------------
-* Description: Exception when it not exists a node with a node name passed
-* as a parameter.
-*/
-DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidNodeName,
-                               LocationExceptionHierarchy,
-                               "The node name is not valid for any node");
-
-/**
 * InvalidLocation
 * --------------------
 * Description: Exception used a location passed as parameter was not
@@ -209,6 +199,17 @@ public:
     {
         return validateNodes() && validateDistances();
     }
+
+    /**
+     * Check if this locationManager object is empty.
+     *
+     * @return true if it is empty, false otherwise
+     */
+    bool isEmpty() const
+    {
+        return nodeLocationSet.empty() && locationIdSet.empty() && locationsDistances.empty();
+    }
+
 private:
 
     VariantsSet nodeLocationSet;
