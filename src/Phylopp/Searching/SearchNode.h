@@ -23,7 +23,7 @@ template <class T>
 class SelectNodeAction
 {
 public:
-    SelectNodeAction(const std::string& searchString, const Locations::LocationManager& locationManager)
+    SelectNodeAction(const std::string& searchString, const Locations::LocationManager locationManager)
     {
         regExp = searchString;
         this->locationManager = locationManager;
@@ -41,7 +41,7 @@ public:
     }
 private:
     std::string regExp;
-    Locations::LocationManager& locationManager;
+    Locations::LocationManager locationManager;
 };
 
 
@@ -54,7 +54,7 @@ public:
         node = root;
     }
 
-    void search(const std::string& expression, Locations::LocationManager& locationManager)
+    void search(const std::string& expression, Locations::LocationManager locationManager)
     {
         Traverser<T, SelectNodeAction<T> , IsLeafPredicate<T> > t;
         SelectNodeAction<T> a(expression, locationManager);
