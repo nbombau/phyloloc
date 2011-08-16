@@ -57,7 +57,7 @@ public:
                           unsigned int passesCount,
                           double geographicFactorWeight,
                           double branchLengthFactorWeight,
-                          Locations::LocationManager locationManager
+                          Locations::LocationManager& locationManager
                          )
     {
         //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
@@ -80,7 +80,7 @@ public:
                           unsigned int passesCount,
                           Weight geographicFactorWeight,
                           Weight branchLengthFactorWeight,
-                          Locations::LocationManager locationManager
+                          Locations::LocationManager& locationManager
                          )
     {
         assertPropagationPremises(geographicFactorWeight, branchLengthFactorWeight, locationManager);
@@ -126,7 +126,7 @@ private:
         return currentRoundingMode;
     }
 
-    static void assertPropagationPremises(const Weight geographicFactorWeight, const Weight branchLengthFactorWeight, LocationManager locationManager)
+    static void assertPropagationPremises(const Weight geographicFactorWeight, const Weight branchLengthFactorWeight, LocationManager& locationManager)
     {
         if (!(locationManager.isValid()))
         {

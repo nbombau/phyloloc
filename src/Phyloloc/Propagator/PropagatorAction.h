@@ -43,15 +43,15 @@ public:
                                 const Locations::DistanceVector& dispersal,
                                 Weight geographic,
                                 Weight branch,
-                                Locations::LocationManager locationManager)
-        : branchLengthSum(blSum),
+                                Locations::LocationManager& manager)
+        : 
+          locationManager(manager),
+          branchLengthSum(blSum),
           geographicFactorWeight(geographic),
           branchLenghtFactorWeight(branch),
           dispersalVector(dispersal)
 
-    {
-        this->locationManager = locationManager;
-    }
+    {}
 
     VisitAction visitNode(T* n)
     {
@@ -61,7 +61,7 @@ public:
     }
 
 private:
-    Locations::LocationManager locationManager;
+    Locations::LocationManager& locationManager;
     Domain::BranchLength branchLengthSum;
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
