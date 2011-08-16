@@ -121,7 +121,7 @@ private:
 
         //If probabilities vector not initialized yet, initialize
         //as vector of zeros
-        if (locationCount > 0)
+        if (probabilities.size() == 0)
         {
             if (probabilities.empty())
             {
