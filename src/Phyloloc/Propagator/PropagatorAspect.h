@@ -25,7 +25,7 @@ public:
                                const Locations::DistanceVector& dispersalVector,
                                Weight geographicFactorWeight,
                                Weight branchLenghtFactorWeight,
-                               Locations::LocationManager locationManager)
+                               Locations::LocationManager& locationManager)
     {
 
         initProbabilities(locationManager);
@@ -115,7 +115,7 @@ public:
 
 private:
 
-    void initProbabilities(Locations::LocationManager locationManager)
+    void initProbabilities(Locations::LocationManager& locationManager)
     {
         size_t locationCount = locationManager.getLocationsCount();
 
