@@ -9,9 +9,9 @@ using namespace PhyloGUI;
 using namespace std;
 
 NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
-                                   Locations::Location& locations,
+                                   /*Locations::Location& locations,*/
                                    Propagation::LocationProbabilities& probabilities,
-                                   Locations::LocationManager& locationManager,
+                                   /*Locations::LocationManager& locationManager,*/
                                    QWidget* parent)
     : QDialog(parent),
       propGrid(NULL),
@@ -46,7 +46,8 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
 
     locationText = new QLabel(this);
     locationText->setWordWrap(true);
-    locationText->setText(QString(locations.empty()?"No information available":locations.c_str()));
+    //locationText->setText(QString(locations.empty()?"No information available":locations.c_str()));
+    locationText->setText(QString("No information available"));
     locationText->setGeometry(leftMargin+80, top, labelWidth, height);
     top += height;
 
@@ -68,16 +69,16 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         QStringList propTitles("Location");
         propTitles.append(QString("Probabilities"));
         propGrid->setHorizontalHeaderLabels(propTitles);
-        VariantsSet::iterator it = locationManager.getLocations();
-        for(unsigned int i=0; i<probabilities.size(); ++i,it++)
+        //VariantsSet::iterator it = locationManager.getLocations();
+        for(unsigned int i=0; i<probabilities.size(); ++i/*,it++*/)
         {
             QTableWidgetItem * prob=new QTableWidgetItem(QString().setNum(probabilities[i], 'f', 3));
             prob->setFlags(Qt::NoItemFlags);
             propGrid->setItem(i,1,prob);
 
-            QTableWidgetItem * location=new QTableWidgetItem(QString(it->second.c_str()));
+            /*QTableWidgetItem * location=new QTableWidgetItem(QString(it->second.c_str()));
             location->setFlags(Qt::NoItemFlags);
-            propGrid->setItem(i,0,location);
+            propGrid->setItem(i,0,location);*/
         }
 
         top += height+200;
