@@ -112,7 +112,7 @@ void PropagateDialog::acceptInput()
         accept();
 }
 
-double PropagateDialog::getBCLF()
+double PropagateDialog::getBLCF()
 {
     return BCFLLine->value();
 }

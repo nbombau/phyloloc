@@ -17,13 +17,39 @@ class PropagateDialog : public QDialog
     Q_OBJECT
 
 public:
+    /**
+    * Constructor. Returns a dialog for setting propagation parameters.
+    *
+    * @param parent dialog's parent widget.
+    */
     PropagateDialog(QWidget* parent = NULL);
+
+    /**
+    * Destructor.
+    */
     ~PropagateDialog();
-    double getBCLF();
+
+    /**
+    * Returns the branch length correction factor entered by the user.
+    *
+    * @return returns the branch length correction factor.
+    */
+    double getBLCF();
+
+    /**
+    * Returns the branch geographical factor entered by the user.
+    *
+    * @return returns the geographical correction factor.
+    */
     double getGCF();
+
+    /**
+    * Returns the number of iterations for the propagation entered by the user.
+    *
+    * @return returns the number of iterations.
+    */
     int getPasses();
 private:
-
     QLabel* BCFLLabel;
     QDoubleSpinBox* BCFLLine;
 

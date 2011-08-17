@@ -64,9 +64,7 @@ void Edge::adjust()
             destPoint = line.p2() - edgeOffset;
         }
         else
-        {
             sourcePoint = destPoint = line.p1();
-        }
     }
 }
 
@@ -79,15 +77,9 @@ QRectF Edge::boundingRect() const
     }
     else
     {
-        //qreal penWidth = 1;
         rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
                                           destPoint.y() - sourcePoint.y()))
                .normalized();
-        /*qreal extra = (penWidth + arrowSize) / 2.0;
-        rect = QRectF(sourcePoint, QSizeF(destPoint.x() - sourcePoint.x(),
-                                          destPoint.y() - sourcePoint.y()))
-               .normalized()
-               .adjusted(-extra, -extra, extra, extra);*/
     }
     return rect;
 }
@@ -96,10 +88,16 @@ void Edge::paint(QPainter* painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if (source != NULL && dest != NULL)
     {
+        /*
+         * If the edge is selected, the z-value is set to 0. That way if
+         * multiple edges are stacked the visibility of the one selected
+         * is ensured.
+         */
         if (selected)
             this->setZValue(0);
         else
             this->setZValue(-1000);
+
         //Union between the two parts of the line
         QPointF point(destPoint.x(), sourcePoint.y());
 

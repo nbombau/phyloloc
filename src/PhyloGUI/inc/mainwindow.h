@@ -42,9 +42,9 @@ private:
 
 public slots:
     void drawTree();
-    //void nodeSelected(int nodeAction);
 
 private slots:
+    void on_actionActual_size_triggered();
     void on_actionProcess_tree_triggered();
     void on_actionSelect_Ancestors_triggered();
     void on_actionSelect_descendants_triggered();
