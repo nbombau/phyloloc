@@ -4,6 +4,7 @@
 #include <vector>
 #include <mili/mili.h>
 #include "INode.h"
+#include "ListIterator.h"
 
 namespace Locations
 {
@@ -37,6 +38,11 @@ class LocationManager
 {
 
 public:
+
+    VariantsSet::iterator getLocations()
+    {
+        return nodeLocationSet.begin();
+    }
 
     void clear()
     {

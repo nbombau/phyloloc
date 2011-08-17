@@ -15,7 +15,8 @@ SOURCES += PhyloGUI/src/main.cpp\
     PhyloGUI/src/graphwidget.cpp \
     PhyloGUI/src/edge.cpp \
     PhyloGUI/src/filedialog.cpp \
-    PhyloGUI/src/propagatedialog.cpp
+    PhyloGUI/src/propagatedialog.cpp \
+    PhyloGUI/src/nodedetaildialog.cpp
 
 HEADERS  += PhyloGUI/inc/mainwindow.h \
     PhyloGUI/inc/graphwidget.h \
@@ -23,7 +24,8 @@ HEADERS  += PhyloGUI/inc/mainwindow.h \
     PhyloGUI/GuiAspect.h \
     Domain/INode.h \
     PhyloGUI/inc/filedialog.h \
-    PhyloGUI/inc/propagatedialog.h
+    PhyloGUI/inc/propagatedialog.h \
+    PhyloGUI/inc/nodedetaildialog.h
 
 FORMS    += PhyloGUI/forms/mainwindow.ui
 

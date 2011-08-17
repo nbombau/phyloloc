@@ -7,11 +7,10 @@ using namespace Domain;
 using namespace std;
 using namespace PhyloGUI;
 
-//typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 struct AlwaysTruePredicate
 {
-    bool operator()(GuiNode* /*node*/) const
+    bool operator()(GuiNode*) const
     {
         return true;
     }
@@ -87,7 +86,6 @@ public:
     {
         QList<Edge*> edgesFrom = n->edgesFrom();
         Edge* edge;
-        //Edge* edge = edgesFrom.at(0);
         if (n->isSelected() || (!edgesFrom.isEmpty() && edgesFrom.at(0) != NULL && edgesFrom.at(0)->isSelected()))
         {
             n->setSelected(true);
@@ -132,7 +130,6 @@ public:
         {
             edgesFrom = n->edgesFrom();
             Edge* edge;
-            //Edge* edge = edgesFrom.at(0);
             if (!edgesFrom.isEmpty())
             {
                 edge = edgesFrom.at(0);
@@ -159,8 +156,9 @@ public:
 };
 
 
-GraphWidget::GraphWidget(QWidget* parent)
-    : QGraphicsView(parent)
+GraphWidget::GraphWidget(Locations::LocationManager& locationManager,QWidget* parent)
+    : QGraphicsView(parent),
+      lm(locationManager)
 {
     //Properties
     setCacheMode(CacheBackground);
@@ -345,3 +343,7 @@ QSize GraphWidget::sizeHint() const
     return QSize(600, 300);
 }
 
+Locations::LocationManager& GraphWidget::getLocationManager() const
+{
+    return lm;
+}

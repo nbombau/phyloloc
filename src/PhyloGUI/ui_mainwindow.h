@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Thu Aug 4 17:03:14 2011
+** Created: Mon Aug 15 15:17:42 2011
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -30,31 +30,33 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction* actionOpen;
-    QAction* actionSave_As;
-    QAction* actionQuit;
-    QAction* actionProcess_tree;
-    QAction* actionConcense_trees;
-    QAction* actionClear_selection;
-    QAction* actionSelect_descendants;
-    QAction* actionSelect_Ancestors;
-    QAction* actionColor_nodes;
-    QAction* actionSelect_all_nodes;
-    QAction* actionSearch_terminal_nodes;
-    QAction* actionZoom;
-    QAction* actionZoom_2;
-    QWidget* centralWidget;
-    QHBoxLayout* horizontalLayout;
-    QSplitter* splitter;
-    QListWidget* listWidget;
-    QMenuBar* menuBar;
-    QMenu* menuFile;
-    QMenu* menuNode;
-    QMenu* menuTools;
-    QToolBar* mainToolBar;
-    QStatusBar* statusBar;
+    QAction *actionOpen;
+    QAction *actionSave_As;
+    QAction *actionQuit;
+    QAction *actionProcess_tree;
+    QAction *actionConcense_trees;
+    QAction *actionClear_selection;
+    QAction *actionSelect_descendants;
+    QAction *actionSelect_Ancestors;
+    QAction *actionColor_nodes;
+    QAction *actionSelect_all_nodes;
+    QAction *actionSearch_terminal_nodes;
+    QAction *actionZoom;
+    QAction *actionZoom_2;
+    QAction *actionActual_size;
+    QWidget *centralWidget;
+    QHBoxLayout *horizontalLayout;
+    QSplitter *splitter;
+    QListWidget *listWidget;
+    QMenuBar *menuBar;
+    QMenu *menuFile;
+    QMenu *menuNode;
+    QMenu *menuTools;
+    QMenu *menuView;
+    QToolBar *mainToolBar;
+    QStatusBar *statusBar;
 
-    void setupUi(QMainWindow* MainWindow)
+    void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
@@ -85,6 +87,8 @@ public:
         actionZoom->setObjectName(QString::fromUtf8("actionZoom"));
         actionZoom_2 = new QAction(MainWindow);
         actionZoom_2->setObjectName(QString::fromUtf8("actionZoom_2"));
+        actionActual_size = new QAction(MainWindow);
+        actionActual_size->setObjectName(QString::fromUtf8("actionActual_size"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -112,6 +116,8 @@ public:
         menuNode->setObjectName(QString::fromUtf8("menuNode"));
         menuTools = new QMenu(menuBar);
         menuTools->setObjectName(QString::fromUtf8("menuTools"));
+        menuView = new QMenu(menuBar);
+        menuView->setObjectName(QString::fromUtf8("menuView"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -121,6 +127,7 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuNode->menuAction());
         menuBar->addAction(menuTools->menuAction());
         menuFile->addAction(actionOpen);
@@ -134,19 +141,20 @@ public:
         menuNode->addSeparator();
         menuNode->addAction(actionColor_nodes);
         menuNode->addSeparator();
-        menuNode->addAction(actionZoom);
-        menuNode->addAction(actionZoom_2);
-        menuNode->addSeparator();
         menuNode->addAction(actionSearch_terminal_nodes);
         menuTools->addAction(actionProcess_tree);
         menuTools->addAction(actionConcense_trees);
+        menuView->addAction(actionZoom);
+        menuView->addAction(actionZoom_2);
+        menuView->addSeparator();
+        menuView->addAction(actionActual_size);
 
         retranslateUi(MainWindow);
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
 
-    void retranslateUi(QMainWindow* MainWindow)
+    void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Phyloloc", 0, QApplication::UnicodeUTF8));
         actionOpen->setText(QApplication::translate("MainWindow", "Open...", 0, QApplication::UnicodeUTF8));
@@ -175,16 +183,18 @@ public:
         actionZoom->setShortcut(QApplication::translate("MainWindow", "Ctrl++", 0, QApplication::UnicodeUTF8));
         actionZoom_2->setText(QApplication::translate("MainWindow", "Zoom -", 0, QApplication::UnicodeUTF8));
         actionZoom_2->setShortcut(QApplication::translate("MainWindow", "Ctrl+-", 0, QApplication::UnicodeUTF8));
+        actionActual_size->setText(QApplication::translate("MainWindow", "Actual size", 0, QApplication::UnicodeUTF8));
+        actionActual_size->setShortcut(QApplication::translate("MainWindow", "Ctrl+0", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
 
-namespace Ui
-{
-class MainWindow: public Ui_MainWindow {};
+namespace Ui {
+    class MainWindow: public Ui_MainWindow {};
 } // namespace Ui
 
 QT_END_NAMESPACE

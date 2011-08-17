@@ -23,17 +23,17 @@
 #include <QGraphicsItem>
 
 #include "PhyloGUI/inc/edge.h"
+#include "PhyloGUI/inc/nodedetaildialog.h"
 #include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
 
 namespace PhyloGUI
 {
+
 template <class T>
 class GuiAspect : public T, public QGraphicsItem
 {
-
-
 private:
     bool selected;
     bool expanded;
@@ -43,7 +43,6 @@ private:
     QGraphicsTextItem* graphicsName;
 
 public:
-
     GuiAspect() : selected(false), expanded(true), color(Qt::yellow), graphicsName(NULL)
     {
         setCacheMode(DeviceCoordinateCache);
@@ -65,36 +64,65 @@ public:
         this->graphicsName = graphicsName;
     }
 
+    /**
+    * Returns if the node has a name. This name is only for graphical purposes.
+    *
+    * @return true or false.
+    */
     bool hasGraphicsName() const
     {
         return graphicsName != NULL;
     }
 
+    /**
+    * Returns if the node has been selected or not.
+    *
+    * @return true or false.
+    */
     bool isSelected() const
     {
         return selected;
     }
 
+    /**
+    * Returns if the node is expanded or not.
+    *
+    * @return true or false.
+    */
     bool isExpanded() const
     {
         return expanded;
     }
 
+    /**
+    * Returns the actual color of the node.
+    *
+    * @return the color.
+    */
     QColor getColor() const
     {
         return color;
     }
 
+    /**
+    * Set if the node is selected or not.
+    */
     void setSelected(const bool s)
     {
         selected = s;
     }
 
+    /**
+    * Set if the node is expanded or not.
+    */
     void setExpanded(const bool e)
     {
         expanded = e;
     }
 
+    /**
+    * Set the node's color.
+    */
     void setColor(const QColor c)
     {
         color = c;
@@ -134,6 +162,7 @@ public:
         path.addEllipse(-10, -10, 20, 20);
         return path;
     }
+
     void setVisible(bool visible)
     {
         QGraphicsItem::setVisible(visible);
@@ -149,6 +178,20 @@ public:
             graphicsName->setVisible(visible);
     }
 
+    /**
+    * Performs the actual painting of the node.
+    * The painter parameter performs low-level painting on widgets and other
+    * paint devices.
+    * The option parameter provides style options for the item, such as its
+    * state, exposed area and its level-of-detail hints.
+    * The widget argument is optional. If provided, it points to the widget
+    * that is being painted on; otherwise, it is 0. For cached painting, widget
+    * is always 0.
+    *
+    * @param painter
+    * @param option
+    * @param widget
+    */
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
     {
         Q_UNUSED(option);
@@ -181,6 +224,8 @@ public:
     {
         Q_UNUSED(event);
         QMenu menu;
+
+        //Makes no sense to expand or collapse a leaf
         if (!this->isLeaf())
         {
             if (this->isExpanded())
@@ -191,6 +236,8 @@ public:
         }
         menu.addAction("Set color...");
         menu.addSeparator();
+
+        //Makes no sense to select descendants of a leaf
         if(!this->isLeaf())
             menu.addAction("Select descendants");
         menu.addAction("Select ancestors");
@@ -276,43 +323,11 @@ protected:
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
 
-        if (this->getName().empty())
-            description.append("No information available.");
-        else
-            description.append(this->getName().c_str());
-
-        description.append("\n\nLocation: ");
-
-        // This will be temporary commented, until we find a 
-        // solution to the passing locationManager instance
-        // to the event problem
-        // "No information available" will be shown instead
-        //TODO: Use locationManager unique instance in order to get
-        //the location name for the node
-        /*
-        if (this->getLocation().empty())
-            description.append("No information available.");
-        else
-            description.append(this->getLocation().c_str());
-        */
-        description.append("No information available.");
-
-        if (!this->probabilities.empty())
-        {
-            description.append("\n\nPlausibility vector: [ ");
-            for (unsigned int i = 0; i < this->probabilities.size(); i++)
-            {
-                description.append(QString().setNum(this->probabilities[i], 'f', 3));
-                description.append(" ");
-            }
-            description.append(" ]");
-        }
-
-        QMessageBox msgBox(QMessageBox::Information
-                           ,this->getName().empty()?"Node name not available":this->getName().c_str()
-                           ,description, QMessageBox::NoButton
-                           ,(QWidget *)scene()->parent()->parent()->parent()->parent());
-        msgBox.exec();
+        Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
+        Locations::Location location = lm.getLocation(this->getName());
+        Domain::NodeName name = this->getName();
+        NodeDetailDialog detail(name,location,this->probabilities,lm);
+        detail.exec();
     }
 
 

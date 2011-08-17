@@ -9,6 +9,7 @@
 #include "PhyloGUI/inc/filedialog.h"
 #include "PhyloGUI/inc/propagatedialog.h"
 #include "Phylopp/Searching/SearchNode.h"
+#include "PhyloGUI/inc/nodedetaildialog.h"
 
 
 using namespace DataSource;
@@ -22,9 +23,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //nodesSelectedCount = 0;
     actualTree = NULL;
-    graph = new GraphWidget(ui->splitter);
+    graph = new GraphWidget(locationManager,ui->splitter);
     graph->setAttribute(Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);
@@ -36,7 +36,9 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionSearch_terminal_nodes->setEnabled(false);
     ui->actionZoom->setEnabled(false);
     ui->actionZoom_2->setEnabled(false);
+    ui->actionActual_size->setEnabled(false);
     ui->splitter->addWidget(graph);
+
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -184,13 +186,18 @@ void MainWindow::on_actionProcess_tree_triggered()
         try
         {
             ListIterator<ITree<GuiNode> > it = trees.getIterator();
-            for(;!it.end();it.next())
+            for(; !it.end(); it.next())
             {
-                Propagator<GuiNode>::propagate(it.get(), propagateDialog.getPasses(), propagateDialog.getGCF(), propagateDialog.getBCLF(), locationManager);
+                Propagator<GuiNode>::propagate(it.get(),
+                                               propagateDialog.getPasses(),
+                                               propagateDialog.getGCF(),
+                                               propagateDialog.getBLCF(),
+                                               locationManager);
                 ++i;
             }
             if(actualTree!=NULL)
             {
+                //After propagation the items need to be redrawn (updated).
                 QListIterator<QGraphicsItem*> items(graph->scene()->items());
                 while (items.hasNext())
                 {
@@ -220,6 +227,7 @@ void MainWindow::drawTree()
     ui->actionSearch_terminal_nodes->setEnabled(true);
     ui->actionZoom->setEnabled(true);
     ui->actionZoom_2->setEnabled(true);
+    ui->actionActual_size->setEnabled(true);
     actualTree = trees.elementAt(ui->listWidget->currentRow());
     graph->draw(actualTree);
 }
@@ -234,23 +242,9 @@ void MainWindow::on_actionZoom_2_triggered()
 {
     graph->scaleView(0.8);
 }
-/*
-void MainWindow::nodeSelected(int nodeAction)
-{
-    if(nodeAction==0)
-        ++nodesSelectedCount;
-    else
-        --nodesSelectedCount;
 
-    if(nodesSelectedCount>0)
-        activateMenuItems(true);
-    else
-        activateMenuItems(false);
+void MainWindow::on_actionActual_size_triggered()
+{
+    graph->fitInView(graph->scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
-void MainWindow::activateMenuItems(bool activate)
-{
-    ui->actionColor_nodes->setEnabled(activate);
-    ui->actionSelect_descendants->setEnabled(activate);
-    ui->actionSelect_Ancestors->setEnabled(activate);
-}*/

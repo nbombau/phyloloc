@@ -16,6 +16,7 @@
 #include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
+#include "Domain/LocationManager.h"
 
 namespace PhyloGUI
 {
@@ -24,7 +25,7 @@ class GraphWidget : public QGraphicsView
 {
 
 public:
-    GraphWidget(QWidget* parent = 0);
+    GraphWidget(Locations::LocationManager& locationManager,QWidget* parent = 0);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event);
     void mousePressEvent(QGraphicsSceneMouseEvent* event);
     void paintNode(QColor color, Domain::ITree<GuiNode>* tree);
@@ -35,6 +36,7 @@ public:
     void selectNodeDescendants(Domain::ITree<GuiNode>* tree);
     void selectNodeAncestors(Domain::ITree<GuiNode>*tree);
     void scaleView(qreal scaleFactor);
+    Locations::LocationManager& getLocationManager() const;
     QSize sizeHint() const;
 
 protected:
@@ -45,6 +47,7 @@ protected:
 private:
     Domain::ITree<GuiNode>* tree;
     int timerId;
+    Locations::LocationManager& lm;
     void drawTree(QGraphicsScene* scene, GuiNode* node);
     QPointF drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber);
     void reScaleScene();
