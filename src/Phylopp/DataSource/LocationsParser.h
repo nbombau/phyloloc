@@ -59,6 +59,12 @@ class LocationsParser
 {
 public:
 
+    /**
+     * Parses locations from a file
+     * 
+     * @param fname locations file path
+     * @param locationManager Manager of locations and distances between locations
+     */
     void loadLocationsFile(const std::string& fname, Locations::LocationManager& locationManager)
     {
         std::ifstream f(fname.c_str());
@@ -87,6 +93,13 @@ public:
 
 private:
 
+    /**
+     * Add a location to the location manager
+     * 
+     * @param nodeName Node name
+     * @param location Node Location
+     * @param locationManager Manager of locations and distances between locations
+     */
     void addLocation(const Domain::NodeName nodeName, const Location& location, Locations::LocationManager& locationManager)
     {
         locationManager.addLocation(location, nodeName);
