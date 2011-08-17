@@ -27,6 +27,7 @@
 #include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
+#include "Domain/LocationManager.h"
 
 namespace PhyloGUI
 {
@@ -34,7 +35,12 @@ namespace PhyloGUI
 template <class T>
 class GuiAspect : public T, public QGraphicsItem
 {
+
+
+
 private:
+
+    static Locations::LocationManager* lm;
     bool selected;
     bool expanded;
     QColor color;
@@ -57,6 +63,11 @@ public:
             delete *it;
         }
         */
+    }
+
+    static void setLocationManager(Locations::LocationManager* locationManager)
+    {
+        lm=locationManager;
     }
 
     void setGraphicsName(QGraphicsTextItem* graphicsName)
@@ -324,15 +335,15 @@ protected:
         QString description = QString::fromAscii("Name: ");
 
         //Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
-        //Locations::Location location = lm.getLocation(this->getName());
+        Locations::Location location = lm->getLocation(this->getName());
         Domain::NodeName name = this->getName();
-        NodeDetailDialog detail(name/*,location*/,this->probabilities/*,lm*/);
+        NodeDetailDialog detail(name,location,this->probabilities,lm);
         detail.exec();
     }
 
 
 };
-
+template <typename T> Locations::LocationManager* GuiAspect<T>::lm = NULL;
 typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 }

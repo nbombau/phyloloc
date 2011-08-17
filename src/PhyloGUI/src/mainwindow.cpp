@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setupUi(this);
     actualTree = NULL;
     graph = new GraphWidget(locationManager,ui->splitter);
+    GuiNode::setLocationManager(&locationManager);
     graph->setAttribute(Qt::WA_DeleteOnClose, true);
     ui->actionClear_selection->setEnabled(false);
     ui->actionColor_nodes->setEnabled(false);

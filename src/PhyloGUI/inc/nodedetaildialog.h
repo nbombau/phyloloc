@@ -31,9 +31,9 @@ public:
     * @param parent dialog's parent widget.
     */
     NodeDetailDialog(Domain::NodeName& name,
-                     /*Locations::Location& locations,*/
+                     Locations::Location& locations,
                      Propagation::LocationProbabilities& probabilities,
-                     /*Locations::LocationManager& locationManager,*/
+                     Locations::LocationManager* locationManager,
                      QWidget* parent = NULL);
 
     /**
