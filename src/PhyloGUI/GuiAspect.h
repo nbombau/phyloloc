@@ -323,10 +323,10 @@ protected:
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
 
-        Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
-        Locations::Location location = lm.getLocation(this->getName());
+        //Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
+        //Locations::Location location = lm.getLocation(this->getName());
         Domain::NodeName name = this->getName();
-        NodeDetailDialog detail(name,location,this->probabilities,lm);
+        NodeDetailDialog detail(name/*,location*/,this->probabilities/*,lm*/);
         detail.exec();
     }
 
