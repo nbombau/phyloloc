@@ -59,6 +59,12 @@ class DistancesParser
 {
 public:
 
+    /**
+     * Loads distences information from a file
+     * 
+     * @param fname File name
+     * @param locationManager Manager of locations and distances between locations
+     */
     void loadDistancesFile(const std::string& fname, Locations::LocationManager& locationManager)
     {
         std::ifstream f(fname.c_str());
@@ -92,6 +98,14 @@ public:
 
 private:
 
+    /**
+     * Adds to the location manager the distance between location1 and location2
+     * 
+     * @param distance Distance between locations
+     * @param location1 First location
+     * @param location2 Second location
+     * @param locationManager Manager of locations and distances between locations
+     */
     void addDistance(const float distance, const Location& location1, const Location& location2, Locations::LocationManager& locationManager)
     {
         try

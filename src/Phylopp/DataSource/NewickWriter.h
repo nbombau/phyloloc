@@ -35,6 +35,12 @@ class NewickWriter
 {
 public:
 
+    /**
+     * Saves a collection of trees to a file
+     * 
+     * @param fname file name in which the trees will be saved
+     * @param trees The collection of trees to be saved 
+     */
     void saveNewickFile(const std::string& fname, const Domain::ITreeCollection<T>& trees)
     {
         std::ofstream os(fname.c_str());
@@ -52,6 +58,12 @@ private:
     typedef Domain::ITreeCollection<T> TreeCollection;
     typedef Domain::ListIterator<T, Domain::Node> NodeIterator;
 
+    /**
+     * Saves a tree in a file recursively
+     * 
+     * @param node Node to be saved
+     * @param os File stream in which the node will be saved
+     */
     static void saveTree(const T* node, std::ostream& os)
     {
 

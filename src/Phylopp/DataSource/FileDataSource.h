@@ -2,8 +2,6 @@
 FileDataSource: a class for loading trees, distances and locations from a file,
 and also for saving trees to a file.
                 
-
-
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
     This file is part of the Phyloloc project.
@@ -53,10 +51,12 @@ class FileDataSource : public IDataSourceStrategy<T, FilesInfo>
 public:
 
     /**
-    * Method: load
-    * --------------------
-    * Description: Load multiples tree structures from a text file
-    * an associate each node with a location.
+    * Load multiples tree structures, along with location and distances from texts files
+    *
+    * @param info File paths information
+    * @param trees Collection of trees to be filled
+    * @param locationManager Manager of locations and distances between locations
+    * @param allowMissingData Whether missing data in trees is allowed
     */
     void load(const FilesInfo& info, Domain::ITreeCollection<T>& trees, Locations::LocationManager& locationManager, bool allowMissingData)
     {
@@ -112,9 +112,10 @@ public:
     }
 
     /**
-    * Method: save
-    * --------------------
-    * Description: Saves multiples tree structures to the file system.
+    * Saves multiples tree structures to the file system.
+    * 
+    * @param trees Trees to be saved
+    * @param info File paths information
     */
     void save(const Domain::ITreeCollection<T>& trees, const FilesInfo& info)
     {

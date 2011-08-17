@@ -43,9 +43,7 @@ class IDataSourceFactory
 {
 public:
     /**
-    * Method: createDataSource
-    * ------------------------
-    * Description: Creates a dataSource instance
+    * Creates a dataSource instance
     * @return datasource object
     */
     virtual IDataSourceStrategy<T, K>* createDataSource() = 0;

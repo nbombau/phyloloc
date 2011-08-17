@@ -47,19 +47,16 @@ class IDataSourceStrategy
 {
 public:
     /**
-    * Method: load
-    * ---------------
-    * Description: Loads a tree collection from a particular data source
+    * Loads a tree collection from a particular data source
     * @param info information to access the datasource
+    * @param trees treeCollection to be filled
+    * @param locationManager Manager of locations and distances between locations
     * @param allowMissingData true if nameless nodes are allowed
-    * @return loaded tree collection
     */
     virtual void load(const K& info, Domain::ITreeCollection<T>& trees, Locations::LocationManager& locationManager, bool allowMissingData) = 0;
 
     /**
-    * Method: load
-    * ---------------
-    * Description: Loads a tree collection to a particular data source
+    * Loads a tree collection to a particular data source
     * @param trees treeCollection to be saved
     * @param info information to access the datasource
     */

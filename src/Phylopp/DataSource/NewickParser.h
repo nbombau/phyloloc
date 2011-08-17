@@ -79,8 +79,20 @@ class NewickParser
 {
 public:
 
+    /**
+     * Constructor
+     * 
+     * @param validationPolicy policy used to validate nodes
+     */
     NewickParser(const ValidationPolicy& validationPolicy = ValidationPolicy()) : validationPolicy(validationPolicy) {}
 
+    /**
+     * Loads a tree in newick format from a file
+     * 
+     * @param fname file path
+     * @param locationManager Manager of locations and distances between locations
+     * @param trees Collection to be filled with the parsed trees
+     */
     void loadNewickFile(const std::string& fname, const Locations::LocationManager locationManager, Domain::ITreeCollection<T>& trees)
     {
         std::ifstream f(fname.c_str());
@@ -133,6 +145,12 @@ private:
     }
     /****************************************************/
 
+    /**
+     * Loads a node and all its children recursively
+     * 
+     * @param locationManager Manager of locations and distances between locations
+     * @param node Node to be filled
+     */
     void load_node(const Locations::LocationManager locationManager, T* node)
     {
         std::string name;
@@ -180,6 +198,12 @@ private:
             throw MissingDataException(getLineNumberText());
     }
 
+    /**
+     * Loads a nodes children
+     * 
+     * @param locationManager Manager of locations and distances between locations
+     * @param parent node whose children will be loaded
+     */
     void load_children(const Locations::LocationManager locationManager, T* parent)
     {
         T* child;

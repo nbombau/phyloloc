@@ -32,6 +32,14 @@ class FilesInfo
 {
 public:
 
+    /**
+     * Constructor
+     * 
+     * @param treeFilePath Path to trees file
+     * @param locationsFilePath Path to locations file
+     * @param distancesFilePath Path to distances file
+     * 
+     */
     FilesInfo(const std::string& treesFilePath, const std::string& locationsFilePath, const std::string& distancesFilePath)
     {
         this->treesFilePath = treesFilePath;
@@ -39,16 +47,31 @@ public:
         this->distancesFilePath = distancesFilePath;
     }
 
+    /**
+     * Get the trees file path
+     * 
+     * @return tree file path
+     */
     std::string getTreesFilePath() const
     {
         return treesFilePath;
     }
 
+    /**
+     * Get the locations file path
+     * 
+     * @return locations file path
+     */
     std::string getLocationsFilePath() const
     {
         return locationsFilePath;
     }
 
+    /**
+     * Get the distances file path
+     * 
+     * @return distances file path
+     */
     std::string getDistancesFilePath() const
     {
         return distancesFilePath;
