@@ -7,7 +7,6 @@
 #include "PropagatorAspect.h"
 #include "PropagatorAction.h"
 #include "Phylopp/Traversal/Traverser.h"
-#include <iomanip>
 
 class PropagationExceptionHierarchy {};
 typedef GenericException<PropagationExceptionHierarchy> PropagationException;
@@ -100,38 +99,12 @@ public:
                 geographicFactorWeight,
                 branchLengthFactorWeight);
 
-        std::ofstream outFile("conv4.csv");
-
-/*
-        1)BLCF 0.4 GCF 0.4
-        2)BLCF 0.4 GCF 0
-        3)BLCF 0 GCF 0.4
-        4)BLCF 0 GCF 0
-  */
-        outFile << "BLCF: 0\n";
-        outFile << "GCF:  0\n";
-
-        outFile << "iteracion " << "a1     " << "a2     " << "a3     " << "a4     " << "a5 \n";
-
         for (unsigned int i = 0; i < passesCount; i++)
         {
             if (isUpPass(i))
             {
                 Traverser<T, PropagateFromChildrenAction<T>, AlwaysTruePredicate<T> >
                 ::traversePostOrder(tree, childrenAction);
-
-                T* root = tree->getRoot();
-
-                outFile << "    " << i << "     ";
-
-               if (!root->probabilities.empty())
-               {
-                   for (unsigned int i = 0; i < root->probabilities.size(); i++)
-                   {
-                       outFile << root->probabilities[i] << "  ";
-                   }
-               }
-               outFile << "\n";
             }
             else
             {
