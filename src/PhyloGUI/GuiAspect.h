@@ -27,7 +27,9 @@
 #include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
-#include "Domain/LocationManager.h"
+//#include "Domain/LocationManager.h"
+#include "Phyloloc/Propagator/StatisticsAspect.h"
+#include "Phylopp/Consensor/ConsensorAspect.h"
 
 namespace PhyloGUI
 {
@@ -68,6 +70,16 @@ public:
     static void setLocationManager(Locations::LocationManager* locationManager)
     {
         lm=locationManager;
+    }
+
+    static unsigned int getLocationsCount()
+    {
+        return lm->getLocationsCount();
+    }
+
+    static unsigned int getNodeNameCount()
+    {
+        return lm->getNodeNameCount();
     }
 
     void setGraphicsName(QGraphicsTextItem* graphicsName)
@@ -333,18 +345,17 @@ protected:
     {
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
-
         //Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
         Locations::Location location = lm->getLocation(this->getName());
         Domain::NodeName name = this->getName();
-        NodeDetailDialog detail(name,location,this->probabilities,lm);
+        NodeDetailDialog detail(name,location,this->probabilities,lm,this->getStatistics());
         detail.exec();
     }
 
 
 };
+typedef GuiAspect<Propagation::StatisticAspect<Consensus::ConsensorAspect<Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > > >  GuiNode;
 template <typename T> Locations::LocationManager* GuiAspect<T>::lm = NULL;
-typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
 
 }
 

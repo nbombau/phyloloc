@@ -1,82 +1,58 @@
+#ifndef MACRO_CONSENSOR_OBSERVER_H
+#define MACRO_CONSENSOR_OBSERVER_H
+
+#include "bitset.h"
 #include "IConsensorObserver.h"
-#include "ListIterator.h"
-#include <list>
 
-
-namespace Consensor
+namespace Consensus
 {
-using namespace std;
-using namespace Domain;
+/**
+ * Class: MacroConsensorObserver
+ * ----------------------
+ * Description: Macro observer to be used when multiple consensor
+ * observers are needed.
+ * Type Parameter T: T is the underlying node class
+ */
+//TODO: DO
+/* template <class T>
+ class MacroConsensorObserver : public IConsensorObserver<T>
+ {
+ private:
+
+     std::vector<IConsensorObserver>
+
+ public:
+
+
+     virtual void onStart(const ITreeCollection<Node>& trees)
+     {}
+
+     /**
+      * Method: notifyInclude
+      * ---------------
+      * Description: Notifies when a node is included in the consensed tree.
+      * @param node node that has been included in the consensed tree
+      */
+/*virtual void onInclude(Node* node, const bitset& cluster)
+{
+
+}
 
 /**
-* Class: MacroConsensorObserver
-* ----------------------
-* Description: Macro observer to be used when multiple consensor
-* observers are needed.
-* Type Parameter T: T is the underlying node class
-*/
-template <class T>
-class MacroConsensorObserver : public IConsensorObserver<T>
-{
-public:
-    /**
-    * Method: notifyInclude
-    * ---------------
-    * Description: Notifies when a node is included in the consensed tree.
-    * @param node node that has been included in the consensed tree
-    */
-    virtual void notifyInclude(T* node)
-    {
-        ListIterator<IConsensorObserver<T>>* iter = new ListIterator<IConsensorObserver<T>>(observers);
+ * Method: notifyExclude
+ * ---------------
+ * Description: Notifies when a node is excluded in the consensed tree.
+ * @param node node that has been excluded in the consensed tree
+ */
+/* virtual void onExclude(Node* node, const bitset& cluster)
+ {
 
-        while (!iter.end())
-        {
-            IConsensorObserver<T>* o = iter.get();
-            o.notifyInclude(node);
-            iter.next();
-        }
-    }
+ }
 
-    /**
-    * Method: notifyExclude
-    * ---------------
-    * Description: Notifies when a node is excluded in the consensed tree.
-    * @param node node that has been excluded in the consensed tree
-    */
-    virtual void notifyExclude(T* node)
-    {
-        //TODO: Reuse the code from the method above
-        ListIterator<IConsensorObserver<T>>* iter = new ListIterator<IConsensorObserver<T>>(observers);
+ virtual void onEnd(const ITree<Node>& consensed)
+ {
 
-        while (!iter.end())
-        {
-            IConsensorObserver<T>* o = iter.get();
-            o.notifyExclude(node);
-            iter.next();
-        }
-    }
+ }*/
 
-    /**
-    * Method: addObserver
-    * -------------------
-    * Description: Adds an observer
-    */
-    virtual void addObserver(IConsensorObserver<T>* o)
-    {
-        observers.push_back(o);
-    }
-
-    /**
-    * Method: clearObservers
-    * ----------------------
-    * Description: Clears the observers
-    */
-    virtual void clearObservers()
-    {
-        observers.clear();
-    }
-
-private:
-    list<IConsensorObserver<T>*> observers;
 };
 }

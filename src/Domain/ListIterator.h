@@ -20,10 +20,16 @@ class ListIterator
 {
 public:
     //Constructor
-    ListIterator(std::list<K*> l)
+    ListIterator(const std::list<K*>& l) : iterableList(l)
     {
-        iterableList = l;
+        //iterableList = l;
         it = iterableList.begin();
+    }
+
+
+    ListIterator(const ListIterator<T,K>& it) : iterableList(it.iterableList)
+    {
+        this->it = iterableList.begin();
     }
 
     virtual void restart()
@@ -55,7 +61,14 @@ public:
     {
         return iterableList.size();
     }
-
+    /*
+        ListIterator& operator= (const ListIterator& other)
+        {
+            iterableList = other.iterableList;
+            it = iterableList.begin();
+            return *this;
+        }
+    */
     ~ListIterator() { }
 
 private:
@@ -63,8 +76,12 @@ private:
     typedef typename std::list<K*>::iterator iterator;
     typedef typename std::list<K*>::const_iterator const_iterator;
 
-    std::list<K*> iterableList;
-    iterator it;
+    const std::list<K*>& iterableList;
+    const_iterator it;
+
+    ListIterator& operator= (const ListIterator& other) {
+        return *this;
+    }
 };
 }
 

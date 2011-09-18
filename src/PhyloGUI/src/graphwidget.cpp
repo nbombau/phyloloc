@@ -189,6 +189,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
     ListIterator<GuiNode, Domain::Node>  it = node->getChildrenIterator<GuiNode>();
+
     list<QPointF> points;
     QPointF nodeCoord;
     QPointF ret;
@@ -253,6 +254,7 @@ void GraphWidget::drawTree(QGraphicsScene* scene, GuiNode* node)
 {
     unsigned int leafNumber = 0;
     unsigned int depth = 50;
+
     drawTreeAux(scene, node, depth, &leafNumber);
 }
 

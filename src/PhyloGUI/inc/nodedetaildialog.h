@@ -10,6 +10,7 @@
 #include <QSpinBox>
 #include <QTableWidget>
 #include "Phyloloc/Propagator/PropagatorAspect.h"
+#include "Phyloloc/Propagator/StatisticsAspect.h"
 
 
 namespace PhyloGUI
@@ -34,6 +35,7 @@ public:
                      Locations::Location& locations,
                      Propagation::LocationProbabilities& probabilities,
                      Locations::LocationManager* locationManager,
+                     Propagation::StatisticInfoVector& statistics,
                      QWidget* parent = NULL);
 
     /**

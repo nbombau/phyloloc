@@ -10,17 +10,21 @@
 #include "PhyloGUI/inc/propagatedialog.h"
 #include "Phylopp/Searching/SearchNode.h"
 #include "PhyloGUI/inc/nodedetaildialog.h"
+#include "Phylopp/Consensor/StrictConsensor.h"
+#include "Phyloloc/Propagator/StatisticCollectorObserver.h"
 
 
 using namespace DataSource;
 using namespace Propagation;
 using namespace Searching;
 using namespace PhyloGUI;
+using namespace Consensus;
 
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    consensedTree(NULL)
 {
     ui->setupUi(this);
     actualTree = NULL;
@@ -55,15 +59,23 @@ void MainWindow::on_actionQuit_triggered()
 
 void MainWindow::on_actionOpen_triggered()
 {
-    FileDialog fileDialog(this);
-
-    if (fileDialog.exec())
+    if(consensedTree!=NULL)
     {
-        FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
-
-        loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
+        QMessageBox msg(QMessageBox::Information, "Already propagated", "After propagating you need to close all the trees before loading any more. Go to File -> Close all... and load the trees again.", QMessageBox::NoButton, this);
+        msg.exec();
     }
-    //else not needed: user closed or canceled the dialog
+    else
+    {
+        FileDialog fileDialog(this);
+
+        if (fileDialog.exec())
+        {
+            FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
+
+            loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
+        }
+        //else not needed: user closed or canceled the dialog
+    }
 }
 
 void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, LocationManager& locationManager)
@@ -180,40 +192,58 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
-    PropagateDialog propagateDialog(this);
-    unsigned int i=0;
-    if (propagateDialog.exec())
+    if(consensedTree!=NULL)
     {
-        try
+        QMessageBox msg(QMessageBox::Information, "Already propagated", "For doing a second propagation go to File -> Close all... and load the trees again.", QMessageBox::NoButton, this);
+        msg.exec();
+    }
+    else
+    {
+        PropagateDialog propagateDialog(this);
+        unsigned int i=0;
+        if (propagateDialog.exec())
         {
-            ListIterator<ITree<GuiNode> > it = trees.getIterator();
-            for(; !it.end(); it.next())
+            try
             {
-                Propagator<GuiNode>::propagate(it.get(),
-                                               propagateDialog.getPasses(),
-                                               propagateDialog.getGCF(),
-                                               propagateDialog.getBLCF(),
-                                               locationManager);
-                ++i;
-            }
-            if(actualTree!=NULL)
-            {
-                //After propagation the items need to be redrawn (updated).
-                QListIterator<QGraphicsItem*> items(graph->scene()->items());
-                while (items.hasNext())
+                ListIterator<ITree<GuiNode> > it = trees.getIterator();
+                for(; !it.end(); it.next())
                 {
-                    items.next()->update();
+                    Propagator<GuiNode>::propagate(it.get(),
+                                                   propagateDialog.getPasses(),
+                                                   propagateDialog.getGCF(),
+                                                   propagateDialog.getBLCF(),
+                                                   locationManager);
+                    ++i;
                 }
+                if(actualTree!=NULL)
+                {
+                    //After propagation the items need to be redrawn (updated).
+                    QListIterator<QGraphicsItem*> items(graph->scene()->items());
+                    while (items.hasNext())
+                    {
+                        items.next()->update();
+                    }
+                }
+
+                StatisticCollectorObserver<GuiNode > observer(locationManager.getLocationsCount());
+                StrictConsensor<GuiNode ,StatisticCollectorObserver<GuiNode > > consensor;
+                consensedTree = consensor.consensus(trees,observer, locationManager);
+
+                QListWidgetItem* newItem = new QListWidgetItem();
+                newItem->setText("Consensed tree");
+                ui->listWidget->addItem(newItem);
+                consensedTreeRow = ui->listWidget->row(newItem);
+
+                QMessageBox msg(QMessageBox::Information, "Propagation finished"
+                                , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail.\n\nA consensus tree is also available."
+                                , QMessageBox::NoButton, this);
+                msg.exec();
             }
-            QMessageBox msg(QMessageBox::Information, "Propagation finished"
-                            , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail."
-                            , QMessageBox::NoButton, this);
-            msg.exec();
-        }
-        catch (const PropagationException& ex)
-        {
-            QMessageBox msg(QMessageBox::Information, "Propagation error", ex.what(), QMessageBox::NoButton, this);
-            msg.exec();
+            catch (const PropagationException& ex)
+            {
+                QMessageBox msg(QMessageBox::Information, "Propagation error", ex.what(), QMessageBox::NoButton, this);
+                msg.exec();
+            }
         }
     }
 }
@@ -229,8 +259,14 @@ void MainWindow::drawTree()
     ui->actionZoom->setEnabled(true);
     ui->actionZoom_2->setEnabled(true);
     ui->actionActual_size->setEnabled(true);
-    actualTree = trees.elementAt(ui->listWidget->currentRow());
-    graph->draw(actualTree);
+    int row = ui->listWidget->currentRow();
+    if(row==consensedTreeRow)
+        graph->draw(consensedTree);
+    else
+    {
+        actualTree = trees.elementAt(row);
+        graph->draw(actualTree);
+    }
 }
 
 
@@ -249,3 +285,29 @@ void MainWindow::on_actionActual_size_triggered()
     graph->fitInView(graph->scene()->sceneRect(), Qt::KeepAspectRatio);
 }
 
+void MainWindow::on_actionClose_all_triggered()
+{
+    QMessageBox msg(QMessageBox::Question, "Close all", "Are you sure you want to close all the trees currently open?", QMessageBox::Ok|QMessageBox::Cancel, this);
+    if( msg.exec() == QMessageBox::Ok)
+    {
+        locationManager.clear();
+        delete consensedTree;
+        consensedTree=NULL;
+        trees.clear();
+        actualTree=NULL;
+        ui->listWidget->clear();
+        delete graph->scene();
+        consensedTreeRow=-1;
+        ui->actionClear_selection->setEnabled(false);
+        ui->actionColor_nodes->setEnabled(false);
+        ui->actionSelect_all_nodes->setEnabled(false);
+        ui->actionSelect_descendants->setEnabled(false);
+        ui->actionSelect_Ancestors->setEnabled(false);
+        ui->actionProcess_tree->setEnabled(false);
+        ui->actionSave_As->setEnabled(false);
+        ui->actionSearch_terminal_nodes->setEnabled(false);
+        ui->actionZoom->setEnabled(false);
+        ui->actionZoom_2->setEnabled(false);
+        ui->actionActual_size->setEnabled(false);
+    }
+}
