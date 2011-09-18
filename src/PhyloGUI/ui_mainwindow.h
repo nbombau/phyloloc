@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Mon Aug 15 15:17:42 2011
+** Created: Sun Sep 18 17:59:20 2011
 **      by: Qt User Interface Compiler version 4.5.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
@@ -44,6 +44,7 @@ public:
     QAction *actionZoom;
     QAction *actionZoom_2;
     QAction *actionActual_size;
+    QAction *actionClose_all;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QSplitter *splitter;
@@ -89,6 +90,8 @@ public:
         actionZoom_2->setObjectName(QString::fromUtf8("actionZoom_2"));
         actionActual_size = new QAction(MainWindow);
         actionActual_size->setObjectName(QString::fromUtf8("actionActual_size"));
+        actionClose_all = new QAction(MainWindow);
+        actionClose_all->setObjectName(QString::fromUtf8("actionClose_all"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -133,6 +136,8 @@ public:
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave_As);
         menuFile->addSeparator();
+        menuFile->addAction(actionClose_all);
+        menuFile->addSeparator();
         menuFile->addAction(actionQuit);
         menuNode->addAction(actionSelect_all_nodes);
         menuNode->addAction(actionClear_selection);
@@ -143,7 +148,6 @@ public:
         menuNode->addSeparator();
         menuNode->addAction(actionSearch_terminal_nodes);
         menuTools->addAction(actionProcess_tree);
-        menuTools->addAction(actionConcense_trees);
         menuView->addAction(actionZoom);
         menuView->addAction(actionZoom_2);
         menuView->addSeparator();
@@ -185,6 +189,7 @@ public:
         actionZoom_2->setShortcut(QApplication::translate("MainWindow", "Ctrl+-", 0, QApplication::UnicodeUTF8));
         actionActual_size->setText(QApplication::translate("MainWindow", "Actual size", 0, QApplication::UnicodeUTF8));
         actionActual_size->setShortcut(QApplication::translate("MainWindow", "Ctrl+0", 0, QApplication::UnicodeUTF8));
+        actionClose_all->setText(QApplication::translate("MainWindow", "Close all...", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));

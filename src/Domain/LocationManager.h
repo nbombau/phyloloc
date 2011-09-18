@@ -10,6 +10,8 @@ namespace Locations
 {
 
 static const unsigned int LOCATION_NOT_FOUND = 0;
+static const unsigned int NODENAME_NOT_FOUND = 0;
+static const unsigned int ID_INCREMENT = 1;
 
 class LocationExceptionHierarchy {};
 
@@ -18,6 +20,7 @@ typedef float Distance;
 typedef std::vector<Distance> DistanceVector;
 typedef std::string Location;
 typedef unsigned int LocationId;
+typedef unsigned int NodeNameId;
 
 /**
 * InvalidLocation
@@ -48,6 +51,7 @@ public:
     {
         nodeLocationSet.clear();
         locationIdSet.clear();
+        nodeNameIdSet.clear();
 
         for (unsigned int i = 0; i < locationsDistances.size(); i++)
         {
@@ -64,12 +68,16 @@ public:
     void addLocation(const Location& location, const Domain::NodeName& name)
     {
         const LocationId id = getLocationId(location);
+        const NodeNameId nameId = getNodeNameId(name);
 
-        size_t generatedId = (id == LOCATION_NOT_FOUND) ? getLocationsCount() + 1 : id;
+        //TODO: generate Id in private method
+        size_t generatedId = (id == LOCATION_NOT_FOUND) ? getLocationsCount() + ID_INCREMENT : id;
+        size_t generatedNodeNameId = (nameId == NODENAME_NOT_FOUND) ? getNodeNameCount() + ID_INCREMENT : nameId;
+
         //consistent if location already exists
-
         nodeLocationSet.insert(name, location);
         locationIdSet.insert(location, generatedId);
+        nodeNameIdSet.insert(name, generatedNodeNameId);
     }
 
     /**
@@ -147,7 +155,6 @@ public:
         return dispersionVector;
     }
 
-    //TODO: Make these private, first resolve propagator initialization
     /**
      * Method: getLocationId
      * ----------------------
@@ -164,6 +171,26 @@ public:
         catch (const BadElementName&)
         {
             id = LOCATION_NOT_FOUND;
+        }
+        return id;
+    }
+
+    /**
+     * Method: getNodeNameId
+     * ----------------------
+     * Description: Look for the id mapped to a NodeName
+     * Returns: Cero if the id is not defined.
+     */
+    NodeNameId getNodeNameId(const Domain::NodeName& name) const
+    {
+        NodeNameId id;
+        try
+        {
+            id = nodeNameIdSet.get_element<NodeNameId>(name);
+        }
+        catch (const BadElementName&)
+        {
+            id = NODENAME_NOT_FOUND;
         }
         return id;
     }
@@ -201,6 +228,16 @@ public:
         return locationIdSet.size();
     }
 
+    /**
+     * Method: getNodeNameCount
+     * ----------------------
+     * Returns: The number of node names stored
+     */
+    size_t getNodeNameCount() const
+    {
+        return nodeNameIdSet.size();
+    }
+
     bool isValid() const
     {
         return validateNodes() && validateDistances();
@@ -220,6 +257,7 @@ private:
 
     VariantsSet nodeLocationSet;
     VariantsSet locationIdSet;
+    VariantsSet nodeNameIdSet;
     std::vector<std::vector<Distance> > locationsDistances;
     DistanceVector dispersionVector;
 

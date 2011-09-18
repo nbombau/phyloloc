@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <stdio.h>
 #include <QListWidgetItem>
+#include <QList>
 
 #include "PhyloGUI/inc/graphwidget.h"
 #include "Domain/ITreeCollection.h"
@@ -38,12 +39,15 @@ private:
     Domain::ITree<PhyloGUI::GuiNode>* actualTree;
     void loadTree(const DataSource::FilesInfo& info, bool allowMissingData, LocationManager& locationManager);
     Domain::ITreeCollection<PhyloGUI::GuiNode> trees;
+    Domain::ITree<PhyloGUI::GuiNode>* consensedTree;
     Locations::LocationManager locationManager;
+    int consensedTreeRow;
 
 public slots:
     void drawTree();
 
 private slots:
+    void on_actionClose_all_triggered();
     void on_actionActual_size_triggered();
     void on_actionProcess_tree_triggered();
     void on_actionSelect_Ancestors_triggered();

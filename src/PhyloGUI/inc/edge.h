@@ -8,13 +8,14 @@
 //#include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
+#include "Phyloloc/Propagator/StatisticsAspect.h"
+#include "Phylopp/Consensor/ConsensorAspect.h"
 
 namespace PhyloGUI
 {
 
 template<class T> class GuiAspect;
-typedef GuiAspect< Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > GuiNode;
-
+typedef GuiAspect<Propagation::StatisticAspect<Consensus::ConsensorAspect<Propagation::PropagatorAspect< Locations::LocationAspect< Domain::Node> > > > >  GuiNode;
 class Edge : public QGraphicsItem
 {
 public:

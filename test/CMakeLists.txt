@@ -11,6 +11,9 @@ set(test_src TestMain.cpp
              Propagator/VectorHelperTest.cpp
              Propagator/PropagatorAspectTest.cpp
              Propagator/PropagatorTest.cpp
+	     Consensor/ClusterTreeTest.cpp
+             ../src/Phylopp/Consensor/bitset.cpp
+             Propagator/StatisticCollectorTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

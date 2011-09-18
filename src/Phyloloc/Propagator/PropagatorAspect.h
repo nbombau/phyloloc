@@ -107,6 +107,12 @@ public:
         );
     }
 
+    LocationProbabilities::const_iterator getProbabilitiesIterator() const
+    {
+        LocationProbabilities::const_iterator it = probabilities.begin();
+        return it;
+    }
+
     //TODO: temporary until integgration. protected removed for initializing leaf probabilities
     //shall be removed during integration
     //protected:
