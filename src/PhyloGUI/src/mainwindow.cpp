@@ -20,6 +20,7 @@ using namespace Searching;
 using namespace PhyloGUI;
 using namespace Consensus;
 
+const int NO_CONSENSED_TREE = 1;
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
@@ -259,8 +260,8 @@ void MainWindow::drawTree()
     ui->actionZoom->setEnabled(true);
     ui->actionZoom_2->setEnabled(true);
     ui->actionActual_size->setEnabled(true);
-    int row = ui->listWidget->currentRow();
-    if(row==consensedTreeRow)
+    const int row = ui->listWidget->currentRow();
+    if(row == consensedTreeRow)
         graph->draw(consensedTree);
     else
     {
@@ -288,16 +289,16 @@ void MainWindow::on_actionActual_size_triggered()
 void MainWindow::on_actionClose_all_triggered()
 {
     QMessageBox msg(QMessageBox::Question, "Close all", "Are you sure you want to close all the trees currently open?", QMessageBox::Ok|QMessageBox::Cancel, this);
-    if( msg.exec() == QMessageBox::Ok)
+    if(msg.exec() == QMessageBox::Ok)
     {
         locationManager.clear();
         delete consensedTree;
-        consensedTree=NULL;
+        consensedTree = NULL;
         trees.clear();
-        actualTree=NULL;
+        actualTree = NULL;
         ui->listWidget->clear();
         delete graph->scene();
-        consensedTreeRow=-1;
+        consensedTreeRow = NO_CONSENSED_TREE;
         ui->actionClear_selection->setEnabled(false);
         ui->actionColor_nodes->setEnabled(false);
         ui->actionSelect_all_nodes->setEnabled(false);

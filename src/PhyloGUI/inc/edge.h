@@ -3,9 +3,6 @@
 
 #include <QGraphicsItem>
 #include <Qt>
-//#include "PhyloGUI/inc/graphwidget.h"
-//#include "Domain/INode.h"
-//#include "PhyloGUI/GuiAspect.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
 #include "Phyloloc/Propagator/StatisticsAspect.h"

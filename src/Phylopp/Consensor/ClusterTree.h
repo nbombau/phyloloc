@@ -78,11 +78,11 @@ private:
         b.set(locationManager.getNodeNameId(leaf->getName()) - 1);
     }
 
-    bitset getConsenedRoot() const
+    bitset getConsensedRoot() const
     {
-        ClusterConstIterator it = clusters.begin();
         bitset aux(locationManager.getNodeNameCount());
-        for(; it!=clusters.end(); it++)
+     
+        for(ClusterConstIterator it = clusters.begin(); it!=clusters.end(); it++)
             aux|=(*it).cluster;
 
         return aux;
@@ -91,20 +91,16 @@ private:
 public:
 
     ClusterTree(Domain::ITree<Node2>* t, Observer& observer, Locations::LocationManager& locMgr)
-        : obs(observer), locationManager(locMgr)
+        : obs(observer), tree(t), isConsensusTree(false), locationManager(locMgr)
     {
-        tree=t;
-        isConsensusTree=false;
-        //obs=observer;
         calculateClusters();
     }
 
     ClusterTree(const ClusterTree<Node2,Observer>& other, Observer& observer, Locations::LocationManager& locMgr)
-        : obs(observer), locationManager(locMgr)
+        : obs(observer), isConsensusTree(true), locationManager(locMgr)
     {
-        isConsensusTree=true;
-        //obs=observer;
         ClusterConstIterator it = other.getClusterIterator();
+        
         for(; it != other.clusters.end(); it++)
         {
             bitset newCluster((*it).cluster);
@@ -122,10 +118,15 @@ public:
     bool containsCluster(const bitset& bits) const
     {
         ClusterConstIterator it = clusters.begin();
-        for(; it != clusters.end(); it++)
-            if((*it).cluster == bits)
-                return true;
-        return false;
+        bool contains = false;
+        
+        while(it != clusters.end() && !contains)
+        {
+            contains = it->cluster == bits;
+            it++;
+        }
+        
+        return contains;
     }
 
     void intersectWith(const ClusterTree<Node2, Observer >& other)
@@ -164,26 +165,6 @@ public:
         }
     }
 
-    class BitsetComparator
-    {
-    public:
-        bool operator() (NodeCluster<Node2> & node1,NodeCluster<Node2> & node2)
-        {
-            bool ret=false;
-            if(countTrueBits(node1.cluster)>countTrueBits(node2.cluster))
-                ret=true;
-            return ret;
-        }
-        //TODO add to bitset implementation?
-        static size_t countTrueBits(Consensus::bitset & bs)
-        {
-            size_t cant=0;
-            for(unsigned int i=0; i<bs.size(); ++i)
-                cant += (bs[i]==bitset::bit::true_bit)?1:0;
-            return cant;
-        }
-    };
-
     Domain::ITree<Node2>* toTree()
     {
         ClusterIterator it;
@@ -195,7 +176,7 @@ public:
         clusters.sort(BitsetComparator());
 
         nodes[0]=tree->getRoot();
-        bitset root = getConsenedRoot();
+        bitset root = getConsensedRoot();
 
         if(root!=clusters.front().cluster)
         {
@@ -231,6 +212,26 @@ public:
         }
         return tree;
     }
+    
+    class BitsetComparator
+    {
+    public:
+        bool operator() (NodeCluster<Node2> & node1,NodeCluster<Node2> & node2)
+        {
+            bool ret=false;
+            if(countTrueBits(node1.cluster)>countTrueBits(node2.cluster))
+                ret=true;
+            return ret;
+        }
+        //TODO add to bitset implementation?
+        static size_t countTrueBits(Consensus::bitset & bs)
+        {
+            size_t cant=0;
+            for(unsigned int i=0; i<bs.size(); ++i)
+                cant += (bs[i]==bitset::bit::true_bit)?1:0;
+            return cant;
+        }
+    };
 };
 }
 

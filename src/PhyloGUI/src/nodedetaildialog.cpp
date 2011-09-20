@@ -12,7 +12,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
                                    Locations::Location& locations,
                                    Propagation::LocationProbabilities& probabilities,
                                    Locations::LocationManager* locationManager,
-                                   Propagation::StatisticInfoVector& statistics,
+                                   const Propagation::StatisticInfoVector& statistics,
                                    QWidget* parent)
     : QDialog(parent),
       propGrid(NULL),
@@ -104,31 +104,31 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         consGrid->setHorizontalHeaderLabels(consTitles);
         Propagation::StatisticInfoConstIterator it2 = statistics.begin();
         VariantsSet::iterator itLocations = locationManager->getLocations();
-        for(unsigned int i=0; it2!=statistics.end(); it2++,i++,itLocations++)
+        for(unsigned int i = 0; it2!=statistics.end(); it2++, i++, itLocations++)
         {
-            QTableWidgetItem * location=new QTableWidgetItem(QString(itLocations->second.c_str()));
+            QTableWidgetItem * location = new QTableWidgetItem(QString(itLocations->second.c_str()));
             location->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,0,location);
-            QTableWidgetItem * average=new QTableWidgetItem(QString().setNum((*it2).average, 'f', 3));
+            consGrid->setItem(i, 0, location);
+            QTableWidgetItem * average = new QTableWidgetItem(QString().setNum((*it2).average, 'f', 3));
             average->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,1,average);
-            QTableWidgetItem * stdDeviation=new QTableWidgetItem(QString().setNum((*it2).stdDeviation, 'f', 3));
+            consGrid->setItem(i, 1, average);
+            QTableWidgetItem * stdDeviation = new QTableWidgetItem(QString().setNum((*it2).stdDeviation, 'f', 3));
             stdDeviation->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,2,stdDeviation);
-            QTableWidgetItem * median=new QTableWidgetItem(QString().setNum((*it2).median, 'f', 3));
+            consGrid->setItem(i, 2, stdDeviation);
+            QTableWidgetItem * median = new QTableWidgetItem(QString().setNum((*it2).median, 'f', 3));
             median->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,3,median);
-            QTableWidgetItem * percentile25=new QTableWidgetItem(QString().setNum((*it2).percentile25, 'f', 3));
+            consGrid->setItem(i, 3, median);
+            QTableWidgetItem * percentile25 = new QTableWidgetItem(QString().setNum((*it2).percentile25, 'f', 3));
             percentile25->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,4,percentile25);
-            QTableWidgetItem * percentile75=new QTableWidgetItem(QString().setNum((*it2).percentile75, 'f', 3));
+            consGrid->setItem(i, 4, percentile25);
+            QTableWidgetItem * percentile75 = new QTableWidgetItem(QString().setNum((*it2).percentile75, 'f', 3));
             percentile75->setFlags(Qt::NoItemFlags);
-            consGrid->setItem(i,5,percentile75);
+            consGrid->setItem(i, 5, percentile75);
         }
 
         consGrid->resizeColumnsToContents();
 
-        top += height+200;
+        top += height + 200;
     }
     propagateButton = new QPushButton(this);
     propagateButton->setGeometry((width() -loadButtonWidth) / 2, top, loadButtonWidth, height);
