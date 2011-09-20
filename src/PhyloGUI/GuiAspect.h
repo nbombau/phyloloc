@@ -27,7 +27,6 @@
 #include "Domain/INode.h"
 #include "Phyloloc/Propagator/PropagatorAspect.h"
 #include "Domain/LocationAspect.h"
-//#include "Domain/LocationManager.h"
 #include "Phyloloc/Propagator/StatisticsAspect.h"
 #include "Phylopp/Consensor/ConsensorAspect.h"
 
@@ -348,7 +347,7 @@ protected:
         //Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
         Locations::Location location = lm->getLocation(this->getName());
         Domain::NodeName name = this->getName();
-        NodeDetailDialog detail(name,location,this->probabilities,lm,this->getStatistics());
+        NodeDetailDialog detail(name, location, this->probabilities, lm, this->getStatistics());
         detail.exec();
     }
 

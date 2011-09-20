@@ -35,7 +35,7 @@ public:
                      Locations::Location& locations,
                      Propagation::LocationProbabilities& probabilities,
                      Locations::LocationManager* locationManager,
-                     Propagation::StatisticInfoVector& statistics,
+                     const Propagation::StatisticInfoVector& statistics,
                      QWidget* parent = NULL);
 
     /**

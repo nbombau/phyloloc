@@ -44,6 +44,10 @@ public:
      */
     void onInclude(Node2 * node, const Consensus::bitset& cluster)
     {
+       /* printf("\n");
+        for(unsigned int i = 0; i < cluster.size(); i++)
+            printf("%s", cluster[i] == Consensus::bitset::bit::true_bit ? "1" :"0" );*/
+        
         collector.addStatistic(cluster, node->getProbabilitiesIterator());
     }
 
