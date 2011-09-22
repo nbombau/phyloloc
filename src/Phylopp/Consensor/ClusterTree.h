@@ -106,6 +106,7 @@ public:
             bitset newCluster((*it).cluster);
             NodeCluster<Node2> n(newCluster, (*it).node);
             clusters.push_back(n);
+            observer.onInclude((*it).node, bitset((*it).cluster));
         }
     }
 
@@ -149,7 +150,7 @@ public:
             itExtern--;
             if(isPresent)
             {
-                obs.onInclude((*itLocal).node,(*itLocal).cluster);
+                obs.onInclude((*itExtern).node, (*itExtern).cluster);
                 if((*itLocal).node->getBranchLength()>(*(itExtern)).node->getBranchLength())
                 {
                     (*itLocal).node=(*itExtern).node;
@@ -158,7 +159,7 @@ public:
             }
             else
             {
-                obs.onExclude((*itLocal).node,(*itLocal).cluster);
+                obs.onExclude((*itExtern).node,(*itLocal).cluster);
                 itLocal=clusters.erase(itLocal);
                 itLocal--;
             }
