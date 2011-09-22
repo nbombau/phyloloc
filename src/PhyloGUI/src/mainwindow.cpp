@@ -20,7 +20,7 @@ using namespace Searching;
 using namespace PhyloGUI;
 using namespace Consensus;
 
-const int NO_CONSENSED_TREE = 1;
+const int NO_CONSENSED_TREE = -1;
 
 MainWindow::MainWindow(QWidget* parent) :
     QMainWindow(parent),
