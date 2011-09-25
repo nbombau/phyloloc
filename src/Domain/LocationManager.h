@@ -44,7 +44,7 @@ public:
 
     VariantsSet::iterator getLocations()
     {
-        return nodeLocationSet.begin();
+        return locationIdSet.begin();
     }
 
     void clear()

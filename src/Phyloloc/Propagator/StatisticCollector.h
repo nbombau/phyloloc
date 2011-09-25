@@ -76,15 +76,6 @@ namespace Propagation
             statistics.resize(locationsCount);
         }
         
-        NodeStatisticsCollector(const NodeStatisticsCollector& other)
-        : statisticsCount(other.statisticsCount),
-        locationsCount(other.locationsCount)
-        {
-            averages = StatisticVector(other.averages);
-            variances = StatisticVector(other.variances);
-            statistics = NodeStatistics(other.statistics);
-        }
-
         void addStatistic(StatisticConstIterator it)
         {
             //TODO: check iterator size, assert its statistics size

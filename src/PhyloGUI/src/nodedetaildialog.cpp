@@ -77,7 +77,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
             prob->setFlags(Qt::NoItemFlags);
             propGrid->setItem(i,1,prob);
 
-            QTableWidgetItem * location=new QTableWidgetItem(QString(it->second.c_str()));
+            QTableWidgetItem * location=new QTableWidgetItem(QString(it->first.c_str()));
             location->setFlags(Qt::NoItemFlags);
             propGrid->setItem(i,0,location);
         }
@@ -106,7 +106,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         VariantsSet::iterator itLocations = locationManager->getLocations();
         for(unsigned int i = 0; it2!=statistics.end(); it2++, i++, itLocations++)
         {
-            QTableWidgetItem * location = new QTableWidgetItem(QString(itLocations->second.c_str()));
+            QTableWidgetItem * location = new QTableWidgetItem(QString(itLocations->first.c_str()));
             location->setFlags(Qt::NoItemFlags);
             consGrid->setItem(i, 0, location);
             QTableWidgetItem * average = new QTableWidgetItem(QString().setNum((*it2).average, 'f', 3));
