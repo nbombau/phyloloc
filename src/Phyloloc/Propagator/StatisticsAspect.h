@@ -18,7 +18,7 @@ namespace Propagation
 
     public:
 
-        void loadStatistics(const StatisticInfoVector& s)
+        void loadStatistics(StatisticInfoVector s)
         {
             statistics = s;
         }

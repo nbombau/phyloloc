@@ -14,6 +14,7 @@ set(test_src TestMain.cpp
 	     Consensor/ClusterTreeTest.cpp
              ../src/Phylopp/Consensor/bitset.cpp
              Propagator/StatisticCollectorTest.cpp
+            Consensor/bitsetTest.cpp
 )
 
 INCLUDE_DIRECTORIES(../src)

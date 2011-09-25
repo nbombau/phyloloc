@@ -5,7 +5,6 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
-#include <stdio.h>
 #include <mili/mili.h>
 #include "StatisticInfo.h"
 #include "Phylopp/Consensor/bitset.h"
@@ -42,8 +41,8 @@ namespace Propagation
             
             if(statisticsCount > 0)
             {
-                const Statistic numerator = sqrt(
-                    statisticsCount * statisticSquareSums[i] - square(statisticSums[i])
+                Statistic numerator = sqrt(
+                    statisticsCount * statisticSquareSums[i] - statisticSums[i] * statisticSums[i]
                 );
                 ret = numerator / statisticsCount;
             }
@@ -77,6 +76,15 @@ namespace Propagation
             statisticSquareSums.resize(locationsCount);
             statistics.resize(locationsCount);
         }
+        
+        NodeStatisticsCollector(const NodeStatisticsCollector& other)
+        : statisticsCount(other.statisticsCount),
+        locationsCount(other.locationsCount)
+        {
+            statisticSums = StatisticVector(other.statisticSums);
+            statisticSquareSums = StatisticVector(other.statisticSquareSums);
+            statistics = NodeStatistics(other.statistics);
+        }
 
         void addStatistic(StatisticConstIterator it)
         {
@@ -84,7 +92,6 @@ namespace Propagation
             for(unsigned int i = 0; i < locationsCount; i++)
             {
                 statistics[i].push_back(*it);
-
                 statisticSums[i] += *it;
                 statisticSquareSums[i] += square(*it);
                 it++;
@@ -127,11 +134,7 @@ namespace Propagation
         TreeStatisticsCollector(unsigned int count) : locationsCount(count) {}
 
         void addStatistic(const Consensus::bitset& b, StatisticConstIterator it)
-        {
-            printf("\n");
-            for(unsigned int i = 0; i < b.size(); i++)
-                printf("%s", b[i] == Consensus::bitset::bit::true_bit ? "1" :"0" );
-            
+        {   
             if(treeStatistics.count(b) == 0)
             {
                 NodeStatisticsCollector statCol(locationsCount);

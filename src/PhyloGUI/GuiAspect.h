@@ -12,7 +12,6 @@
 #include <QMenu>
 #include <QAction>
 #include <QRectF>
-#include <stdio.h>
 #include <mili/mili.h>
 #include <QObject>
 #include <QList>
