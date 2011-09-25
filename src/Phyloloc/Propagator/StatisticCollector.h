@@ -22,8 +22,8 @@ namespace Propagation
     {
     private:
         NodeStatistics statistics;
-        StatisticVector statisticSums;
-        StatisticVector statisticSquareSums;
+        StatisticVector averages;
+        StatisticVector variances;
         unsigned int statisticsCount;
         unsigned int locationsCount;
 
@@ -31,7 +31,7 @@ namespace Propagation
         {
             Statistic ret = 0;
             if(statisticsCount > 0)
-                ret = statisticSums[i] / statisticsCount;
+                ret = averages[i];
             return ret;
         }
 
@@ -41,10 +41,7 @@ namespace Propagation
             
             if(statisticsCount > 0)
             {
-                Statistic numerator = sqrt(
-                    statisticsCount * statisticSquareSums[i] - statisticSums[i] * statisticSums[i]
-                );
-                ret = numerator / statisticsCount;
+                ret = sqrt(variances[i] / statisticsCount);
             }
 
             return ret;
@@ -52,7 +49,9 @@ namespace Propagation
 
         Statistic calculatePercentile(unsigned int i, unsigned int percentile) const
         {
-            //TODO: Weighted percentile
+            //TODO: O(nlog(n)) solution. Consider implementing a O(n) solution,
+            // as presented in Introduction To Algorithms, Cormen, chapter 7, 
+            //Order Statistics
             unsigned int idx = static_cast<unsigned int>(
                     (percentile / 100.0) * statisticsCount - 0.5
                 );
@@ -72,8 +71,8 @@ namespace Propagation
             locationsCount(locCount)
 
         {
-            statisticSums.resize(locationsCount);
-            statisticSquareSums.resize(locationsCount);
+            averages.resize(locationsCount);
+            variances.resize(locationsCount);
             statistics.resize(locationsCount);
         }
         
@@ -81,8 +80,8 @@ namespace Propagation
         : statisticsCount(other.statisticsCount),
         locationsCount(other.locationsCount)
         {
-            statisticSums = StatisticVector(other.statisticSums);
-            statisticSquareSums = StatisticVector(other.statisticSquareSums);
+            averages = StatisticVector(other.averages);
+            variances = StatisticVector(other.variances);
             statistics = NodeStatistics(other.statistics);
         }
 
@@ -91,9 +90,26 @@ namespace Propagation
             //TODO: check iterator size, assert its statistics size
             for(unsigned int i = 0; i < locationsCount; i++)
             {
+                //save the statistics for the percentile's calculation
                 statistics[i].push_back(*it);
-                statisticSums[i] += *it;
-                statisticSquareSums[i] += square(*it);
+                
+                //Variance, Standard Deviation and average calculated using Welford's 
+                //Algorithm, presented in Knuth, Art of Computer Programming volume 2,
+                //statistics calculation chapter
+                if(statisticsCount == 0)
+                {
+                    averages[i] = *it;
+                    variances[i] = 0.0;
+                }
+                else
+                {
+                    Statistic prevAverage = averages[i];
+                    //update the average
+                    averages[i] += (*it - averages[i]) / (statisticsCount + 1);
+                    
+                    //update the standardDeviations
+                    variances[i] +=  (*it - prevAverage) * (*it - averages[i]);
+                }    
                 it++;
             }
             statisticsCount++;
