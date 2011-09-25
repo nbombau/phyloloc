@@ -1,5 +1,4 @@
 #include "bitset.h"
-#include <stdio.h>
 #include <mili/mili.h>
 
 namespace Consensus
@@ -351,7 +350,7 @@ namespace Consensus
         while(i < a.size() && lt == false)
         {
             if(a[i] != b[i])
-                lt = a[i] == bitset::bit::false_bit;
+                return a[i] == bitset::bit::false_bit;
             i++;
         }
         

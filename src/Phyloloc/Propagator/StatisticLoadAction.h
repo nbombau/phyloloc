@@ -22,7 +22,9 @@ public:
     VisitAction visitNode(Node* n)
     {
         if(statistics.hasStatistics(n->cluster))
+        {
             n->loadStatistics(statistics.getClusterStatistics(n->cluster));
+        }
 
         return ContinueTraversing;
     }

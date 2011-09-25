@@ -5,7 +5,6 @@
 #include <QStringListModel>
 #include <stdlib.h>
 #include <QFileDialog>
-#include <stdio.h>
 #include <QListWidgetItem>
 #include <QList>
 

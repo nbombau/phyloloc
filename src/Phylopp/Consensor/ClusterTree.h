@@ -2,7 +2,6 @@
 #define CLUSTER_TREE_H
 
 #include <list>
-#include <stdio.h>
 #include "bitset.h"
 #include "Domain/INode.h"
 #include "Domain/LocationAspect.h"
@@ -106,7 +105,7 @@ public:
             bitset newCluster((*it).cluster);
             NodeCluster<Node2> n(newCluster, (*it).node);
             clusters.push_back(n);
-            observer.onInclude((*it).node, bitset((*it).cluster));
+            obs.onInclude(n.node, n.cluster);
         }
     }
 
@@ -202,8 +201,11 @@ public:
                     nodes[aux] = nodes[j]->template addChild<Node2>();
                     nodes[aux]->template setName(itAux->node->template getName());
                     nodes[aux]->template setBranchLength(itAux->node->template getBranchLength());
-                    nodes[aux]->cluster = bitset((*itAux).cluster);
+                    nodes[aux]->cluster = (*itAux).cluster;
                     quit=true;
+                    
+                    nodes[aux]->cluster.print();
+                    
                 }
                 if(it==clusters.begin())
                     quit=true;
