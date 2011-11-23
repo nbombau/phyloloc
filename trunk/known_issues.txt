@@ -1,0 +1,16 @@
+
+-issue 5: 
+	Remove memory leaks - The application has several memory leaks.
+	g++ version: 4.4.1 (Ubuntu 4.4.1-4ubuntu9)
+	Valgrind version: valgrind-3.5.0-Debian
+
+-issue 15: Improve seach functionality
+	Search should support regular expressions
+	Implement search interface
+
+-issue 29 "save as" availability
+-issue 38 zoom on resize
+-issue 42 progress bar for propagation
+	Show a progress bar when running the propagation algorithm (just based on iterations)  
+-issue 43 error calculus export
+	calc the prediction error for each terminal node, and export it to a CSV file for external 	analysis and plotting (convergence, etc.)
