@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file alias="EFPU-logo">PhyloGUI/img/Logo_EFPU.gif</file>
+        <file alias="FuDePAN-logo">PhyloGUI/img/logo-fudepan.png</file>
+        <file alias="ITBA-logo">PhyloGUI/img/Logo_ITBA2.gif</file>
+        <file alias="Gpl-logo">PhyloGUI/img/logo-gplv3.png</file>
+    </qresource>
+</RCC>

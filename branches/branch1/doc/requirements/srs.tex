@@ -1,0 +1,510 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+
+\usepackage[toc, page, header]{appendix}
+\renewcommand{\appendixtocname}{Appendix}
+\renewcommand{\appendixpagename}{Appendix}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{url}
+\author{Nicol\'as Bombau \and Carlos Castro \and Dami\'an Dom\'e \and Emmanuel Teisaire}
+\title{Software Requirements Specification \\ Phyloloc}
+\pagestyle{headings}
+\begin{document}
+\maketitle
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introduction}
+  \subsection{Purpose}
+  \paragraph{}
+
+Emergent viruses and other pathogens spread out by means of chains of infection in which, basically, one host passes the pathogen to another one. In this way, pathogens gradually spread along a geographic range that usually corresponds to its host distribution. Hosts capable of moving long distances can therefore largely drive pathogen
+dispersal. For example, it is though that Human Immunodeficiency Virus 1 (HIV-1) spread out from Africa into remote places around the world following human movements.
+\paragraph{}
+Deciphering the history of pathogens' demography is of keen interest in epidemiology, as is demonstrated by many works that deal with unraveling the dispersion process of pathogens. The combination of data on the evolutionary history of the pathogen (i.e. phylogenetic trees) with information on its geographic distribution, together with other epidemiological data, shall help explaining the present distribution of infectious agents. The basic idea behind this kind of studies is that phylogenetic relatedness is indicative of geographic proximity.
+\paragraph{}
+Despite the obvious interest in the problem of tracing the geographic origin and dynamics of emerging diseases, a formal optimality criterion capable of integrating phylogenetic and geographic data is lacking. Phyloloc shall implement a method to estimate the geographic origin of any given clade in a rooted tree. The method produces, for each node in a given tree or set of trees, a vector of potential ancestral locations. Each potential location present in this vector has an associated value, ranging from 0 to 1, that reflects the plausibility of the corresponding location being the geographic origin of the node?s childs.
+
+  \subsection{Document Conventions}
+
+\paragraph{} 
+ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119.
+
+  \subsection{Intended Audience}
+
+  \paragraph{}
+Below are enumerated the people involved in the thesis, and their respective roles. In the short term, they shall be the audience of the present document.
+
+  \begin{itemize}
+    \item Lic Silvia Gomez: Thesis Director, ITBA
+    \item Lic. Daniel Gutson: Thesis Tutor, FuDePAN
+    \item PhD Leandro Jones: Thesis Colaborator, EFPU
+    \item Nicol\'as Bombau: Thesist, ITBA
+    \item Carlos Castro: Thesist, ITBA
+    \item Dami\'an Dom\'e: Thesist, ITBA
+    \item Emmanuel Teisaire: Thesist, ITBA
+  \end{itemize}  
+ 
+  \subsection{Project Scope}
+\paragraph{}
+The product specified in the current document is called \textbf{``Phyloloc''}, and it's main purpose is to, through a formal optimality criterion, integrate the phylogenetic and geographic data of a collection of phylogenetic trees. 
+\paragraph{}
+The output of the project shall be three software components: a general and resusable phylogenetic utilities library, phyloloc itself, which uses the utilities library, and a user interface, which must also be reusable.
+\paragraph{}
+The final product has to let the user load phylogenetic tree or set of trees, and output an integrated tree, which in it's nodes has a vector of potential ancestral locations and their corresponding plausibility value, ranging from $0$ to $1$. 
+\paragraph{}
+The product shall also provide a \emph{user-friendly} interface, in order to let the user visualize phylogenetic trees in a confortable way. The user interface shall also allow basic operations like node selection, highlighting, expansion and collapsation.
+\paragraph{}
+The project shall be deployed as a desktop application. As some algorithms may take a considerable amount of time to run, it would be interesting to provide a way to run the algorithms in a distributed way. This functionality shall be included in another future project, being out of the current project scope.
+\paragraph{}
+
+  \subsection{Document Structure}
+\paragraph{}
+The structure of the present document follows the recommendations from the ``Guide for the requirements specification'' published by the IEEE, standard 830-1998. 
+\paragraph{}
+Section \ref{section-desc-gral} provides an overall description of the most general aspects of the product, such as the product perspective, major features, user interfaces and profiles, and operating enviroment.
+\paragraph{}
+Section \ref{section-int} describes the interfaces of the product, such as it's user interface and software interfaces.
+\paragraph{}
+Section \ref{section-req} organizes the functional requirements for the product. 
+\paragraph{}
+Section \ref{section-nreq} enumerates the non functional requirements, such as coding style, design and coverage constraints.
+
+
+\section{Overall Description}
+  \label{section-desc-gral}
+  \subsection{Product Perspective}
+\paragraph{}
+The product is intended to provide the cientific and amateur communities a tool that accomplishes to join the information they have in the form of phylogenetic trees, considering the geographic and phylogenetic information through the method proposed by PhD Leandro Jones.
+\paragraph{}
+The tool is also intended to provide quick \emph{point-and-click} capabilities for agile tree analisys.
+\subsection{Product Features}
+\paragraph{}
+This section provides a brief description of the major features of the product, which are detailed in \ref{section-req}.
+\subsubsection{Phylogenetic Trees Loading}
+\paragraph{}
+In order to integrate trees, in the first place phyloloc must be able to load phylogenetic trees, which shall have previously been obtained using any of the methods available, such as maximum likehood and maximum parsimony methods. 
+
+\subsubsection{Phylogenetic Trees Visualization and Analisys Tools}
+\paragraph{}
+The product provides visualization capabilities, specially prepared for really large trees visualization.
+d for really large trees visualization. The GUI shall also provide basic node operations like searching, selecting, highlighting and coloring.
+
+\subsubsection{Phylogenetic and Geographical Data Integration} 
+\paragraph{}
+The product shall provide an analisys operation, which integrates phylogenetic and geographical data, considering branch length and geographic dispersion of locations. The method shall be explained in detail in \ref{subsection-data-integration}.
+
+\subsubsection{User Classes and Characteristics}
+\paragraph{}
+The final users are the ones that use the product in order to use the tools it provides. The product is intended to be used by people keen on phylogeny, such as biologists, students, bioinformatics investigators, and anyone interested in the subject.
+
+
+
+
+
+\section{Interfaces}
+  \label{section-int}
+\paragraph{}
+
+\subsection{User Interface}
+\paragraph{}
+The user interface consists of two forms, a main menu and a configuration panel, detailed below.
+
+\subsubsection{Main Menu}
+\paragraph{}
+The main menu is the place where the top-level commands are grouped. The menu shall at least, include the following options:
+\begin{enumerate}
+    \item{Load: }
+	Load data in order to visualize or analyze it.
+    \item{Close: }
+	Closes the system.
+    \item{Search Nodes: }
+	Search a determined node by name.
+\item{Clear Selection: }
+	Selects all the tree nodes.
+\item{Clear Selection: }
+	Clears all the selected nodes.
+\item{Expand Nodes: }
+	Expands all selected nodes.
+\item{Collapse Nodes: }
+	Collapses all selected nodes.
+\item{Color Nodes: }
+	Highlights the selected nodes with a color that the user can choose for each coloring.
+\item{Show Node Ancestors: }
+	Highlights all selected nodes' ancestors.
+\item{Show Node Descendants: }
+	Highlights all selected nodes' descendants.
+
+\end{enumerate}
+
+\subsubsection{Data Load Form}
+\paragraph{}
+Form that allows the user to load the trees into the system. The user is asked to load a file, from which the information of the trees is parsed.
+\subsubsection{Tree Visualization Form}
+\paragraph{}
+The visualization form allows the user to see the recently loaded trees, and also the integrated tree. This form shall provide the visualization capabilities, and showing the result of applying the basic tools such as collapsing, expanding nodes and node coloring. The user shall also visualize the details of a particular node in a friendly way.
+\subsubsection{Configuration Panel}
+\paragraph{}
+The configuration panel allows the user to customize certain aspects of the execution and analisys, such as the integrating algorithm termination criterion, as well as the ways of handling missing data, and other possible system parameters.
+
+
+    \subsection{Hardware Interfaces}
+\paragraph{}
+    No requirements specified.
+
+\subsection{Software Interfaces}
+\paragraph{}
+The product shall be divided into three modules:	
+
+\begin{enumerate}
+    \item{phylopp: }
+		Base library that provides phylogenetic utilities, that concern general phylogeny functions that may serve other purposes for future related products. This library shall be completly reusable.
+    \item{phyloloc: }
+		The main product, which shall use the utilities provided by phylopp, in order to perform the product-specific algorithms and operations.
+    \item{phylogui: }
+		User interface that shall provide the final user ways to interact with phyloloc. As phylogui shall provide the final user ways to visualize phylogenetic trees, that part of the gui shall be completly reusable, and loosely coupled, so that it can be used in future products.
+
+\end{enumerate}
+    
+\paragraph{}
+Although phylopp and phylogui are software interfaces that shall interact with phyloloc, all of them shall be implemented as part of the current project.
+
+\subsection{Communication Interfaces}
+\paragraph{}
+    No requirements specified.
+
+
+
+\section{Functional Requirements}
+\label{section-req}  
+
+\subsection{GUI Requirements}
+
+\subsubsection{REQ01 Data Load}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user load a file containing the trees that will be processed by the product.
+\paragraph{Priority}
+High.
+\paragraph{Description}
+
+\begin{enumerate}
+    \item \textbf{File Loading:}
+	The system displays a form drop down list, with the possible file and tree formats available. Also, the system allows the user to select a file to upload from his filesystem. If the file is successfully loaded, the validation of the file takes place. Otherwise, an error message is displayed.
+    
+    \item \textbf{File Content Validation:}
+	The system parses the file loaded in the previous step, using the parse method assigned to the file format selected. If there is a parsing error, an error message is displayed. If the parsing is succesfull, the system indicates the user that the file was loaded.
+\end{enumerate}    
+
+\paragraph{}
+The tree load format shall be Newick.
+
+ \subsubsection{REQ02 Terminal Node Search}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user search terminal nodes by name.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Activation: }
+	The main manu shall have a \emph{search} option. Once this option is selected, the user is prompted to enter the name of the node. In case there are no matches, the user is informed so. Otherwise, the matches are highlighted.
+    \item \textbf{Visualization: }
+	Once the search progress is done, the found and selected nodes - if applies, are highlighted in the tree visualization.
+    \end{enumerate}
+
+	\subsubsection{REQ03 Node Selection}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user select a node or set of nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Selection: }
+	The user can select a node by pointing and clicking it. Once a node is selected, the system highlights it.
+    \end{enumerate}
+	
+	\subsubsection{REQ04 All Nodes Selection}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user select all nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Selection: }
+	The main manu shall have a \emph{select all} option. Once this option is selected, the system selects all nodes.
+    \end{enumerate}
+
+  \subsubsection{REQ05 Node Selection Clear}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user clear the selected nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Selection Clear: }
+	The main manu shall have a \emph{clear selection} option. Once this option is selected, the system removes all highlighting from the tree nodes.
+    \end{enumerate}
+
+  \subsubsection{REQ06 Node Expanding}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user expand a given node or set of nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Expanding: }
+	The main manu shall have an \emph{expand} option. Once this option is selected, the system expands the selected nodes, showing its direct children.
+    \end{enumerate}
+
+  \subsubsection{REQ07 Node Collapsing}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user collapse a given node or set of nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Collapsing: }
+	The main manu shall have an \emph{collapse} option. Once this option is selected, the system collapses the selected nodes, hiding its children.
+    \end{enumerate}
+
+  \subsubsection{REQ08 Node Coloring}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user colur a given node or set of nodes.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Coloring: }
+	The main manu shall have an \emph{Color} option. Once this option is selected, the system displays a set of colors, so that the user selects one. Once a color is selected, the system colors the 
+    \end{enumerate}
+
+  \subsubsection{REQ09 Node Ancestors Selection}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user select the ancestors of a given node.
+
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Ancestors Selection: }
+	The main manu shall have an \emph{Select Ancestors} option. Once this option is selected, the system recursively selects all the ancestors of all the selected nodes.
+    \end{enumerate}
+	
+	  \subsubsection{REQ10 Node Descendants Selection}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user select the descendants of a given nodes
+
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Node Descendants Selection: }
+	The main manu shall have an \emph{Select Descendants} option. Once this option is selected, the system recursively selects all the descendants of all the selected nodes.
+    \end{enumerate}
+
+\subsubsection{REQ011 Tree Saving}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to let the user save a tree in the filesystem.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Tree Saving: }
+The main menu shall have a \emph{Save} option, which saves the structure of the tree that is being visualized, so that it can be shared, or loaded again later. The export format shall be Newick.
+    \end{enumerate}
+
+
+  \subsubsection{REQ012 Formatted Tree Saving}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is the possibility of saving trees in the filesystem, mantaing colouring and expansion preferences.
+\paragraph{Priority}
+\paragraph{}
+Low.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Tree Saving: }
+The main menu shall have a \emph{Formatted Save} option, which saves the structure of the tree that is being visualized, so that it can be shared, or loaded again later. This option also saves the state of the nodes, such as if it is collapsed or expanded, the colour asigned to it, and its selection.
+    \end{enumerate}
+	
+	
+\subsection{Algorithmic Requirements}
+
+  \subsubsection{REQ13 Tree Data Integration}
+\label{subsection-data-integration}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is the integration of a tree's topology, geographical data, branch length and dispersion of locations.
+\paragraph{Priority}
+\paragraph{}
+High
+\paragraph{Description}
+\paragraph{}
+	For the integration of the information available, several passes have to be done along all its nodes. Here the detailed procedure is described.
+  \begin{enumerate}
+    \item \textbf{First Pass: }
+	The first one is a down-pass (i.e. from tips to root), in which the nodes' vectors are given a transitory states set using the method proposed in \emph{phyloloc (Jones, Gutson, ...)}. Factors are introduced to correct geographical dispersion and branch length.
+
+
+    \item \textbf{Second Pass: }
+The second pass starts from the tree root, passing recursively through all the nodes, until it goes back to the tips.
+    \item \textbf{Further Passes and Convergence: }
+Once the completion of the first two passes through the tree, the first pass shall be repeated, and afterwards the second pass, until the end condition is true. There are many cases in which the algorithm might terminate. 
+    \item \textbf{Convergence Criteria: }
+	The idea is to provide different ways of deciding whether the algorithm has converged or not. The ways that shall be provided are the following:
+		\begin{enumerate}
+		    \item Finish when the number of up and down passes reaches a certain number, which is received as a parameter.
+		    \item Finish when each of the root node's probability vector's cells vary less than $\Delta$, between the current and the previous pass.
+		    \item Finish when each of the selected nodes' probability vectors' cells vary less than $\Delta$, between the current and the previous pass.
+		    \item Finish when each of the terminal nodes' probability vectors' cells vary less than $\Delta$, between the current and the previous 
+		  \end{enumerate}
+
+  \end{enumerate}
+
+
+  \subsubsection{REQ14 Multiple Tree Consensus}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is the consensus of a set of trees that have been previously loaded by the user. 
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Tree Merge Algorithm:}
+	For the consensus of sets of phylogenetic trees, there exist many well known algorithms, which have already been tested for years. One of those algorithms shall be chosen, adapted and implemented in order to provide tree consensus functionality.
+    \end{enumerate}
+
+  \subsubsection{REQ03 Missing Data Handling}
+\paragraph{Objective}
+\paragraph{}
+The objective of this requirement is to provide the possibility of loading trees where some of its terminal nodes have have missing data.
+\paragraph{Priority}
+\paragraph{}
+High.
+\paragraph{Description}
+  \begin{enumerate}
+    \item \textbf{Missing Data Handling: }
+	The most common kind of terminal node that shall be loaded is one that regards to a known location. However, the system shall be able to handle when some terminal node has missing data. The interpretation of this situation is that it's known that certain virus kind arised, but it is not known where.
+    \end{enumerate}
+	
+	The system shall provide two ways of handling this kind of nodes:
+	
+	\begin{enumerate}
+    \item \textbf{Every Missing Data is a diferent and unknown location. }
+	\item \textbf{All Missing Data are the same location }
+    \end{enumerate}
+
+ 
+
+
+
+\section{Nonfunctional Requirements}
+  \label{section-nreq}  
+    \subsection{Design Requirements}
+\paragraph{}
+The product must be implemented on the basis of the object oriented design principles listed below. The first five of them, are also known by the acronym ``\textbf{SOLID}''. A brief description of each design principle is also listed.
+
+    \begin{itemize}
+      \item \textbf{S}ingle responsibility principle (SRP)
+      \item \textbf{O}pen/closed principle (OCP)
+      \item \textbf{L}iskov substitution principle (LSP)
+      \item \textbf{I}nterface segregation principle (ISP)
+      \item \textbf{D}ependency inversion principle (DIP)   
+      \item Law of Demeter (LoD)
+    \end{itemize}
+\paragraph{}
+Also, the product must stick to the ANSI C++ standard, and the ``coding style'' agreed altogether with FuDePAN.
+
+\subsection{Software Attributes}
+\paragraph{}
+The product's code shall have an 80\% coverage through tests.
+
+\subsection{Memory Restrictions}
+\paragraph{}
+No memory constraints are registered, but the reader should notice that given the problems complexity, the system's performance will be directly related to the machine that runs it.
+
+\subsection{Operating Enviroments}
+\paragraph{}
+Phyloloc is intended to be used on standard plataforms, as a desktop application. The supported plataforms are Windows 7 and GNU/LINUX most used distributions.
+
+\subsection{License Restrictions}
+\paragraph{}
+The product shall be licensed as GPLv3.
+
+\subsection{GUI Usability Attributes}
+\paragraph{}
+The GUI shall be color blind enabled.
+
+\begin{appendices} 
+    
+	\section{Glossary}
+  \label{appendix-def}
+  \begin{itemize}
+    \item \textbf{ITBA}: Instituto Tecnol\'ogico de Buenos Aires
+    \item \textbf{FuDePAN}: Fundaci\'on para el Desarrollo de la Programaci\'on en \'Acidos Nucleicos.
+	\item \textbf{EFPU}: Estaci\'on de Fotobiolog\'ia Playa Uni\'on
+    \item \textbf{API}: Application Programming Interface.
+    \item \textbf{GPL}: General Public License.
+    \item \textbf{IEEE}: Institute of Electrical and Electronics Engineers
+    \item \textbf{SOLID}: Acronym introduced by Robert C. Martin, representing five basic object oriented design and programming principles.
+	      \item \textbf{Single responsibility principle }
+	  SRP states that every object should have a single responsibility, and that responsibility should be entirely encapsulated by the class. All its services should be narrowly aligned with that responsibility.
+      \item \textbf{Open/closed principle }
+	  OCP states that software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification, that is, such an entity can allow its behaviour to be modified without altering its source code.
+      \item \textbf{Liskov substitution principle }
+	  LSP is a particular definition of a subtyping relation, called (strong) behavioral subtyping, and states that given $q(x)$ to be a property provable about objects $x$ of type $T$, then $q(y)$ should be true for objects $y$ of type $S$ where $S$ is a subtype of $T$.
+      \item \textbf{Interface segregation principle }
+	  ISP supports the idea that many client specific interfaces are better than one general purpose interface.
+      \item \textbf{Dependency inversion principle }  
+	  DIP states that High-level modules should not depend on low-level modules, both should depend on abstractions, and that abstractions should not depend upon details, details should depend upon abstractions.
+    \item \textbf{LoD}: Law of Demeter, object oriented principle used to accomplish loose coupling.
+	\item \textbf{Missing Data}: When a node in a phylogenetic tree has an unknown location.
+    \end{itemize}
+	
+	\section{References}
+  \label{appendix-ref}
+  \begin{itemize}
+    \item C++: Programming language. \\
+    \url{http://www.cplusplus.com}
+    \item QT: C++ library for user interface development.\\
+    \url{http://qt.nokia.com/products}
+    \item GPL: General Public License. \\
+    \url{http://www.gnu.org/licenses/gpl.html}
+    \item IEEE STD 830-1998: Guide for the Software Requirements Specification \\
+    \url{http://standards.ieee.org/reading/ieee/std_public/description/se/830-1998_desc.html}
+    \item SOLID: ``Design Principles and Design Patterns'', Robert C. Martin. \\
+    \url{http://www.objectmentor.com/resources/articles/Principles_and_Patterns.pdf}    
+\item ``Phyloloc: Combining phylogenetic and geographic information to
+untangling the spread of emerging pathogens'', Leandro Jones, Daniel Gutson
+\item RFC 2119: Standard practice to indicate requirement levels.
+  \end{itemize}
+\end{appendices}
+
+
+\end{document}

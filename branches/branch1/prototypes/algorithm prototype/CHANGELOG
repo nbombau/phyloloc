@@ -1,0 +1,21 @@
+Version 0.5
+===========
+    * tree-places: new distribution calculus based on centroids.
+
+Version 0.4
+===========
+    * tree-places: initial distribution calculus.
+
+Version 0.3
+===========
+    * Multiple-tree parsing.
+
+Version 0.2
+===========
+    * Autoconf-tools
+    * Trees collection interface.
+    * tree-places: ability to specify a leaf.
+
+Version 0.1
+===========
+    * First release.

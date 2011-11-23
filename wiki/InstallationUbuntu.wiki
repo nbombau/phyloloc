@@ -1,0 +1,22 @@
+#summary Commands for installing phyloloc in ubuntu
+
+= Introduction =
+
+For installing phyloloc in ubuntu, please follow the next steps.
+
+= Details =
+
+  # Install qt
+    # sudo apt-get install qtcreator
+  # Install mili library
+    # svn checkout http://mili.googlecode.com/svn/trunk/ mili-read-only
+    # The previous command downloads mili in the folder mili-read-only.
+      # cd mili-read-only
+      # sudo ./install.sh
+  # Download and compile phyloloc
+    # svn checkout http://phyloloc.googlecode.com/svn/trunk/ phyloloc-read-only
+    # The previous command generates the folder phyloloc-read-only.
+      # cd phyloloc-read-only/src
+      # make
+  # Run phyloloc
+      # ./phyloloc

@@ -1,0 +1,11 @@
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\Application.Form1.resources
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\Application.Properties.Resources.resources
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\ResGen.read.1.tlog
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\ResGen.write.1.tlog
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\bin\Debug\Application.exe
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\bin\Debug\Application.pdb
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\Application.exe
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\Application.pdb
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\bin\Debug\Application.exe.config
+C:\Users\admin\Documents\Visual Studio 2010\Projects\PhyloGuiPrototype\Application\obj\x86\Debug\Application.NodeDetail.resources
