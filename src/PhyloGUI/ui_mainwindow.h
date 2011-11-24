@@ -1,10 +1,10 @@
 /********************************************************************************
-** Form generated from reading ui file 'mainwindow.ui'
+** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Sun Sep 18 17:59:20 2011
-**      by: Qt User Interface Compiler version 4.5.2
+** Created: Mon Nov 21 06:10:59 2011
+**      by: Qt User Interface Compiler version 4.7.3
 **
-** WARNING! All changes made in this file will be lost when recompiling ui file!
+** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
 #ifndef UI_MAINWINDOW_H
@@ -45,6 +45,7 @@ public:
     QAction *actionZoom_2;
     QAction *actionActual_size;
     QAction *actionClose_all;
+    QAction *actionAbout;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QSplitter *splitter;
@@ -54,6 +55,7 @@ public:
     QMenu *menuNode;
     QMenu *menuTools;
     QMenu *menuView;
+    QMenu *menuHelp;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -92,11 +94,13 @@ public:
         actionActual_size->setObjectName(QString::fromUtf8("actionActual_size"));
         actionClose_all = new QAction(MainWindow);
         actionClose_all->setObjectName(QString::fromUtf8("actionClose_all"));
+        actionAbout = new QAction(MainWindow);
+        actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
         horizontalLayout->setSpacing(6);
-        horizontalLayout->setMargin(11);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         splitter = new QSplitter(centralWidget);
         splitter->setObjectName(QString::fromUtf8("splitter"));
@@ -112,7 +116,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 640, 25));
+        menuBar->setGeometry(QRect(0, 0, 640, 23));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QString::fromUtf8("menuFile"));
         menuNode = new QMenu(menuBar);
@@ -121,6 +125,8 @@ public:
         menuTools->setObjectName(QString::fromUtf8("menuTools"));
         menuView = new QMenu(menuBar);
         menuView->setObjectName(QString::fromUtf8("menuView"));
+        menuHelp = new QMenu(menuBar);
+        menuHelp->setObjectName(QString::fromUtf8("menuHelp"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -133,6 +139,7 @@ public:
         menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuNode->menuAction());
         menuBar->addAction(menuTools->menuAction());
+        menuBar->addAction(menuHelp->menuAction());
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionSave_As);
         menuFile->addSeparator();
@@ -152,6 +159,7 @@ public:
         menuView->addAction(actionZoom_2);
         menuView->addSeparator();
         menuView->addAction(actionActual_size);
+        menuHelp->addAction(actionAbout);
 
         retranslateUi(MainWindow);
 
@@ -190,10 +198,12 @@ public:
         actionActual_size->setText(QApplication::translate("MainWindow", "Actual size", 0, QApplication::UnicodeUTF8));
         actionActual_size->setShortcut(QApplication::translate("MainWindow", "Ctrl+0", 0, QApplication::UnicodeUTF8));
         actionClose_all->setText(QApplication::translate("MainWindow", "Close all...", 0, QApplication::UnicodeUTF8));
+        actionAbout->setText(QApplication::translate("MainWindow", "About", 0, QApplication::UnicodeUTF8));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
         menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
         menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

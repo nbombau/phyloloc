@@ -7,6 +7,7 @@
 #include "PhyloGUI/ui_mainwindow.h"
 #include "PhyloGUI/inc/graphwidget.h"
 #include "PhyloGUI/inc/filedialog.h"
+#include "PhyloGUI/inc/aboutdialog.h"
 #include "PhyloGUI/inc/propagatedialog.h"
 #include "Phylopp/Searching/SearchNode.h"
 #include "PhyloGUI/inc/nodedetaildialog.h"
@@ -74,9 +75,20 @@ void MainWindow::on_actionOpen_triggered()
             FilesInfo filesInfo(fileDialog.getTreesFile(), fileDialog.getLocationsFile(), fileDialog.getDistancesFile());
 
             loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
+
+            ui->actionSave_As->setEnabled(true);
         }
         //else not needed: user closed or canceled the dialog
     }
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    AboutDialog aboutDialog(this);
+
+    aboutDialog.exec();
+
+
 }
 
 void MainWindow::loadTree(const FilesInfo& info, bool allowMissingData, LocationManager& locationManager)
@@ -310,5 +322,6 @@ void MainWindow::on_actionClose_all_triggered()
         ui->actionZoom->setEnabled(false);
         ui->actionZoom_2->setEnabled(false);
         ui->actionActual_size->setEnabled(false);
+        ui->actionSave_As->setEnabled(false);
     }
 }
