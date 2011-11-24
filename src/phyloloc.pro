@@ -19,7 +19,8 @@ SOURCES += PhyloGUI/src/main.cpp\
     PhyloGUI/src/nodedetaildialog.cpp \
     Phylopp/Consensor/bitset.cpp \
     Phylopp/Consensor/StrictConsensor.cpp \
-    Phyloloc/Propagator/StatisticCollector.cpp
+    Phyloloc/Propagator/StatisticCollector.cpp \
+    PhyloGUI/src/aboutdialog.cpp
 
 HEADERS  += PhyloGUI/inc/mainwindow.h \
     PhyloGUI/inc/graphwidget.h \
@@ -47,7 +48,8 @@ HEADERS  += PhyloGUI/inc/mainwindow.h \
     Phyloloc/Propagator/StatisticCollector.h \
     Phyloloc/Propagator/PropagatorAspect.h \
     Phyloloc/Propagator/PropagatorAction.h \
-    Phyloloc/Propagator/Propagator.h
+    Phyloloc/Propagator/Propagator.h \
+    PhyloGUI/inc/aboutdialog.h
 
 FORMS    += PhyloGUI/forms/mainwindow.ui
 
@@ -55,3 +57,9 @@ QMAKE_CXXFLAGS += -pedantic -Wextra -ansi -Wno-long-long -ggdb3
 
 OTHER_FILES += \
     Phylopp/Consensor/StatisticConsensorObserverTest
+
+RESOURCES += \
+    resources.qrc
+
+
+

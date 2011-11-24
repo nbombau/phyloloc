@@ -56,11 +56,14 @@ private:
     QLabel* GCFLabel;
     QDoubleSpinBox* GCFLine;
 
-    QLabel* passLabel;
-    QSpinBox* passLine;
+    // Pass number was set to 2
+    //QLabel* passLabel;
+    //QSpinBox* passLine;
 
     QPushButton* propagateButton;
     QPushButton* cancelButton;
+
+    static const int passesNumber = 2;
 
 private slots:
     void acceptInput();

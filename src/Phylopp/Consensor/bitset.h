@@ -4,6 +4,7 @@
 #ifndef BITSET_H
 #define BITSET_H
 
+#include <cstdlib>
 #include <vector>
 
 namespace Consensus

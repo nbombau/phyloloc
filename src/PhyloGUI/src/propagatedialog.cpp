@@ -11,7 +11,9 @@ using namespace std;
 PropagateDialog::PropagateDialog(QWidget* parent)
     : QDialog(parent)
 {
-    this->setBaseSize(450, 350);
+    //Size with label and spinbox to pass number
+    //this->setBaseSize(450, 350);
+    this->setBaseSize(340, 250);
     setFixedSize(baseSize());
 
     this->setWindowTitle("Propagation");
@@ -60,6 +62,8 @@ PropagateDialog::PropagateDialog(QWidget* parent)
 
     top += height;
 
+    /*
+    The passes number was set to 2
     passLabel = new QLabel(this);
     passLabel->setText("Number of passes:");
     passLabel->setGeometry(leftMargin, top, labelWidth, height);
@@ -73,6 +77,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
     top += height + 5;
 
     top += height + 25;
+    */
 
     propagateButton = new QPushButton(this);
     propagateButton->setGeometry((width() - 2 * loadButtonWidth - 15) / 2, top, loadButtonWidth, height);
@@ -94,8 +99,8 @@ PropagateDialog::~PropagateDialog()
     delete GCFLabel;
     delete GCFLine;
 
-    delete passLabel;
-    delete passLine;
+    //delete passLabel;
+    //delete passLine;
 
     delete cancelButton;
     delete propagateButton;
@@ -124,5 +129,6 @@ double PropagateDialog::getGCF()
 
 int PropagateDialog::getPasses()
 {
-    return passLine->value();
+    return this->passesNumber;
+    //return passLine->value();
 }
