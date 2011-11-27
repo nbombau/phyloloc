@@ -205,7 +205,7 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
 
 void MainWindow::on_actionProcess_tree_triggered()
 {
-    if(consensedTree!=NULL)
+    if(consensedTree != NULL)
     {
         QMessageBox msg(QMessageBox::Information, "Already propagated", "For doing a second propagation go to File -> Close all... and load the trees again.", QMessageBox::NoButton, this);
         msg.exec();
@@ -257,6 +257,14 @@ void MainWindow::on_actionProcess_tree_triggered()
                 QMessageBox msg(QMessageBox::Information, "Propagation error", ex.what(), QMessageBox::NoButton, this);
                 msg.exec();
             }
+            catch (const DisjointTerminalsException& ex)
+            {
+                QMessageBox msg(QMessageBox::Information, "Propagation finished"
+                , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail.\n\nNo consensus tree is available because the input trees have disjoint terminal nodes"
+                , QMessageBox::NoButton, this);
+                msg.exec();
+                consensedTreeRow = NO_CONSENSED_TREE;
+            }
         }
     }
 }
@@ -304,8 +312,10 @@ void MainWindow::on_actionClose_all_triggered()
     if(msg.exec() == QMessageBox::Ok)
     {
         locationManager.clear();
-        delete consensedTree;
-        consensedTree = NULL;
+        if(consensedTree != NULL) {
+            delete consensedTree;
+            consensedTree = NULL;
+        }
         trees.clear();
         actualTree = NULL;
         ui->listWidget->clear();
