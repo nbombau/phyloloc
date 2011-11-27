@@ -31,32 +31,32 @@ namespace Domain
             this->it = iterableList.begin();
         }
 
-        virtual void restart()
+        void restart()
         {
             it = iterableList.begin();
         }
 
-        virtual bool end() const
+        bool end() const
         {
             return it == iterableList.end();
         }
 
-        virtual void next()
+        void next()
         {
             ++it;
         }
 
-        virtual const T* get() const
+        const T* get() const
         {
             return static_cast<T*>(*it);
         }
 
-        virtual T* get()
+        T* get()
         {
             return static_cast<T*>(*it);
         }
 
-        virtual size_t count()
+        size_t count()
         {
             return iterableList.size();
         }
