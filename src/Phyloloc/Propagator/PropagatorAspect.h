@@ -12,6 +12,7 @@ typedef float Probability;
 typedef float Weight;
 typedef unsigned int LocationId;
 typedef std::vector<Probability> LocationProbabilities;
+typedef std::vector<Probability>::const_iterator ProbabilitiesConstIterator;
 
 template <class T>
 class PropagatorAspect : public T
