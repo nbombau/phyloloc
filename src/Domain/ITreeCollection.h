@@ -10,92 +10,92 @@
 namespace Domain
 {
 
-/**
-* Class: ITreeCollection
-* ----------------------
-* Description: Class that defines a collection of phylogenetic trees
-* Type Parameter T: T is the underlying node class
-*/
-template <class T>
-class ITreeCollection
-{
-
-public:
-
-    typedef ListIterator<ITree<T> > iterator;
-    /*
-    * Method: addTree
-    * ---------------
-    * Description: Adds a tree to the collection.
-    * @return the recently added tree
+    /**
+    * Class: ITreeCollection
+    * ----------------------
+    * Description: Class that defines a collection of phylogenetic trees
+    * Type Parameter T: T is the underlying node class
     */
-    virtual ITree<T>* addTree()
+    template <class T>
+    class ITreeCollection
     {
-        ITree<T>* const tree = new ITree<T>();
-        trees.push_back(tree);
-        return tree;
-    }
 
-    /*
-    * Method: getIterator
-    * -------------------
-    * Description: Provides the user a way to iterate through the
-    * trees of the collection.
-    * @return trees iterator
-    */
-    iterator getIterator() const
-    {
-        ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
-        return iter;
-    }
+    public:
 
-    /*
-     * Method: elementAt
-     * -------------------
-     * Description: Returns the element at certain index
-     * @return element at certain index, null otherwise
-     */
-    ITree<T>* elementAt(unsigned int index) const
-    {
-        unsigned int i = 0;
-        ITree<T>* ret = NULL;
-        iterator it = this->getIterator();
-
-        while (i < index && !it.end())
+        typedef ListIterator<ITree<T> > iterator;
+        /*
+        * Method: addTree
+        * ---------------
+        * Description: Adds a tree to the collection.
+        * @return the recently added tree
+        */
+        virtual ITree<T>* addTree()
         {
-            it.next();
-            i++;
+            ITree<T>* const tree = new ITree<T>();
+            trees.push_back(tree);
+            return tree;
         }
 
-        if (i == index)
+        /*
+        * Method: getIterator
+        * -------------------
+        * Description: Provides the user a way to iterate through the
+        * trees of the collection.
+        * @return trees iterator
+        */
+        iterator getIterator() const
         {
-            ret = it.get();
+            ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
+            return iter;
         }
 
-        return ret;
-    }
+        /*
+        * Method: elementAt
+        * -------------------
+        * Description: Returns the element at certain index
+        * @return element at certain index, null otherwise
+        */
+        ITree<T>* elementAt(unsigned int index) const
+        {
+            unsigned int i = 0;
+            ITree<T>* ret = NULL;
+            iterator it = this->getIterator();
 
-    /*
-     * Method: clear
-     * -------------------
-     * Description: Clears the tree collection
-     */
-    void clear()
-    {
-        delete_container(trees);
-    }
+            while (i < index && !it.end())
+            {
+                it.next();
+                i++;
+            }
 
-    //Destructor
-    ~ITreeCollection()
-    {
-        //Call to MiLi's delete_container
-        delete_container(trees);
-    }
+            if (i == index)
+            {
+                ret = it.get();
+            }
 
-private:
+            return ret;
+        }
 
-    std::list<ITree<T>*> trees;
-};
+        /*
+        * Method: clear
+        * -------------------
+        * Description: Clears the tree collection
+        */
+        void clear()
+        {
+            delete_container(trees);
+        }
+
+        //Destructor
+        ~ITreeCollection()
+        {
+            //Call to MiLi's delete_container
+            delete_container(trees);
+        }
+
+    private:
+
+        std::list<ITree<T>*> trees;
+    };
 }
 
 #endif

@@ -1,50 +1,48 @@
 #ifndef STRICT_CONSENSOR_H
 #define STRICT_CONSENSOR_H
 
-//#include "IConsensorObserver.h"
-//#include "IConsensorStrategy.h"
 #include "ClusterTree.h"
 
 namespace Consensus
 {
-template <class Node2, class Observer>
-class StrictConsensor// : public IConsensorStrategy<Node, Observer>
-{
-public:
-
-    Domain::ITree<Node2> *consensus(Domain::ITreeCollection<Node2>& trees,
-                                    Observer& observer,
-                                    Locations::LocationManager& locManager)
+    template <class Node2, class Observer>
+    class StrictConsensor
     {
-        unsigned int i=0;
-        observer.onStart(trees);
-        Domain::ListIterator<Domain::ITree<Node2> > it = trees.getIterator();
+    public:
 
-        //TODO: Throw MiLi Generic Exception
-        if(it.count() == 0)
-            throw std::exception();
-
-        ClusterTree<Node2,Observer> first(trees.elementAt(i),observer, locManager);
-
-        ClusterTree<Node2,Observer> consensusCluster(first,observer, locManager);
-
-        if(it.count() > 1)
+        Domain::ITree<Node2> *consensus(Domain::ITreeCollection<Node2>& trees,
+                                        Observer& observer,
+                                        Locations::LocationManager& locManager)
         {
-            it.next();
-            i++;
-            for(; i<it.count() && !it.end(); ++i,it.next())
+            unsigned int i=0;
+            observer.onStart(trees);
+            Domain::ListIterator<Domain::ITree<Node2> > it = trees.getIterator();
+
+            //TODO: Throw MiLi Generic Exception
+            if(it.count() == 0)
+                throw std::exception();
+
+            ClusterTree<Node2,Observer> first(trees.elementAt(i),observer, locManager);
+
+            ClusterTree<Node2,Observer> consensusCluster(first,observer, locManager);
+
+            if(it.count() > 1)
             {
-                ClusterTree<Node2,Observer> current(trees.elementAt(i),observer, locManager);
-                consensusCluster.intersectWith(current);
+                it.next();
+                i++;
+                for(; i<it.count() && !it.end(); ++i,it.next())
+                {
+                    ClusterTree<Node2,Observer> current(trees.elementAt(i),observer, locManager);
+                    consensusCluster.intersectWith(current);
+                }
             }
+
+            Domain::ITree<Node2> * consensedTree = consensusCluster.toTree();
+            observer.onEnd(consensedTree);
+
+            return consensedTree;
         }
-
-        Domain::ITree<Node2> * consensedTree = consensusCluster.toTree();
-        observer.onEnd(consensedTree);
-
-        return consensedTree;
-    }
-};
+    };
 
 }
 

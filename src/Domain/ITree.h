@@ -10,48 +10,47 @@
 
 namespace Domain
 {
-/**
-* Class: ITree
-* ----------------------
-* Description: Class that defines a phylogenetic tree
-* Type Parameter T: T is the underlying node class
-*/
-template <class T>
-class ITree
-{
-public:
-
-    //Constructor
-    ITree() : root() { }
-
-    /*
-    * Method: getRoot
-    * ---------------
-    * Description: Returns the root node of the tree
-    * @return tree's root
+    /**
+    * Class: ITree
+    * ----------------------
+    * Description: Class that defines a phylogenetic tree
+    * Type Parameter T: T is the underlying node class
     */
-    T* getRoot()
+    template <class T>
+    class ITree
     {
-        return &root;
-    }
+    public:
 
-    /*
-    * Method: getRoot
-    * ---------------
-    * Description: Returns the root node of the tree
-    * @return tree's root
-    */
-    const T* getRoot() const
-    {
-        return &root;
-    }
+        //Constructor
+        ITree() : root() { }
 
-    //TODO: Map de (name, T) que tenga las hojas para buscarlas e iterarlas
+        /*
+        * Method: getRoot
+        * ---------------
+        * Description: Returns the root node of the tree
+        * @return tree's root
+        */
+        T* getRoot()
+        {
+            return &root;
+        }
 
-private:
+        /*
+        * Method: getRoot
+        * ---------------
+        * Description: Returns the root node of the tree
+        * @return tree's root
+        */
+        const T* getRoot() const
+        {
+            return &root;
+        }
 
-    T root;
-};
+
+    private:
+
+        T root;
+    };
 }
 
 #endif

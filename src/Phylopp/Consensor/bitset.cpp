@@ -327,7 +327,7 @@ namespace Consensus
         
         while(i < a.size() && eq == true)
         {
-            eq = a[i] == b[i];
+            eq = (a[i] == b[i]);
             i++;
         }
         
