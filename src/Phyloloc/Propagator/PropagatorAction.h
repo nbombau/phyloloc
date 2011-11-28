@@ -99,38 +99,6 @@ namespace Propagation
         const Locations::DistanceVector& dispersalVector;
     };
     
-    /*template <class T, class Observer>
-    class ObservablePropagateFromParentAction : public PropagateFromParentAction
-    {
-        public:
-            PropagateFromParentAction(Domain::BranchLength blSum,
-                                      const Locations::DistanceVector& dispersal,
-                                      Weight geographic,
-                                      Weight branch,
-                                      Observer& obs)
-                                      : PropagateFromParentAction(blSum, dispersal, geographic, branch),
-                                      observer(obs))
-                                      
-                                      {}
-                                      
-            VisitAction visitNode(T* n)
-            {
-                obs.beforePropagation(n);
-                
-                VisitAction v = PropagateFromParentAction::visitNode(n);
-                
-                obs.afterPropagation(n);
-                
-                return v;
-            }
-                                      
-        private:
-            
-            Domain::BranchLength branchLengthSum;
-            Weight geographicFactorWeight;
-            Weight branchLenghtFactorWeight;
-            const Locations::DistanceVector& dispersalVector;
-    };*/
 }
 
 

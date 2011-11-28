@@ -1,7 +1,22 @@
 #ifndef STRICT_CONSENSOR_H
 #define STRICT_CONSENSOR_H
 
+#include <mili/mili.h>
 #include "ClusterTree.h"
+
+class StrictConsensorExceptionHierarchy {};
+typedef GenericException<StrictConsensorExceptionHierarchy> StrictConsensorException;
+
+
+/**
+* StrictConsensorException
+* ------------------------
+* Description: Exception thrown when no trees exist for consensus
+*/
+DEFINE_SPECIFIC_EXCEPTION_TEXT(EmptyTreeCollectionException,
+                               StrictConsensorExceptionHierarchy,
+                               "No trees were supplied");
+                               
 
 namespace Consensus
 {
@@ -18,9 +33,8 @@ namespace Consensus
             observer.onStart(trees);
             Domain::ListIterator<Domain::ITree<Node2> > it = trees.getIterator();
 
-            //TODO: Throw MiLi Generic Exception
             if(it.count() == 0)
-                throw std::exception();
+                throw EmptyTreeCollectionException();
 
             ClusterTree<Node2,Observer> first(trees.elementAt(i),observer, locManager);
 
