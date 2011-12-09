@@ -32,14 +32,13 @@ public:
     }
 };
 
-
 int main()
-{    
+{
     GuiNode n2;
-    
-    printf("es raiz %d \n", (n2.getParent() == NULL ? 1: 0));
-    printf("es raiz %d \n", (n2.getParent() == NULL ? 1: 0));
-    
+
+    printf("es raiz %d \n", (n2.getParent() == NULL ? 1 : 0));
+    printf("es raiz %d \n", (n2.getParent() == NULL ? 1 : 0));
+
     GuiNode* c2 = n2.addChild();
     c2->setName("a2");
     c2 = n2.addChild();
@@ -55,7 +54,7 @@ int main()
 
     ListIterator<GuiNode>* iter2 = n2.getChildrenIterator();
     int i = 2;
-    while(!iter2->end())
+    while (!iter2->end())
     {
         printf("nodoGui: %d \n", i);
         iter2->next();

@@ -156,7 +156,7 @@ public:
 };
 
 
-GraphWidget::GraphWidget(Locations::LocationManager& locationManager,QWidget* parent)
+GraphWidget::GraphWidget(Locations::LocationManager& locationManager, QWidget* parent)
     : QGraphicsView(parent),
       lm(locationManager)
 {

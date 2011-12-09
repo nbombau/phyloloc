@@ -1,5 +1,5 @@
 /*
-LocationsParser: a class for parsing locations from a file
+    LocationsParser: a class for parsing locations from a file
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -61,7 +61,7 @@ public:
 
     /**
      * Parses locations from a file
-     * 
+     *
      * @param fname locations file path
      * @param locationManager Manager of locations and distances between locations
      */
@@ -95,7 +95,7 @@ private:
 
     /**
      * Add a location to the location manager
-     * 
+     *
      * @param nodeName Node name
      * @param location Node Location
      * @param locationManager Manager of locations and distances between locations

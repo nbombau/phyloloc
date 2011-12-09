@@ -1,5 +1,5 @@
 /*
-NewickWriter: a class for saving trees in a file, in newick format
+    NewickWriter: a class for saving trees in a file, in newick format
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -37,9 +37,9 @@ public:
 
     /**
      * Saves a collection of trees to a file
-     * 
+     *
      * @param fname file name in which the trees will be saved
-     * @param trees The collection of trees to be saved 
+     * @param trees The collection of trees to be saved
      */
     void saveNewickFile(const std::string& fname, const Domain::ITreeCollection<T>& trees)
     {
@@ -60,7 +60,7 @@ private:
 
     /**
      * Saves a tree in a file recursively
-     * 
+     *
      * @param node Node to be saved
      * @param os File stream in which the node will be saved
      */

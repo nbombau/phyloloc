@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
+
+    This file is part of the Phyloloc project.
+
+    Phyloloc is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Phyloloc is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef FACADE_H
 #define FACADE_H
 
@@ -18,6 +37,14 @@ template <class T, class V, class K>
 class Facade
 {
 public:
+    Facade()
+    {}
+
+    Facade(Traversal::Traverser<T, V>& t, DataSource::FileDataSource<T>& d) :
+        traverser(t), 
+        dataSource(d)
+    {}
+
     void load(const K& info, Domain::ITreeCollection<T>& trees) const
     {
         dataSource.load(info, trees);
@@ -42,11 +69,6 @@ public:
     {
         traverser.traverseDown(t, v);
     }
-
-    Facade() { }
-
-    Facade(Traversal::Traverser<T, V>& t, DataSource::FileDataSource<T>& d)
-        : traverser(t), dataSource(d) { }
 
 private:
     Traversal::Traverser<T, V> traverser;

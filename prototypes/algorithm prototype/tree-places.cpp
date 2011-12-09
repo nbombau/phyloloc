@@ -64,7 +64,10 @@ public:
 
     void calc_sets();
     void calc_distribution();
-    float get_distribution() const { return distribution; }
+    float get_distribution() const
+    {
+        return distribution;
+    }
 
     void show_places_set() const
     {
@@ -79,8 +82,8 @@ public:
         cerr << string(lvl, '-') << name;
         show_places_set();
         cerr << " (" << distribution << ")" << endl;
-        for(list<PlacesNode*>::const_iterator it = children.begin(); it != children.end(); ++it)
-            (*it)->show(lvl+1);
+        for (list<PlacesNode*>::const_iterator it = children.begin(); it != children.end(); ++it)
+            (*it)->show(lvl + 1);
     }
 };
 
@@ -98,7 +101,7 @@ public:
             // calc max and sum:
             float sum  = 0;
             const float n = float(places_count);
-            const float denom = (n-1 + square(n-1));
+            const float denom = (n - 1 + square(n - 1));
             const float inv_n = 1.0f / n;
 
             for (PlacesSet::const_iterator place = places_set.begin(); place != places_set.end(); ++place)
@@ -125,8 +128,8 @@ int main(int argc, char* argv[])
     {
         TreesCollection<PlacesNode> collection;
 
-        if (load_trees(argv[TreeName], &collection) && 
-            load_data(argv[PlacesName], &collection))
+        if (load_trees(argv[TreeName], &collection) &&
+                load_data(argv[PlacesName], &collection))
         {
             foreach_tree(collection, tree, PlacesNode)
             {
@@ -187,9 +190,9 @@ void PlacesNode::merge_place(const PlacesSet& child_places)
     const float children_count = float(children.size());
 
     // for each element in child_places_set, add it in our set:
-    for(PlacesSet::const_iterator childit = child_places.begin();
-        childit != child_places.end();
-        ++childit)
+    for (PlacesSet::const_iterator childit = child_places.begin();
+            childit != child_places.end();
+            ++childit)
     {
         PlacesSet::iterator myit = places_set.find(childit->first);
         if (myit != places_set.end())
@@ -230,7 +233,7 @@ void do_upstream(const PlacesNode* leaf)
             node->show_places_set();
             cout << "\t" << node->get_distribution();
             node = node->get_parent();
-            cout << endl;            
+            cout << endl;
         }
     }
 }

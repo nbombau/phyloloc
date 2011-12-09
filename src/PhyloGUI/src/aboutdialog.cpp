@@ -3,7 +3,7 @@
 
 using namespace PhyloGUI;
 
-AboutDialog::AboutDialog(QWidget *parent) :
+AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent)
 {
     this->setBaseSize(445, 330);
@@ -19,25 +19,25 @@ AboutDialog::AboutDialog(QWidget *parent) :
     this->logoFudepanLabel = new QLabel(this);
     this->logoFudepanLabel->setGeometry(7, 21, 200, 150);
     this->logoFudepanLabel->setText("<a href='http://fudepan.org.ar/'><img src=':/Images/FuDePAN-logo' /></>");
-    this->logoFudepanLabel->setToolTip( tr ("Fundacion para el desarrollo de la Programacion en acidos Nucleicos"));
+    this->logoFudepanLabel->setToolTip(tr("Fundacion para el desarrollo de la Programacion en acidos Nucleicos"));
     this->logoFudepanLabel->setOpenExternalLinks(true);
 
     this->logoItbaLabel = new QLabel(this);
     this->logoItbaLabel->setGeometry(232, 21, 200, 150);
     this->logoItbaLabel->setText("<a href='http://www.itba.edu.ar/'><img src=':/Images/ITBA-logo' /></>");
-    this->logoItbaLabel->setToolTip( tr ("Instituto tecnologico de Buenos Aires"));
+    this->logoItbaLabel->setToolTip(tr("Instituto tecnologico de Buenos Aires"));
     this->logoItbaLabel->setOpenExternalLinks(true);
 
     this->logoGplLabel = new QLabel(this);
     this->logoGplLabel->setGeometry(7, 141, 200, 150);
     this->logoGplLabel->setText("<a href='http://gplv3.fsf.org//'><img src=':/Images/Gpl-logo' /></>");
-    this->logoGplLabel->setToolTip( tr ("GPL V3"));
+    this->logoGplLabel->setToolTip(tr("GPL V3"));
     this->logoGplLabel->setOpenExternalLinks(true);
 
     this->logoEfpuLabel = new QLabel(this);
     this->logoEfpuLabel->setGeometry(276, 141, 200, 150);
     this->logoEfpuLabel->setText("<a href='http://www.efpu.org.ar/'><img src=':/Images/EFPU-logo' /></>");
-    this->logoEfpuLabel->setToolTip( tr ("Estacion de Fotobiologia Playa Union"));
+    this->logoEfpuLabel->setToolTip(tr("Estacion de Fotobiologia Playa Union"));
     this->logoEfpuLabel->setOpenExternalLinks(true);
 
     this->okButton = new QPushButton(this);

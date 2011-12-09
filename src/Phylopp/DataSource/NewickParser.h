@@ -1,6 +1,5 @@
 /*
-NewickParser: a parser for loading trees in newick format from a file
-
+    NewickParser: a parser for loading trees in newick format from a file
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -81,14 +80,14 @@ public:
 
     /**
      * Constructor
-     * 
+     *
      * @param validationPolicy policy used to validate nodes
      */
     NewickParser(const ValidationPolicy& validationPolicy = ValidationPolicy()) : validationPolicy(validationPolicy) {}
 
     /**
      * Loads a tree in newick format from a file
-     * 
+     *
      * @param fname file path
      * @param locationManager Manager of locations and distances between locations
      * @param trees Collection to be filled with the parsed trees
@@ -147,7 +146,7 @@ private:
 
     /**
      * Loads a node and all its children recursively
-     * 
+     *
      * @param locationManager Manager of locations and distances between locations
      * @param node Node to be filled
      */
@@ -170,7 +169,7 @@ private:
                 node->setName(name);
                 branchLength = consume_branch_length();
                 node->setBranchLength(branchLength);
-                
+
                 break;
             case ',':
             case ')':
@@ -189,7 +188,7 @@ private:
                 // Set location id, if exists, for the node
                 locationId = locationManager.getNameLocationId(name);
                 if (locationId != Locations::LOCATION_NOT_FOUND)
-                {                                
+                {
                     node->setLocationId(locationId);
                 }
                 //else no location is set for that node
@@ -200,7 +199,7 @@ private:
 
     /**
      * Loads a nodes children
-     * 
+     *
      * @param locationManager Manager of locations and distances between locations
      * @param parent node whose children will be loaded
      */

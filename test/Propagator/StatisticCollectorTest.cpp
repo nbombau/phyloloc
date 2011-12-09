@@ -6,7 +6,8 @@
 #include "../../src/Phylopp/Consensor/bitset.h"
 
 
-namespace {
+namespace
+{
 
 using namespace Propagation;
 using namespace Consensus;

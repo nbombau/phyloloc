@@ -37,7 +37,7 @@ typedef Propagation::PropagatorAspect<Locations::LocationAspect<Domain::Node> > 
 TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
 {
     const float epsilon = 0.001f;
-    Locations::LocationManager locationManager;    
+    Locations::LocationManager locationManager;
 
 
     PropNode root;

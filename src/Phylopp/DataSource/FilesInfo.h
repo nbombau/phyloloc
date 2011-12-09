@@ -1,6 +1,6 @@
 /*
-FilesInfo: class for storing paths to trees, distances and locations files
-          
+    FilesInfo: class for storing paths to trees, distances and locations files
+
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
     This file is part of the Phyloloc project.
@@ -19,8 +19,6 @@ FilesInfo: class for storing paths to trees, distances and locations files
     along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #ifndef FILESINFO_H
 #define FILESINFO_H
 
@@ -34,11 +32,11 @@ public:
 
     /**
      * Constructor
-     * 
+     *
      * @param treeFilePath Path to trees file
      * @param locationsFilePath Path to locations file
      * @param distancesFilePath Path to distances file
-     * 
+     *
      */
     FilesInfo(const std::string& treesFilePath, const std::string& locationsFilePath, const std::string& distancesFilePath)
     {
@@ -49,7 +47,7 @@ public:
 
     /**
      * Get the trees file path
-     * 
+     *
      * @return tree file path
      */
     std::string getTreesFilePath() const
@@ -59,7 +57,7 @@ public:
 
     /**
      * Get the locations file path
-     * 
+     *
      * @return locations file path
      */
     std::string getLocationsFilePath() const
@@ -69,7 +67,7 @@ public:
 
     /**
      * Get the distances file path
-     * 
+     *
      * @return distances file path
      */
     std::string getDistancesFilePath() const

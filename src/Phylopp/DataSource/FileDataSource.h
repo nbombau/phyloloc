@@ -1,7 +1,7 @@
 /*
-FileDataSource: a class for loading trees, distances and locations from a file,
-and also for saving trees to a file.
-                
+    FileDataSource: a class for loading trees, distances and locations from a file,
+    and also for saving trees to a file.
+
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
     This file is part of the Phyloloc project.
@@ -68,7 +68,7 @@ public:
             DistancesParser distancesParser;
             distancesParser.loadDistancesFile(info.getDistancesFilePath(), locationManager);
         }
-        catch(const LocationException& ex)
+        catch (const LocationException& ex)
         {
             trees.clear();
             locationManager.clear();
@@ -113,7 +113,7 @@ public:
 
     /**
     * Saves multiples tree structures to the file system.
-    * 
+    *
     * @param trees Trees to be saved
     * @param info File paths information
     */
