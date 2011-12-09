@@ -1,5 +1,5 @@
 /*
-DistancesParser: A parser for loading location distances from a file
+    DistancesParser: A parser for loading location distances from a file
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -61,7 +61,7 @@ public:
 
     /**
      * Loads distences information from a file
-     * 
+     *
      * @param fname File name
      * @param locationManager Manager of locations and distances between locations
      */
@@ -100,7 +100,7 @@ private:
 
     /**
      * Adds to the location manager the distance between location1 and location2
-     * 
+     *
      * @param distance Distance between locations
      * @param location1 First location
      * @param location2 Second location

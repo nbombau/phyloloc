@@ -1,6 +1,5 @@
 /*
-IDataSourceFactory: class for creating dataSource objects
-
+    IDataSourceFactory: class for creating dataSource objects
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -47,7 +46,6 @@ public:
     * @return datasource object
     */
     virtual IDataSourceStrategy<T, K>* createDataSource() = 0;
-
 };
 }
 

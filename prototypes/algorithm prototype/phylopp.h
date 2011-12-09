@@ -61,14 +61,20 @@ struct TreeData
     map<NodeName, TreeNode*> leaves;
     size_t depth;
 
-    TreeData() : depth(0){}
+    TreeData() : depth(0) {}
 };
 
 template <class TreeNode>
 class TreeNodeBase : public TreeNodeInterface
 {
-    TreeNode* This() { return static_cast<TreeNode*>(this); }
-    const TreeNode* This() const { return static_cast<const TreeNode*>(this); }
+    TreeNode* This()
+    {
+        return static_cast<TreeNode*>(this);
+    }
+    const TreeNode* This() const
+    {
+        return static_cast<const TreeNode*>(this);
+    }
     TreeData<TreeNode>& tree_data;
     const size_t depth;
 protected:
@@ -85,8 +91,14 @@ protected:
             : it(it)
         {}
 
-        TreeNode* operator ->() { return *it; }
-        TreeNode& operator *()  { return **it; }
+        TreeNode* operator ->()
+        {
+            return *it;
+        }
+        TreeNode& operator *()
+        {
+            return **it;
+        }
     };
 
     TreeNodeBase(TreeData<TreeNode>& td, size_t depth)
@@ -102,7 +114,10 @@ public:
         delete_container(children);
     }
 
-    bool root() const { return parent == NULL; }
+    bool root() const
+    {
+        return parent == NULL;
+    }
 
     TreeNode* get_parent() const
     {
@@ -132,7 +147,7 @@ private:
         }
 
         foreach_child(child)
-            child->set_data_from_bag(bag);
+        child->set_data_from_bag(bag);
     }
 
     virtual void set_name(const NodeName& n)
@@ -174,8 +189,14 @@ public:
             : it(it)
         {}
 
-        TreeNode* operator ->() { return it->second; }
-        TreeNode& operator *()  { return *(it->second); }
+        TreeNode* operator ->()
+        {
+            return it->second;
+        }
+        TreeNode& operator *()
+        {
+            return *(it->second);
+        }
     };
 
     Tree()
@@ -202,8 +223,14 @@ public:
         return find(data.leaves, name, nothrow);
     }
 
-    LeavesIterator begin()  {   return LeavesIterator(data.leaves.begin()); }
-    LeavesIterator end()    {   return LeavesIterator(data.leaves.end()); }
+    LeavesIterator begin()
+    {
+        return LeavesIterator(data.leaves.begin());
+    }
+    LeavesIterator end()
+    {
+        return LeavesIterator(data.leaves.end());
+    }
 };
 
 template <class TreeNode>
@@ -221,7 +248,7 @@ class TreesCollection : public TreesCollectionInterface
     virtual void set_data_from_bag(const DataBag& bag)
     {
         // for each tree:
-        for(typename list<Tree<TreeNode>*>::iterator it = trees.begin(); it != trees.end(); ++it)
+        for (typename list<Tree<TreeNode>*>::iterator it = trees.begin(); it != trees.end(); ++it)
             static_cast<TreeInterface*>((*it))->get_root_interface()->set_data_from_bag(bag);
     }
 public:
@@ -232,8 +259,14 @@ public:
             : it(it)
         {}
 
-        Tree<TreeNode>* operator ->() { return *it; }
-        Tree<TreeNode>& operator *()  { return **it; }
+        Tree<TreeNode>* operator ->()
+        {
+            return *it;
+        }
+        Tree<TreeNode>& operator *()
+        {
+            return **it;
+        }
     };
 
     ~TreesCollection()
@@ -241,8 +274,14 @@ public:
         delete_container(trees);
     }
 
-    TreesIterator begin()   {   return TreesIterator(trees.begin());    }
-    TreesIterator end()     {   return TreesIterator(trees.end());    }
+    TreesIterator begin()
+    {
+        return TreesIterator(trees.begin());
+    }
+    TreesIterator end()
+    {
+        return TreesIterator(trees.end());
+    }
 };
 
 #define foreach_tree(collection, tree, TreeNodeType) for(TreesCollection<TreeNodeType>::TreesIterator tree(collection.begin().it); tree.it != collection.end().it; ++tree.it)

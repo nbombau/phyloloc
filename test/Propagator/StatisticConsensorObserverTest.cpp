@@ -15,7 +15,8 @@
 #include "../../src/Phyloloc/Propagator/StatisticCollectorObserver.h"
 
 
-namespace {
+namespace
+{
 
 using namespace Consensus;
 using namespace Domain;

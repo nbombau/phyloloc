@@ -1,7 +1,7 @@
 /*
-IDataSourceStrategy: Interface for loading and saving trees from and to a particular
-DataSource
-              
+    IDataSourceStrategy: Interface for loading and saving trees from and to a particular
+    DataSource
+
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
     This file is part of the Phyloloc project.

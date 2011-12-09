@@ -10,7 +10,8 @@
 #include "DummyObserver.h"
 
 
-namespace {
+namespace
+{
 
 using namespace Consensus;
 using namespace Domain;
@@ -80,7 +81,7 @@ TEST_F(ClusterTreeTest, ClusterTreeCreationTest)
     locMgr.addDistance(2, "C", "A");
     locMgr.addDistance(4, "C", "B");
 
-    ClusterTree<PropNode, DummyObserver<PropNode> > cluster(&t,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode> > cluster(&t, observer, locMgr);
 
     Consensus::bitset b1(3);
     b1.set(0);
@@ -177,7 +178,7 @@ TEST_F(ClusterTreeTest, ClusterIntersectionTest)
     locMgr.addDistance(2, "C", "A");
     locMgr.addDistance(4, "C", "B");
 
-    ClusterTree<PropNode,DummyObserver<PropNode > > cluster1(&t1,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster1(&t1, observer, locMgr);
 
     /*tree 2*/
 
@@ -205,7 +206,7 @@ TEST_F(ClusterTreeTest, ClusterIntersectionTest)
     d11->setBranchLength(2);
 
 
-    ClusterTree<PropNode,DummyObserver<PropNode > > cluster2(&t2,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster2(&t2, observer, locMgr);
     /*intersection*/
 
     cluster1.intersectWith(cluster2);
@@ -349,7 +350,7 @@ TEST_F(ClusterTreeTest, ToTreeTest)
     locMgr.addDistance(2, "C", "A");
     locMgr.addDistance(4, "C", "B");
 
-    ClusterTree<PropNode, DummyObserver<PropNode > > cluster1(&t1,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster1(&t1, observer, locMgr);
 
     /*tree 2*/
 
@@ -377,47 +378,47 @@ TEST_F(ClusterTreeTest, ToTreeTest)
     d4->setBranchLength(4);
 
 
-    ClusterTree<PropNode,DummyObserver<PropNode > > cluster2(&t2, observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster2(&t2, observer, locMgr);
     /*intersection*/
 
     cluster1.intersectWith(cluster2);
 
     ITree<PropNode> * tree = cluster1.toTree();
-    PropNode * rootTest = tree->getRoot();
+    PropNode* rootTest = tree->getRoot();
     ListIterator<PropNode, Node> it = rootTest->getChildrenIterator<PropNode>();
-    ASSERT_STREQ("",rootTest->getName().c_str());
-    ASSERT_TRUE(rootTest->getBranchLength()==0);
-    ASSERT_TRUE(it.count()==2);
+    ASSERT_STREQ("", rootTest->getName().c_str());
+    ASSERT_TRUE(rootTest->getBranchLength() == 0);
+    ASSERT_TRUE(it.count() == 2);
 
-    PropNode * d1_2=it.get();
+    PropNode* d1_2 = it.get();
     it.next();
-    PropNode * d4_2=it.get();
+    PropNode* d4_2 = it.get();
 
     ASSERT_TRUE(d4_2->isLeaf());
-    ASSERT_STREQ("D",d4_2->getName().c_str());
-    ASSERT_TRUE(d4_2->getBranchLength()==4);
+    ASSERT_STREQ("D", d4_2->getName().c_str());
+    ASSERT_TRUE(d4_2->getBranchLength() == 4);
 
     ListIterator<PropNode, Node> it2 = d1_2->getChildrenIterator<PropNode>();
-    ASSERT_STREQ("",d1_2->getName().c_str());
-    ASSERT_TRUE(d1_2->getBranchLength()==1);
-    ASSERT_TRUE(it2.count()==3);
-    PropNode* d12_2=it2.get();
+    ASSERT_STREQ("", d1_2->getName().c_str());
+    ASSERT_TRUE(d1_2->getBranchLength() == 1);
+    ASSERT_TRUE(it2.count() == 3);
+    PropNode* d12_2 = it2.get();
     it2.next();
-    PropNode* d111_2=it2.get();
+    PropNode* d111_2 = it2.get();
     it2.next();
-    PropNode* d112_2=it2.get();
+    PropNode* d112_2 = it2.get();
 
     ASSERT_TRUE(d12_2->isLeaf());
-    ASSERT_STREQ("A",d12_2->getName().c_str());
-    ASSERT_TRUE(d12_2->getBranchLength()==2);
+    ASSERT_STREQ("A", d12_2->getName().c_str());
+    ASSERT_TRUE(d12_2->getBranchLength() == 2);
 
     ASSERT_TRUE(d111_2->isLeaf());
-    ASSERT_STREQ("B",d111_2->getName().c_str());
-    ASSERT_TRUE(d111_2->getBranchLength()==4);
+    ASSERT_STREQ("B", d111_2->getName().c_str());
+    ASSERT_TRUE(d111_2->getBranchLength() == 4);
 
     ASSERT_TRUE(d112_2->isLeaf());
-    ASSERT_STREQ("C",d112_2->getName().c_str());
-    ASSERT_TRUE(d112_2->getBranchLength()==2);
+    ASSERT_STREQ("C", d112_2->getName().c_str());
+    ASSERT_TRUE(d112_2->getBranchLength() == 2);
 
     locMgr.clear();
 }
@@ -472,7 +473,7 @@ TEST_F(ClusterTreeTest, ToTreeDiferentBranchLengthTest)
     locMgr.addDistance(2, "C", "A");
     locMgr.addDistance(4, "C", "B");
 
-    ClusterTree<PropNode, DummyObserver<PropNode > > cluster1(&t1,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster1(&t1, observer, locMgr);
 
     /*tree 2*/
 
@@ -500,47 +501,47 @@ TEST_F(ClusterTreeTest, ToTreeDiferentBranchLengthTest)
     d4->setBranchLength(3);
 
 
-    ClusterTree<PropNode,DummyObserver<PropNode > > cluster2(&t2,observer, locMgr);
+    ClusterTree<PropNode, DummyObserver<PropNode > > cluster2(&t2, observer, locMgr);
     /*intersection*/
 
     cluster1.intersectWith(cluster2);
 
     ITree<PropNode> * tree = cluster1.toTree();
-    PropNode * rootTest = tree->getRoot();
+    PropNode* rootTest = tree->getRoot();
     ListIterator<PropNode, Node> it = rootTest->getChildrenIterator<PropNode>();
-    ASSERT_STREQ("",rootTest->getName().c_str());
-    ASSERT_TRUE(rootTest->getBranchLength()==0);
-    ASSERT_TRUE(it.count()==2);
+    ASSERT_STREQ("", rootTest->getName().c_str());
+    ASSERT_TRUE(rootTest->getBranchLength() == 0);
+    ASSERT_TRUE(it.count() == 2);
 
-    PropNode * d1_2=it.get();
+    PropNode* d1_2 = it.get();
     it.next();
-    PropNode * d4_2=it.get();
+    PropNode* d4_2 = it.get();
 
     ASSERT_TRUE(d4_2->isLeaf());
-    ASSERT_STREQ("D",d4_2->getName().c_str());
-    ASSERT_TRUE(d4_2->getBranchLength()==3);
+    ASSERT_STREQ("D", d4_2->getName().c_str());
+    ASSERT_TRUE(d4_2->getBranchLength() == 3);
 
     ListIterator<PropNode, Node> it2 = d1_2->getChildrenIterator<PropNode>();
-    ASSERT_STREQ("",d1_2->getName().c_str());
-    ASSERT_TRUE(d1_2->getBranchLength()==1);
-    ASSERT_TRUE(it2.count()==3);
-    PropNode* d12_2=it2.get();
+    ASSERT_STREQ("", d1_2->getName().c_str());
+    ASSERT_TRUE(d1_2->getBranchLength() == 1);
+    ASSERT_TRUE(it2.count() == 3);
+    PropNode* d12_2 = it2.get();
     it2.next();
-    PropNode* d111_2=it2.get();
+    PropNode* d111_2 = it2.get();
     it2.next();
-    PropNode* d112_2=it2.get();
+    PropNode* d112_2 = it2.get();
 
     ASSERT_TRUE(d12_2->isLeaf());
-    ASSERT_STREQ("A",d12_2->getName().c_str());
-    ASSERT_TRUE(d12_2->getBranchLength()==1);
+    ASSERT_STREQ("A", d12_2->getName().c_str());
+    ASSERT_TRUE(d12_2->getBranchLength() == 1);
 
     ASSERT_TRUE(d111_2->isLeaf());
-    ASSERT_STREQ("B",d111_2->getName().c_str());
-    ASSERT_TRUE(d111_2->getBranchLength()==1);
+    ASSERT_STREQ("B", d111_2->getName().c_str());
+    ASSERT_TRUE(d111_2->getBranchLength() == 1);
 
     ASSERT_TRUE(d112_2->isLeaf());
-    ASSERT_STREQ("C",d112_2->getName().c_str());
-    ASSERT_TRUE(d112_2->getBranchLength()==1);
+    ASSERT_STREQ("C", d112_2->getName().c_str());
+    ASSERT_TRUE(d112_2->getBranchLength() == 1);
 
     locMgr.clear();
 }

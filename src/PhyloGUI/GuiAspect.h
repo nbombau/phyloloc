@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
+
+    This file is part of the Phyloloc project.
+
+    Phyloloc is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Phyloloc is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #ifndef GUIASPECT_H
 #define GUIASPECT_H
 
@@ -39,7 +57,6 @@ class GuiAspect : public T, public QGraphicsItem
 
 
 private:
-
     static Locations::LocationManager* lm;
     bool selected;
     bool expanded;
@@ -49,7 +66,11 @@ private:
     QGraphicsTextItem* graphicsName;
 
 public:
-    GuiAspect() : selected(false), expanded(true), color(Qt::yellow), graphicsName(NULL)
+    GuiAspect() :
+        selected(false),
+        expanded(true),
+        color(Qt::yellow),
+        graphicsName(NULL)
     {
         setCacheMode(DeviceCoordinateCache);
         setZValue(1000);
@@ -67,7 +88,7 @@ public:
 
     static void setLocationManager(Locations::LocationManager* locationManager)
     {
-        lm=locationManager;
+        lm = locationManager;
     }
 
     static unsigned int getLocationsCount()
@@ -188,7 +209,7 @@ public:
     {
         QGraphicsItem::setVisible(visible);
         QListIterator<Edge*> i(edgeListTo);
-        if(visible)
+        if (visible)
             this->setExpanded(visible);
         while (i.hasNext())
         {
@@ -233,7 +254,7 @@ public:
 
         if (!this->probabilities.empty())
         {
-            gradient.setColorAt(0,Qt::black);
+            gradient.setColorAt(0, Qt::black);
             painter->setBrush(gradient);
             painter->setPen(QPen(Qt::black, 2));
             rect = QRect(-7, -7, 20, 20);
@@ -259,26 +280,26 @@ public:
         menu.addSeparator();
 
         //Makes no sense to select descendants of a leaf
-        if(!this->isLeaf())
+        if (!this->isLeaf())
             menu.addAction("Select descendants");
         menu.addAction("Select ancestors");
         menu.addSeparator();
-        if(!isSelected())
+        if (!isSelected())
             menu.addAction("Select node");
         else
             menu.addAction("Unselect node");
         QAction* a = menu.exec(event->screenPos());
         if (a != NULL)
         {
-            if (a->text()=="Collapse" || a->text()=="Expand")
+            if (a->text() == "Collapse" || a->text() == "Expand")
                 expandCollapseAction();
-            else if(a->text()=="Set color...")
+            else if (a->text() == "Set color...")
                 selectNodeColor();
-            else if(a->text()=="Select ancestors")
+            else if (a->text() == "Select ancestors")
                 selectAncestors();
-            else if(a->text()=="Select descendants")
+            else if (a->text() == "Select descendants")
                 selectDescandants();
-            else if(a->text()=="Select node" || a->text()=="Unselect node")
+            else if (a->text() == "Select node" || a->text() == "Unselect node")
                 setSelected(!isSelected());
             //else not needed
 
@@ -290,7 +311,7 @@ public:
     {
         setSelected(true);
         QListIterator<Edge*> it(edgeListTo);
-        while(it.hasNext())
+        while (it.hasNext())
             it.next()->selectDestNode();
         update();
     }
@@ -298,7 +319,7 @@ public:
     void selectAncestors()
     {
         setSelected(true);
-        if(!edgeListFrom.empty())
+        if (!edgeListFrom.empty())
             edgeListFrom.first()->selectSourceNode();
         update();
     }

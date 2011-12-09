@@ -46,7 +46,7 @@ bool load_data(const string& file, TreesCollectionInterface* collection)
                 name = trim(*it);
 
                 ss = new stringstream;
-                for(++it; it != values.end(); ++it)
+                for (++it; it != values.end(); ++it)
                     (*ss) << *it;
 
                 bag[name] = ss;
@@ -70,7 +70,7 @@ static bool load_children(const char*& character, TreeNodeInterface* parent);
 
 static void consume_whitespace(const char*& character)
 {
-    while(*character == ' ' || *character == '\t')
+    while (*character == ' ' || *character == '\t')
         ++character;
 }
 
@@ -86,7 +86,7 @@ bool load_trees(const string& file, TreesCollectionInterface* collection)
         bool ret(true);
         TreeInterface* tree;
 
-        while(getline(f, line))
+        while (getline(f, line))
             tree_str += line;
 
         ptr  = tree_str.c_str();
@@ -104,7 +104,8 @@ bool load_trees(const string& file, TreesCollectionInterface* collection)
                 else
                     ++ptr;
             }
-        }while(ret && *ptr != 0);
+        }
+        while (ret && *ptr != 0);
 
         return ret;
     }
@@ -127,7 +128,7 @@ static inline bool is_namechar(char c)
 static string consume_name(const char*& character)
 {
     string ret;
-    while(is_namechar(*character))
+    while (is_namechar(*character))
     {
         ret += *character;
         ++character;
@@ -164,7 +165,7 @@ bool load_node(const char*& character, TreeNodeInterface* node)
             // we are leaf.
             name = consume_name(character);
             node->set_name(name);
-    }        
+    }
 
     return ret;
 }
@@ -201,7 +202,8 @@ bool load_children(const char*& character, TreeNodeInterface* parent)
                     cerr << "Malformed expression: expected ')' or ',', read '" << *character << "'\n";
             }
         }
-    }while(keep_reading && ret);
+    }
+    while (keep_reading && ret);
 
     return ret;
 }

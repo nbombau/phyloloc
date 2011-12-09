@@ -1,5 +1,5 @@
 /*
-IDataSourceInfo: interface for holding information about a particular datasource
+    IDataSourceInfo: interface for holding information about a particular datasource
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 

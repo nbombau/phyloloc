@@ -1,5 +1,5 @@
 /*
-DefaultValidationPolicy: a class that defines policies for trees data validation
+    DefaultValidationPolicy: a class that defines policies for trees data validation
 
     Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
 
@@ -18,7 +18,6 @@ DefaultValidationPolicy: a class that defines policies for trees data validation
     You should have received a copy of the GNU General Public License
     along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #ifndef TREE_VALIDATION_POLICIES_H
 #define TREE_VALIDATION_POLICIES_H

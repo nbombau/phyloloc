@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
+
+    This file is part of the Phyloloc project.
+
+    Phyloloc is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Phyloloc is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef TRAVERSER_H
 #define TRAVERSER_H
 
@@ -23,8 +42,8 @@ namespace Traversal
 * ----------------
 * Description: Allows the client to easily traverse a phylogenetic tree
 * Type Parameter T: T is the node type.
-* Type Parameter Action: action is the visitor action type. 
-* Type Parameter Predicate: Predicate that indicates whether to keep 
+* Type Parameter Action: action is the visitor action type.
+* Type Parameter Predicate: Predicate that indicates whether to keep
 * or stop Traversing
 */
 template <class T, class Action, class Predicate>
@@ -57,7 +76,7 @@ public:
     static void traverseDescendants(T* t, Action& a)
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
-        
+
         VisitAction act = ContinueTraversing;
         //A queue shall be used to avoid recursion
         std::queue<T*, std::list<T*> > queue;
@@ -74,17 +93,17 @@ public:
             //Visit the node that is on top of the queue
             act = v.visit(node);
 
-            if(act == ContinueTraversing)
+            if (act == ContinueTraversing)
             {
                 Domain::ListIterator<T, Domain::Node> it = node->template getChildrenIterator<T>();
-                
+
                 //And add the node's children to the queue
-                for(; !it.end(); it.next())
+                for (; !it.end(); it.next())
                 {
                     node = it.get();
                     queue.push(node);
                 }
-            }            
+            }
         }
     }
 
@@ -100,7 +119,7 @@ public:
     static void traverseAncestors(T* t, Action& a)
     {
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
-        
+
         VisitAction act = ContinueTraversing;
         T* node = t;
 
@@ -108,18 +127,18 @@ public:
         while (act == ContinueTraversing)
         {
             act = v.visit(node);
-            
-            if(act == ContinueTraversing)
+
+            if (act == ContinueTraversing)
             {
                 //get the parent
                 if (!node->isRoot())
                     node = node->template getParent<T>();
                 else
-                    act = StopTraversing;    
-            }            
+                    act = StopTraversing;
+            }
         }
     }
-    
+
     /**
      * Method: traversePostOrder
      * ------------------------
@@ -134,22 +153,22 @@ public:
         NodeVisitor<Action, Predicate, T> v = NodeVisitor<Action, Predicate, T>(a);
         traversePostOrderRecursive(t->getRoot(), v);
     }
-    
+
 private:
 
     static VisitAction traversePostOrderRecursive(T* node, NodeVisitor<Action, Predicate, T>& v)
-    {       
-        if(!node->isLeaf())
+    {
+        if (!node->isLeaf())
         {
             Domain::ListIterator<T, Domain::Node> it = node->template getChildrenIterator<T>();
-            
-            for(; !it.end(); it.next())
+
+            for (; !it.end(); it.next())
             {
                 T* child = it.get();
                 traversePostOrderRecursive(child, v);
             }
         }
-        return v.visit(node);        
+        return v.visit(node);
     }
 };
 }

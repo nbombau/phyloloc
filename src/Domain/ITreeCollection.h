@@ -1,101 +1,118 @@
+/*
+    Copyright (C) 2011 Emmanuel Teisaire, Nicolás Bombau, Carlos Castro, Damián Domé, FuDePAN
+
+    This file is part of the Phyloloc project.
+
+    Phyloloc is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Phyloloc is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef ITREE_COLLECTION_H
 #define ITREE_COLLECTION_H
 
 #include <list>
 #include <mili/mili.h>
-
 #include "ListIterator.h"
 #include "ITree.h"
 
 namespace Domain
 {
 
-    /**
-    * Class: ITreeCollection
-    * ----------------------
-    * Description: Class that defines a collection of phylogenetic trees
-    * Type Parameter T: T is the underlying node class
+/**
+* Class: ITreeCollection
+* ----------------------
+* Description: Class that defines a collection of phylogenetic trees
+* Type Parameter T: T is the underlying node class
+*/
+template <class T>
+class ITreeCollection
+{
+
+public:
+
+    typedef ListIterator<ITree<T> > iterator;
+    /*
+    * Method: addTree
+    * ---------------
+    * Description: Adds a tree to the collection.
+    * @return the recently added tree
     */
-    template <class T>
-    class ITreeCollection
+    virtual ITree<T>* addTree()
     {
+        ITree<T>* const tree = new ITree<T>();
+        trees.push_back(tree);
+        return tree;
+    }
 
-    public:
+    /*
+    * Method: getIterator
+    * -------------------
+    * Description: Provides the user a way to iterate through the
+    * trees of the collection.
+    * @return trees iterator
+    */
+    iterator getIterator() const
+    {
+        ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
+        return iter;
+    }
 
-        typedef ListIterator<ITree<T> > iterator;
-        /*
-        * Method: addTree
-        * ---------------
-        * Description: Adds a tree to the collection.
-        * @return the recently added tree
-        */
-        virtual ITree<T>* addTree()
+    /*
+    * Method: elementAt
+    * -------------------
+    * Description: Returns the element at certain index
+    * @return element at certain index, null otherwise
+    */
+    ITree<T>* elementAt(unsigned int index) const
+    {
+        unsigned int i = 0;
+        ITree<T>* ret = NULL;
+        iterator it = this->getIterator();
+
+        while (i < index && !it.end())
         {
-            ITree<T>* const tree = new ITree<T>();
-            trees.push_back(tree);
-            return tree;
+            it.next();
+            i++;
         }
 
-        /*
-        * Method: getIterator
-        * -------------------
-        * Description: Provides the user a way to iterate through the
-        * trees of the collection.
-        * @return trees iterator
-        */
-        iterator getIterator() const
+        if (i == index)
         {
-            ListIterator<ITree<T> > iter = ListIterator<ITree<T> >(trees);
-            return iter;
+            ret = it.get();
         }
 
-        /*
-        * Method: elementAt
-        * -------------------
-        * Description: Returns the element at certain index
-        * @return element at certain index, null otherwise
-        */
-        ITree<T>* elementAt(unsigned int index) const
-        {
-            unsigned int i = 0;
-            ITree<T>* ret = NULL;
-            iterator it = this->getIterator();
+        return ret;
+    }
 
-            while (i < index && !it.end())
-            {
-                it.next();
-                i++;
-            }
+    /*
+    * Method: clear
+    * -------------------
+    * Description: Clears the tree collection
+    */
+    void clear()
+    {
+        delete_container(trees);
+    }
 
-            if (i == index)
-            {
-                ret = it.get();
-            }
+    //Destructor
+    ~ITreeCollection()
+    {
+        //Call to MiLi's delete_container
+        delete_container(trees);
+    }
 
-            return ret;
-        }
-
-        /*
-        * Method: clear
-        * -------------------
-        * Description: Clears the tree collection
-        */
-        void clear()
-        {
-            delete_container(trees);
-        }
-
-        //Destructor
-        ~ITreeCollection()
-        {
-            //Call to MiLi's delete_container
-            delete_container(trees);
-        }
-
-    private:
-
-        std::list<ITree<T>*> trees;
-    };
+private:
+    std::list<ITree<T>*> trees;
+};
 }
 
 #endif
