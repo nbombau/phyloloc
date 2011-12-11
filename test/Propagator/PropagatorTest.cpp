@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
 #include "../../src/Phyloloc/Propagator/Propagator.h"
 #include "../../src/Domain/INode.h"
 #include "../../src/Domain/ITree.h"
@@ -85,26 +84,26 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
     locationManager.addDistance(4, "C", "B");
 
     Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4, locationManager);
+    
+    ASSERT_TRUE(fabs(root->probabilities[0] - 0.538462) < epsilon);
+    ASSERT_TRUE(fabs(root->probabilities[1] - 0.230769) < epsilon);
+    ASSERT_TRUE(fabs(root->probabilities[2] - 0.230769) < epsilon);
 
-    ASSERT_TRUE(fabs(root->probabilities[0] - 0.533) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[1] - 0.233) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[2] - 0.233) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[0] - 0.797101) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[1] - 0.10145) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[2] - 0.10145) < epsilon);
 
-    ASSERT_TRUE(fabs(c1->probabilities[0] - 0.790950) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[1] - 0.104525) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[2] - 0.104525) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[0] - 0.79897) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[1] - 0.100515) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[2] - 0.100515) < epsilon);
 
-    ASSERT_TRUE(fabs(c2->probabilities[0] - 0.792344) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[1] - 0.103828) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[2] - 0.103828) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[0] - 0.308042) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[1] - 0.582701) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[2] - 0.109256) < epsilon);
 
-    ASSERT_TRUE(fabs(c3->probabilities[0] - 0.298901) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[1] - 0.589561) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[2] - 0.111538) < epsilon);
-
-    ASSERT_TRUE(fabs(c4->probabilities[0] - 0.301176) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[1] - 0.111176) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[2] - 0.587647) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[0] - 0.311367) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[1] - 0.108731) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[2] - 0.57990) < epsilon);
 }
 
 TEST_F(PropagatorTest, invalidFactors)
