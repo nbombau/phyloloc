@@ -21,7 +21,6 @@ along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
 #define CLUSTER_TREE_H
 
 #include <list>
-#include <stdio.h>
 #include "bitset.h"
 #include "Domain/INode.h"
 #include "Domain/LocationAspect.h"
@@ -45,7 +44,6 @@ namespace Consensus
     struct NodeCluster
     {
         bitset cluster;
-        //TODO: const correctness
         Node* node;
         
         NodeCluster(bitset b, Node* n)
@@ -73,8 +71,7 @@ namespace Consensus
             void calculateClusters(Domain::ITree<Node>* tree)
             {
                 bitset b(locationManager.getNodeNameCount());
-                b = buildCluster(tree->getRoot(), b);
-                
+                buildCluster(tree->getRoot(), b);
             }
             
             
@@ -114,6 +111,47 @@ namespace Consensus
                 
                 return aux;
             }
+            
+            
+            bool treesAreDisjoint() const
+            {
+                //get the root that results on or-ing all clusters 
+                bitset root = getConsensedRoot();
+                
+                //if the roots don't match, the clusters are disjoint, cant create consensus tree
+                return root != clusters.front().cluster;                    
+            }
+            
+            static bool areParentAndChild(NodeCluster<Node>& parent, NodeCluster<Node>& child)
+            {
+                return (parent.cluster & child.cluster) == child.cluster;
+            }
+            
+            static Node* nodeFromCluster(const NodeCluster<Node>& n, Node* parent)
+            {
+                Node* child = parent->template addChild<Node>();
+                child->setName(n.node->getName());
+                child->setBranchLength(n.node->getBranchLength());
+                child->cluster = n.cluster;
+                return child;
+            }
+            
+            class BitsetComparator
+            {
+                public:
+                    bool operator()(NodeCluster<Node>& node1, NodeCluster<Node>& node2) const
+                    {
+                        return countTrueBits(node1.cluster) > countTrueBits(node2.cluster);
+                    }
+                    
+                    static size_t countTrueBits(Consensus::bitset& bs)
+                    {
+                        size_t count = 0;
+                        for (unsigned int i = 0; i < bs.size(); ++i)
+                            count += (bs[i] == bitset::bit::true_bit) ? 1 : 0;
+                        return count;
+                    }
+            };
             
         public:
             
@@ -202,40 +240,32 @@ namespace Consensus
                 //the leaves at the end
                 clusters.sort(BitsetComparator());
                 
-                //Get the root that comes from or-ing all the clusters to check disjoint clusters
-                //between trees
-                bitset root = getConsensedRoot();
-                
-                //if the roots don't match, the clusters are disjoint, cant create consensus tree
-                if (root != clusters.front().cluster)
+                //If the trees have disjoint terminals, we can't create consensus tree
+                if(treesAreDisjoint())
                     throw DisjointTerminalsException();
                 
-                Domain::ITree<Node> * tree = new Domain::ITree<Node>();
+                Domain::ITree<Node>* const tree = new Domain::ITree<Node>();
+                               
+                //special case for the root
+                nodes[0] = tree->getRoot();
+                nodes[0]->cluster = clusters.front().cluster;
                 
-                unsigned int nextChildIndex = 1; 
-                bool first = true;
+                if(clusters.size() == 1) return tree;
+                
+                it = clusters.begin();
+                it++;
+                
                 //iterate forward through the clusters. 
-                for(it = clusters.begin(); it != clusters.end(); it++)
+                for(unsigned int nextChildIndex = 1; it != clusters.end(); it++, nextChildIndex++)
                 {
-                    //special case for the root
-                    if(it == clusters.begin())
-                    {
-                        nodes[0] = tree->getRoot();
-                        nodes[0]->cluster = clusters.front().cluster;
-                    }
-                    else
-                    {
-                        //find the ancestors of the current cluster, and build the node associated
-                        //to the closest ancestor
-                        nodes[nextChildIndex] = bindClusterToConsensus(it, nodes, nextChildIndex);
-                        nextChildIndex++;
-                    }
-                    
+                    //find the ancestors of the current cluster, and build the node associated
+                    //to the closest ancestor
+                    nodes[nextChildIndex] = bindClusterToConsensus(it, nodes, nextChildIndex);   
                 }
                 
                 return tree;
             }
-            
+
             Node* bindClusterToConsensus(ClusterIterator current, std::vector<Node*>& nodes, unsigned int nextChildIndex) const
             {
                 ClusterIterator parentSearchIter = current;
@@ -246,17 +276,12 @@ namespace Consensus
                 //start searching the parent backwards through the iterator
                 parentSearchIter--;
                 
-                while(!foundParent)
+                do
                 {
                     //the parent is the ancestor that is closer in the nodes vector
                     if(areParentAndChild(*parentSearchIter, *current))
                     {
                         nodeToBind = nodeFromCluster(*current, nodes[parentIndex]);
-                        foundParent = true;
-                    }
-                    //if no more clusters to the left, we found the parent, it's the root!
-                    else if(parentSearchIter == clusters.begin())
-                    {
                         foundParent = true;
                     }
                     //if we didn't find the parent yet, keep looking backwards
@@ -265,44 +290,11 @@ namespace Consensus
                         parentIndex--;
                         parentSearchIter--;
                     }
-                }
+                } while(!foundParent);
+                
                 return nodeToBind;
             }
-            
-            bool areParentAndChild(NodeCluster<Node>& parent, NodeCluster<Node>& child) const
-            {
-                return (((parent.cluster) & (child.cluster)) == (child.cluster));
-            }
-            
-            Node* nodeFromCluster(const NodeCluster<Node>& n, Node* parent) const
-            {
-                Node* child = parent->template addChild<Node>();
-                child->setName(n.node->getName());
-                child->setBranchLength(n.node->getBranchLength());
-                child->cluster = n.cluster;
-                return child;
-            }
-            
-            class BitsetComparator
-            {
-                public:
-                    bool operator()(NodeCluster<Node>& node1, NodeCluster<Node>& node2)
-                    {
-                        bool ret = false;
-                        if (countTrueBits(node1.cluster) > countTrueBits(node2.cluster))
-                            ret = true;
-                        return ret;
-                    }
-                    
-                    static size_t countTrueBits(Consensus::bitset& bs)
-                    {
-                        size_t cant = 0;
-                        for (unsigned int i = 0; i < bs.size(); ++i)
-                            cant += (bs[i] == bitset::bit::true_bit) ? 1 : 0;
-                        return cant;
-                    }
-            };
-    };
+      };
 }
 
 #endif
