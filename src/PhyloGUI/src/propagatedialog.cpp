@@ -128,6 +128,12 @@ PropagateDialog::~PropagateDialog()
     //delete passLabel;
     //delete passLine;
 
+    delete pathLabel;
+    delete pathLineEdit;
+    delete selectPathButton;
+
+    delete exportDeviationCheckBox;
+
     delete cancelButton;
     delete propagateButton;
 }
