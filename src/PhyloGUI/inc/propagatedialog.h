@@ -24,8 +24,11 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QDialog>
+#include <QTextBoundaryFinder>
+#include <QCheckBox>
 #include <QDoubleSpinBox>
 #include <QSpinBox>
+#include <string>
 
 namespace PhyloGUI
 {
@@ -67,6 +70,8 @@ public:
     * @return returns the number of iterations.
     */
     int getPasses();
+
+
 private:
     QLabel* BCFLLabel;
     QDoubleSpinBox* BCFLLine;
@@ -78,13 +83,22 @@ private:
     //QLabel* passLabel;
     //QSpinBox* passLine;
 
+    QLabel* pathLabel;
+    QLineEdit* pathLineEdit;
+    QPushButton* selectPathButton;
+
+    QCheckBox* exportDeviationCheckBox;
+
     QPushButton* propagateButton;
     QPushButton* cancelButton;
 
     static const int passesNumber = 2;
 
+
 private slots:
     void acceptInput();
+    void selectFile();
+    void unlockPath(int);
 };
 
 }

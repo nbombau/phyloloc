@@ -13,7 +13,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
 {
     //Size with label and spinbox to pass number
     //this->setBaseSize(450, 350);
-    this->setBaseSize(340, 250);
+    this->setBaseSize(340, 390);
     setFixedSize(baseSize());
 
     this->setWindowTitle("Propagation");
@@ -79,6 +79,29 @@ PropagateDialog::PropagateDialog(QWidget* parent)
     top += height + 25;
     */
 
+    exportDeviationCheckBox = new QCheckBox(this);
+    exportDeviationCheckBox->setGeometry(leftMargin, top, labelWidth, height);
+    exportDeviationCheckBox->setText("Export Deviations");
+    top += height;
+
+    pathLabel = new QLabel(this);
+    pathLabel->setText("File Path:");
+    pathLabel->setGeometry(leftMargin, top, labelWidth, height);
+    top += height;
+
+    pathLineEdit = new QLineEdit(this);
+    pathLineEdit->setGeometry(leftMargin, top, lineWidth * 2 + 25, height);
+    pathLineEdit->setEnabled(false);
+
+
+    selectPathButton = new QPushButton(this);
+    selectPathButton->setGeometry(lineWidth * 2 + 50, top, lineWidth, height);
+    selectPathButton->setText("Select..");
+    selectPathButton->setEnabled(false);
+    top += height;
+
+    top += height + 5;
+
     propagateButton = new QPushButton(this);
     propagateButton->setGeometry((width() - 2 * loadButtonWidth - 15) / 2, top, loadButtonWidth, height);
     propagateButton->setText("Propagate");
@@ -89,6 +112,9 @@ PropagateDialog::PropagateDialog(QWidget* parent)
 
     connect(propagateButton, SIGNAL(clicked()), this, SLOT(acceptInput()));
     connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(selectPathButton, SIGNAL(clicked()), this, SLOT(selectFile()));
+    connect(exportDeviationCheckBox, SIGNAL(stateChanged(int)), this, SLOT(unlockPath(int)));
+
 }
 
 PropagateDialog::~PropagateDialog()
@@ -132,3 +158,40 @@ int PropagateDialog::getPasses()
     return this->passesNumber;
     //return passLine->value();
 }
+
+void PropagateDialog::selectFile()
+{
+    QFileDialog dialog(this, "Open export file");
+    dialog.setAcceptMode(QFileDialog::AcceptSave);
+    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setFilter("CSV Files (*.csv)");
+
+    if (dialog.exec())
+    {
+        QStringList list = dialog.selectedFiles();
+
+        for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
+        {
+            this->pathLineEdit->setText(*it);
+            // Call here
+        }
+
+    }
+
+}
+
+void PropagateDialog::unlockPath(int state)
+{
+    if (Qt::Checked == state)
+    {
+        pathLineEdit->setEnabled(true);
+        selectPathButton->setEnabled(true);
+    }
+    else
+    {
+        pathLineEdit->setText("");
+        pathLineEdit->setEnabled(false);
+        selectPathButton->setEnabled(false);
+    }
+}
+
