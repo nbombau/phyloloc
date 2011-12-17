@@ -17,8 +17,8 @@
     along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef EXPORT_DEVIATION_H
-#define EXPORT_DEVIATION_H
+#ifndef DEVIATIONS_EXPORTER_H
+#define DEVIATIONS_EXPORTER_H
 
 #include <string>
 #include <vector>
@@ -29,21 +29,15 @@
 namespace Propagation
 {
 
-typedef std::string NodeName;
 using namespace mili;
+typedef std::string NodeName;
 
-
-class ExportDeviation
+class DeviationsExporter
 {
 public:
-    ExportDeviation(std::string fileName)
+    DeviationsExporter(std::string fileName)
     {
-        of.open(fileName.c_str(), std::ios::app);
-    }
-
-    ~ExportDeviation()
-    {
-        of.close();
+        of.open(fileName.c_str());
     }
 
     void write(const std::string& treeName, const NodeName& nodeName, unsigned int iteration,
@@ -56,19 +50,17 @@ public:
 
         v.push_back(static_cast<float>(iteration));
 
-        for (ProbabilitiesConstIterator it = begin  ; it != end; ++it)
-            v.push_back(*(it));
+        for (ProbabilitiesConstIterator it = begin; it != end; ++it)
+            v.push_back(*it);
 
         of << v;
         of << std::endl;
     }
 
-
 private:
     std::ofstream of;
 
 };
-
 }
 
 #endif
