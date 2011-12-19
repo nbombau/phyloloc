@@ -361,27 +361,15 @@ private:
                 {
                     locationDistancesSum += locationsDistances[i][j];
                 }
-                //The number of locations counted is locationscount - 1, because we are
-                //calculating the average distance to all OTHER locations
-                const Distance otherLocationsCount = Distance(locationsCount > 1 ? locationsCount - 1 : 1);
-                dispersionVector[i] = locationDistancesSum / otherLocationsCount;
+                //the sum to all OTHER locations
+                dispersionVector[i] = locationDistancesSum;
+                //update the sum between all locations
                 distancesSum += locationDistancesSum;
             }
 
-            //As we added the whole distance matrix, to get the average distance
-            // we must divide by twice the locationsCount^2, because the matrix
-            //is assymetrical, so we are summing each distance twice.
-            //Also, the locationsCount is substracted twice, because the diagonal of the matrix
-            //which are all zeros must not be considered.
-            Distance distancesCount = Distance(square(locationsCount) - locationsCount);
-
-            const Distance distancesAverage = distancesSum / distancesCount;
             for (unsigned int i = 0; i < locationsCount; i++)
             {
-                Distance locationAverage = dispersionVector[i];
-                dispersionVector[i] = 1.0f - locationAverage / distancesAverage;
-
-                if (dispersionVector[i] < 0.0f) dispersionVector[i] = 0.0f;
+                dispersionVector[i] = 1.0f - dispersionVector[i] / distancesSum;
             }
         }
     }

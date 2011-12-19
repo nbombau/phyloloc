@@ -85,25 +85,25 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
 
     Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4, locationManager);
 
-    ASSERT_TRUE(fabs(root->probabilities[0] - 0.538462) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[1] - 0.230769) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[2] - 0.230769) < epsilon);
+    ASSERT_TRUE(fabs(root->probabilities[0] - 0.513386) < epsilon);
+    ASSERT_TRUE(fabs(root->probabilities[1] - 0.243307) < epsilon);
+    ASSERT_TRUE(fabs(root->probabilities[2] - 0.243307) < epsilon);
 
-    ASSERT_TRUE(fabs(c1->probabilities[0] - 0.797101) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[1] - 0.10145) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[2] - 0.10145) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[0] - 0.767550) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[1] - 0.116225) < epsilon);
+    ASSERT_TRUE(fabs(c1->probabilities[2] - 0.116225) < epsilon);
 
-    ASSERT_TRUE(fabs(c2->probabilities[0] - 0.79897) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[1] - 0.100515) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[2] - 0.100515) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[0] - 0.76809) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[1] - 0.11596) < epsilon);
+    ASSERT_TRUE(fabs(c2->probabilities[2] - 0.11596) < epsilon);
 
-    ASSERT_TRUE(fabs(c3->probabilities[0] - 0.308042) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[1] - 0.582701) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[2] - 0.109256) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[0] - 0.269536) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[1] - 0.610913) < epsilon);
+    ASSERT_TRUE(fabs(c3->probabilities[2] - 0.119552) < epsilon);
 
-    ASSERT_TRUE(fabs(c4->probabilities[0] - 0.311367) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[1] - 0.108731) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[2] - 0.57990) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[0] - 0.270266) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[1] - 0.11943) < epsilon);
+    ASSERT_TRUE(fabs(c4->probabilities[2] - 0.61030) < epsilon);
 }
 
 TEST_F(PropagatorTest, invalidFactors)
