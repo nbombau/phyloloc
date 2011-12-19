@@ -165,28 +165,28 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     c4->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
     root.propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
 
-    
+
     ASSERT_TRUE(fabs(root.probabilities[0] - 0.538462) < epsilon);
     ASSERT_TRUE(fabs(root.probabilities[1] - 0.230769) < epsilon);
     ASSERT_TRUE(fabs(root.probabilities[2] - 0.230769) < epsilon);
 
     c1->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-        
+
     ASSERT_TRUE(fabs(c1->probabilities[0] - 0.79710) < epsilon);
     ASSERT_TRUE(fabs(c1->probabilities[1] - 0.10145) < epsilon);
     ASSERT_TRUE(fabs(c1->probabilities[2] - 0.10145) < epsilon);
     c2->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-    
+
     ASSERT_TRUE(fabs(c2->probabilities[0] - 0.79897) < epsilon);
     ASSERT_TRUE(fabs(c2->probabilities[1] - 0.100515) < epsilon);
     ASSERT_TRUE(fabs(c2->probabilities[2] - 0.100515) < epsilon);
     c3->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-    
+
     ASSERT_TRUE(fabs(c3->probabilities[0] - 0.308042) < epsilon);
     ASSERT_TRUE(fabs(c3->probabilities[1] - 0.582701) < epsilon);
     ASSERT_TRUE(fabs(c3->probabilities[2] - 0.109256) < epsilon);
     c4->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-    
+
     ASSERT_TRUE(fabs(c4->probabilities[0] - 0.311367) < epsilon);
     ASSERT_TRUE(fabs(c4->probabilities[1] - 0.10873) < epsilon);
     ASSERT_TRUE(fabs(c4->probabilities[2] - 0.57990) < epsilon);

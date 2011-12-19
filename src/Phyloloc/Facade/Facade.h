@@ -41,7 +41,7 @@ public:
     {}
 
     Facade(Traversal::Traverser<T, V>& t, DataSource::FileDataSource<T>& d) :
-        traverser(t), 
+        traverser(t),
         dataSource(d)
     {}
 

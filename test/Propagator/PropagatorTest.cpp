@@ -84,7 +84,7 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
     locationManager.addDistance(4, "C", "B");
 
     Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4, locationManager);
-    
+
     ASSERT_TRUE(fabs(root->probabilities[0] - 0.538462) < epsilon);
     ASSERT_TRUE(fabs(root->probabilities[1] - 0.230769) < epsilon);
     ASSERT_TRUE(fabs(root->probabilities[2] - 0.230769) < epsilon);
