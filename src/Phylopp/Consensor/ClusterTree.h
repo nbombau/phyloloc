@@ -90,13 +90,14 @@ private:
         {
             buildLeafCluster(node, nodeCluster);
         }
+        //store the pair Node, Bitset, so that they are used when the consensus tree is build
         NodeCluster<Node> clust(nodeCluster, node);
         clusters.push_back(clust);
         set = bitset(nodeCluster);
         return set;
     }
 
-    void buildLeafCluster(Node* leaf, bitset& b)
+    void buildLeafCluster(const Node* const leaf, bitset& b) const
     {
         b.reset();
         b.set(locationManager.getNodeNameId(leaf->getName()) - 1);
@@ -116,7 +117,7 @@ private:
     bool treesAreDisjoint() const
     {
         //get the root that results on or-ing all clusters
-        bitset root = getConsensedRoot();
+        const bitset root = getConsensedRoot();
 
         //if the roots don't match, the clusters are disjoint, cant create consensus tree
         return root != clusters.front().cluster;
@@ -140,10 +141,10 @@ private:
     {
         ClusterIterator parentSearchIter = current;
         bool foundParent = false;
-
+        bool canContinue = true;
         //as parents are in the right of the vector, index 0 corresponds to the root.
         //as root has no parents we return null if nextChildIndex = 0
-        if (nextChildIndex <= 0) return NULL;
+        if (nextChildIndex == 0) return NULL;
 
         unsigned int parentIndex = nextChildIndex - 1;
         Node* nodeToBind = NULL;
@@ -159,13 +160,17 @@ private:
                 foundParent = true;
             }
             //if we didn't find the parent yet, keep looking backwards
+            else if(parentIndex == 0)
+            {
+                canContinue = false;
+            }
             else
             {
                 --parentIndex;
                 --parentSearchIter;
             }
         }
-        while (!foundParent && parentIndex >= 0);  //parent index < 0 means not node found, return null
+        while (!foundParent && canContinue);
 
         if (foundParent)
             nodeToBind = nodeFromCluster(*current, nodes[parentIndex]);
@@ -184,7 +189,7 @@ private:
         static size_t countTrueBits(Consensus::bitset& bs)
         {
             size_t count = 0;
-            //TODO: use std::count_if, but before shoulnt bitset provide bit iterator?
+            //TODO: use std::count_if, but before shouldn't bitset provide bit iterator?
             for (unsigned int i = 0; i < bs.size(); ++i)
                 count += (bs[i] == bitset::bit::true_bit) ? 1 : 0;
             return count;
@@ -227,7 +232,7 @@ public:
         while (it != clusters.end() && !contains)
         {
             contains = it->cluster == bits;
-            it++;
+            ++it;
         }
 
         return contains;

@@ -177,7 +177,7 @@ public:
     * Method: getLocationId
     * ----------------------
     * Description: Look for the id mapped to a location
-    * Returns: Cero if the id is not defined.
+    * Returns: Zero if the id is not defined.
     */
     LocationId getLocationId(const Location& location) const
     {
@@ -308,7 +308,7 @@ private:
     {
         bool valid = true;
 
-        size_t locationsCount = getLocationsCount();
+        const size_t locationsCount = getLocationsCount();
 
         unsigned int i = 0;
         while (valid && i < locationsCount)
@@ -345,7 +345,7 @@ private:
     */
     void calculateDispersionVector()
     {
-        size_t locationsCount = getLocationsCount();
+        const size_t locationsCount = getLocationsCount();
 
         if (locationsCount > 0)
         {
