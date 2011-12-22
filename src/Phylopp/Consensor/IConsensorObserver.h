@@ -46,7 +46,7 @@ public:
      * Description: Notifies when a node is included in the consensed tree.
      * @param node node that has been included in the consensed tree
      */
-    virtual void onInclude(Node* node, const bitset& cluster) = 0;
+    virtual void onInclude(const Node* const node, const bitset& cluster) = 0;
 
     /**
      * Method: notifyExclude
@@ -54,7 +54,7 @@ public:
      * Description: Notifies when a node is excluded in the consensed tree.
      * @param node node that has been excluded in the consensed tree
      */
-    virtual void onExclude(Node* node, const bitset& cluster) = 0;
+    virtual void onExclude(const Node* const node, const bitset& cluster) = 0;
 
     virtual void onEnd(Domain::ITree<Node>* consensed) = 0;
 
