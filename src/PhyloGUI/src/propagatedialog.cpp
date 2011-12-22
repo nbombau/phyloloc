@@ -85,7 +85,7 @@ PropagateDialog::PropagateDialog(QWidget* parent)
     top += height;
 
     pathLabel = new QLabel(this);
-    pathLabel->setText("File Path:");
+    pathLabel->setText("Select a CSV file to export deviations:");
     pathLabel->setGeometry(leftMargin, top, labelWidth, height);
     top += height;
 
@@ -145,6 +145,12 @@ void PropagateDialog::acceptInput()
         QMessageBox msg(QMessageBox::Information, "Input error", "BCLF Weight + GCF Weight must be <= 1.0", QMessageBox::NoButton, this);
         msg.exec();
     }
+    else if (exportDeviationCheckBox->isChecked() && this->pathLineEdit->text().isEmpty())
+    {
+        QMessageBox msg(QMessageBox::Information, "Input error", "If the Export Deviations check is selected then a CSV file must be selected", QMessageBox::NoButton, this);
+        msg.exec();
+    }
+
     else
         accept();
 }
