@@ -21,6 +21,7 @@
 #define PROPAGATOR_ACTION_H
 
 #include "PropagatorAspect.h"
+#include "Propagator.h"
 #include "Phylopp/Traversal/NodeVisitor.h"
 #include "Phylopp/Traversal/Traverser.h"
 #include "Domain/LocationManager.h"
@@ -54,7 +55,7 @@ struct AlwaysTruePredicate
     }
 };
 
-template <class T>
+template <class T, class Observer>
 class PropagateFromChildrenAction
 {
 public:
@@ -62,19 +63,20 @@ public:
                                 const Locations::DistanceVector& dispersal,
                                 Weight geographic,
                                 Weight branch,
-                                Locations::LocationManager& manager) :
+                                Locations::LocationManager& manager,
+                                Observer* obs) :
         locationManager(manager),
         branchLengthSum(blSum),
         geographicFactorWeight(geographic),
         branchLenghtFactorWeight(branch),
-        dispersalVector(dispersal)
-
+        dispersalVector(dispersal),
+        observer(obs)
     {}
 
     VisitAction visitNode(T* n)
     {
         n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight, locationManager);
-
+        observer->onNodePropagated(n);
         return ContinueTraversing;
     }
 
@@ -84,27 +86,30 @@ private:
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
     const Locations::DistanceVector& dispersalVector;
+    Observer* observer;
 
 };
 
-template <class T>
+template <class T, class Observer>
 class PropagateFromParentAction
 {
 public:
     PropagateFromParentAction(Domain::BranchLength blSum,
                               const Locations::DistanceVector& dispersal,
                               Weight geographic,
-                              Weight branch) :
+                              Weight branch, 
+                              Observer* obs) :
         branchLengthSum(blSum),
         geographicFactorWeight(geographic),
         branchLenghtFactorWeight(branch),
-        dispersalVector(dispersal)
+        dispersalVector(dispersal),
+        observer(obs)
     {}
-
+    
     VisitAction visitNode(T* n)
     {
         n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
-
+        observer->onNodePropagated(n);
         return ContinueTraversing;
     }
 
@@ -114,6 +119,7 @@ private:
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
     const Locations::DistanceVector& dispersalVector;
+    Observer* observer;
 };
 
 }

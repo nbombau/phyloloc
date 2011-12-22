@@ -67,6 +67,14 @@ using namespace Locations;
 typedef std::vector<Domain::BranchLength> BranchLengthVector;
 
 template <class T>
+struct DummyObserver
+{
+    void onPropagationStart(TreeId /*treeId*/) { }
+    void onIterationStart(unsigned int /*iterationNumber*/) { }
+    void onNodePropagated(T* /*node*/) { }
+};
+
+template <class T, class Observer = DummyObserver<T> >
 class Propagator
 {
 public:
@@ -76,7 +84,8 @@ public:
                           unsigned int passesCount,
                           double geographicFactorWeight,
                           double branchLengthFactorWeight,
-                          Locations::LocationManager& locationManager
+                          Locations::LocationManager& locationManager,
+                          Observer* obs
                          )
     {
         //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
@@ -84,7 +93,7 @@ public:
 
         try
         {
-            propagate(tree, passesCount, Weight(geographicFactorWeight), Weight(branchLengthFactorWeight), locationManager);
+            propagate(tree, passesCount, Weight(geographicFactorWeight), Weight(branchLengthFactorWeight), locationManager, obs);
         }
         catch (const PropagationException& ex)
         {
@@ -96,10 +105,22 @@ public:
     }
 
     static void propagate(Domain::ITree<T>* tree,
+                        unsigned int passesCount,
+                        double geographicFactorWeight,
+                        double branchLengthFactorWeight,
+                        Locations::LocationManager& locationManager
+                        )
+    {
+        Observer o;
+        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, &o);
+    }
+
+    static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,
                           Weight geographicFactorWeight,
                           Weight branchLengthFactorWeight,
-                          Locations::LocationManager& locationManager
+                          Locations::LocationManager& locationManager,
+                          Observer* observer
                          )
     {
         assertPropagationPremises(geographicFactorWeight, branchLengthFactorWeight, locationManager);
@@ -108,29 +129,46 @@ public:
 
         const DistanceVector& dispersalVector = locationManager.getDispersionVector();
 
-        PropagateFromChildrenAction<T> childrenAction(branchLenghtSum,
+        PropagateFromChildrenAction<T, Observer> childrenAction(branchLenghtSum,
                 dispersalVector,
                 geographicFactorWeight,
                 branchLengthFactorWeight,
-                locationManager);
-        PropagateFromParentAction<T> parentAction(branchLenghtSum,
+                locationManager,
+                observer);
+        PropagateFromParentAction<T, Observer> parentAction(branchLenghtSum,
                 dispersalVector,
                 geographicFactorWeight,
-                branchLengthFactorWeight);
+                branchLengthFactorWeight,
+                observer);
 
+        observer->onPropagationStart(tree->getId());        
+        
         for (unsigned int i = 0; i < passesCount; i++)
         {
+            observer->onIterationStart(i);
+            
             if (isUpPass(i))
             {
-                Traverser<T, PropagateFromChildrenAction<T>, AlwaysTruePredicate<T> >
+                Traverser<T, PropagateFromChildrenAction<T, Observer>, AlwaysTruePredicate<T> >
                 ::traversePostOrder(tree, childrenAction);
             }
             else
             {
-                Traverser<T, PropagateFromParentAction<T>, AlwaysTruePredicate<T> >
+                Traverser<T, PropagateFromParentAction<T, Observer>, AlwaysTruePredicate<T> >
                 ::traverseDescendants(tree, parentAction);
             }
         }
+    }
+    
+    static void propagate(Domain::ITree<T>* tree,
+                          unsigned int passesCount,
+                          Weight geographicFactorWeight,
+                          Weight branchLengthFactorWeight,
+                          Locations::LocationManager& locationManager
+                          )
+    {
+        Observer o;
+        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, &o);
     }
 
 private:
