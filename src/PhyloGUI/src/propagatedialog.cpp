@@ -175,8 +175,12 @@ void PropagateDialog::selectFile()
 {
     QFileDialog dialog(this, "Open export file");
     dialog.setAcceptMode(QFileDialog::AcceptSave);
-    dialog.setFileMode(QFileDialog::ExistingFile);
+    dialog.setFileMode(QFileDialog::AnyFile);
     dialog.setFilter("CSV Files (*.csv)");
+
+    // this is to store the files without extension .csv
+    // with .csv extension
+    dialog.setDefaultSuffix("csv");
 
     if (dialog.exec())
     {
@@ -187,9 +191,7 @@ void PropagateDialog::selectFile()
             this->pathLineEdit->setText(*it);
             // Call here
         }
-
     }
-
 }
 
 void PropagateDialog::unlockPath(int state)
