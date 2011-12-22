@@ -41,6 +41,9 @@ class ITreeCollection
 public:
 
     typedef ListIterator<ITree<T> > iterator;
+    
+    ITreeCollection() : nextTreeId(1) { }
+    
     /*
     * Method: addTree
     * ---------------
@@ -49,7 +52,8 @@ public:
     */
     virtual ITree<T>* addTree()
     {
-        ITree<T>* const tree = new ITree<T>();
+        TreeId nextId = getNextTreeId();
+        ITree<T>* const tree = new ITree<T>(nextId);
         trees.push_back(tree);
         return tree;
     }
@@ -100,6 +104,7 @@ public:
     */
     void clear()
     {
+        nextTreeId = 1;
         delete_container(trees);
     }
 
@@ -111,7 +116,16 @@ public:
     }
 
 private:
+    
+    TreeId getNextTreeId()
+    {
+        TreeId ret = nextTreeId;
+        ++nextTreeId;
+        return ret;
+    }
+    
     std::list<ITree<T>*> trees;
+    TreeId nextTreeId;
 };
 }
 

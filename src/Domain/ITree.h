@@ -29,6 +29,9 @@
 
 namespace Domain
 {
+
+typedef unsigned int TreeId;
+    
 /**
 * Class: ITree
 * ----------------------
@@ -40,8 +43,10 @@ class ITree
 {
 public:
 
-    ITree() :
-        root()
+    ITree(TreeId treeId) : root(), id(treeId)
+    {}
+
+    ITree() : root()
     {}
 
     /*
@@ -65,10 +70,21 @@ public:
     {
         return &root;
     }
-
+    
+    /*
+    * Method: getId
+    * -------------
+    * Description: gets the id of the tree
+    * @return tree's id
+    */
+    TreeId getId() const
+    {
+        return id;
+    }
 
 private:
     T root;
+    TreeId id;
 };
 }
 
