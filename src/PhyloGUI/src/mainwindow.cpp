@@ -13,6 +13,8 @@
 #include "PhyloGUI/inc/nodedetaildialog.h"
 #include "Phylopp/Consensor/StrictConsensor.h"
 #include "Phyloloc/Propagator/StatisticCollectorObserver.h"
+#include "Phyloloc/Propagator/DeviationPropagatorObserver.h"
+#include "Phyloloc/Propagator/DeviationsExporter.h"
 
 
 using namespace DataSource;
@@ -219,13 +221,28 @@ void MainWindow::on_actionProcess_tree_triggered()
             try
             {
                 ListIterator<ITree<GuiNode> > it = trees.getIterator();
+                DeviationsExporter exporter(propagateDialog.getExportPath());
+                DeviationPropagatorObserver<GuiNode> obs(exporter);
                 for (; !it.end(); it.next())
                 {
-                    Propagator<GuiNode>::propagate(it.get(),
-                                                   propagateDialog.getPasses(),
-                                                   propagateDialog.getGCF(),
-                                                   propagateDialog.getBLCF(),
-                                                   locationManager);
+                    if(propagateDialog.getExportDeviations())
+                    {
+                        Propagator<GuiNode, DeviationPropagatorObserver<GuiNode> >::propagate(it.get(),
+                                                       propagateDialog.getPasses(),
+                                                       propagateDialog.getGCF(),
+                                                       propagateDialog.getBLCF(),
+                                                       locationManager,
+                                                       &obs);
+                    }
+                    else
+                    {
+                        Propagator<GuiNode>::propagate(it.get(),
+                                                       propagateDialog.getPasses(),
+                                                       propagateDialog.getGCF(),
+                                                       propagateDialog.getBLCF(),
+                                                       locationManager);
+                    }                    
+                    
                     ++i;
                 }
                 if (actualTree != NULL)

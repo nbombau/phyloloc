@@ -55,22 +55,35 @@ public:
     *
     * @return returns the branch length correction factor.
     */
-    double getBLCF();
+    double getBLCF() const;
 
     /**
     * Returns the branch geographical factor entered by the user.
     *
     * @return returns the geographical correction factor.
     */
-    double getGCF();
+    double getGCF() const;
 
     /**
     * Returns the number of iterations for the propagation entered by the user.
     *
     * @return returns the number of iterations.
     */
-    int getPasses();
+    int getPasses() const;
 
+    /**
+    * Returns if the process should export deviations to a given file
+    *
+    * @return returns true if deviations of propagation process should be exported
+    */
+    bool getExportDeviations() const;
+    
+    /**
+    * Returns the path where the propagation deviations should be exported
+    *
+    * @return returns file path where the propagation deviations should be exported
+    */
+    std::string getExportPath() const;
 
 private:
     QLabel* BCFLLabel;
@@ -93,8 +106,7 @@ private:
     QPushButton* cancelButton;
 
     static const int passesNumber = 2;
-
-
+    
 private slots:
     void acceptInput();
     void selectFile();

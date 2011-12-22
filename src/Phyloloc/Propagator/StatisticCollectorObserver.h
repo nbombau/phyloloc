@@ -59,9 +59,9 @@ public:
      * Description: Notifies when a node is included in the consensed tree.
      * @param node node that has been included in the consensed tree
      */
-    void onInclude(Node2* node, const Consensus::bitset& cluster)
+    void onInclude(const Node2* const node, const Consensus::bitset& cluster)
     {
-        collector.addStatistic(cluster, node->getProbabilitiesIterator());
+        collector.addStatistic(cluster, node->probabilitiesBegin());
     }
 
     /**
@@ -70,7 +70,7 @@ public:
      * Description: Notifies when a node is excluded in the consensed tree.
      * @param node node that has been excluded in the consensed tree
      */
-    void onExclude(Node2* /*node*/, const Consensus::bitset& /*cluster*/)
+    void onExclude(const Node2* const /*node*/, const Consensus::bitset& /*cluster*/)
     {}
 
     void onEnd(Domain::ITree<Node2>* consensed)

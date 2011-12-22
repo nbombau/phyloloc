@@ -150,25 +150,36 @@ void PropagateDialog::acceptInput()
         QMessageBox msg(QMessageBox::Information, "Input error", "If the Export Deviations check is selected then a CSV file must be selected", QMessageBox::NoButton, this);
         msg.exec();
     }
-
     else
         accept();
 }
 
-double PropagateDialog::getBLCF()
+double PropagateDialog::getBLCF() const
 {
     return BCFLLine->value();
 }
 
-double PropagateDialog::getGCF()
+double PropagateDialog::getGCF() const
 {
     return GCFLine->value();
 }
 
-int PropagateDialog::getPasses()
+int PropagateDialog::getPasses() const
 {
     return this->passesNumber;
     //return passLine->value();
+}
+
+bool PropagateDialog::getExportDeviations() const
+{
+    return exportDeviationCheckBox->isChecked();
+}
+
+std::string PropagateDialog::getExportPath() const
+{
+    return pathLineEdit->text().toStdString(
+    
+    );
 }
 
 void PropagateDialog::selectFile()
@@ -181,7 +192,7 @@ void PropagateDialog::selectFile()
     // this is to store the files without extension .csv
     // with .csv extension
     dialog.setDefaultSuffix("csv");
-
+    
     if (dialog.exec())
     {
         QStringList list = dialog.selectedFiles();
@@ -189,9 +200,10 @@ void PropagateDialog::selectFile()
         for (QStringList::Iterator it = list.begin(); it != list.end(); ++it)
         {
             this->pathLineEdit->setText(*it);
-            // Call here
         }
+
     }
+
 }
 
 void PropagateDialog::unlockPath(int state)

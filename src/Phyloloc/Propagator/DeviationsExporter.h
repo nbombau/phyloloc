@@ -23,14 +23,11 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "mili/mili.h"
+#include <mili/mili.h>
 #include "PropagatorAspect.h"
 
 namespace Propagation
 {
-
-using namespace mili;
-typedef std::string NodeName;
 
 class DeviationsExporter
 {
@@ -40,12 +37,13 @@ public:
         of.open(fileName.c_str());
     }
 
-    void write(const std::string& treeName, const NodeName& nodeName, unsigned int iteration,
+    void write(Domain::TreeId id, const NodeName& nodeName, unsigned int iteration,
                ProbabilitiesConstIterator begin, ProbabilitiesConstIterator end)
     {
         std::vector<float> v;
 
-        of << (treeName + ",");
+        of << id;
+        of << ",";
         of << (nodeName + ",");
 
         v.push_back(static_cast<float>(iteration));
