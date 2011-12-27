@@ -74,7 +74,7 @@ private:
         buildCluster(tree->getRoot(), b);
     }
 
-
+public:
     bitset& buildCluster(Node* node, bitset& set)
     {
         bitset nodeCluster(locationManager.getNodeNameCount());
@@ -196,7 +196,7 @@ private:
         }
     };
 
-public:
+
 
     ClusterTree(Domain::ITree<Node>* t, Observer& observer, Locations::LocationManager& locMgr)
         : obs(observer), isConsensusTree(false), locationManager(locMgr)
