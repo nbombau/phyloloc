@@ -68,8 +68,6 @@ namespace Propagation
                     }
                     
                     normalize(probabilities);
-                    
-                    //applyCorrectionFactors(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
                 }
                 else
                 {
@@ -169,11 +167,7 @@ namespace Propagation
                 for(ProbabilitiesConstIterator it = initialProbabilities.begin(); it != initialProbabilities.end(); ++it)
                     prob.push_back(*it);
             }
-            
-            //TODO: temporary until integgration. protected removed for initializing leaf probabilities
-            //shall be removed during integration
-            //protected:
-            
+                       
             LocationProbabilities probabilities;
             LocationProbabilities initialProbabilities;
                                                                                                    

@@ -1,7 +1,6 @@
 
 #include <stddef.h>
 #include <gtest/gtest.h>
-#include <stdio.h>
 #include "../../src/Phyloloc/Propagator/StatisticCollector.h"
 #include "../../src/Phylopp/Consensor/bitset.h"
 
@@ -70,13 +69,11 @@ TEST_F(StatisticCollectorTest, NodeStatisticTest)
      * Median 0.5
      * std deviation 0.24494
      * */
-    StatisticInfo i = ret[0];
+    StatisticInfo i = ret[0];  
 
-    EXPECT_TRUE(fabs(i.average - 0.5) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.5) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.24494) < epsilon);
-
-
+    ASSERT_NEAR(i.average, 0.5, epsilon);
+    ASSERT_NEAR(i.median, 0.5, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.24494, epsilon);
     /* distribution[1] 0.25 0.25 0.1
      * Avg 0.2
      * Median 0.25
@@ -84,10 +81,10 @@ TEST_F(StatisticCollectorTest, NodeStatisticTest)
      * */
     i = ret[1];
 
-    EXPECT_TRUE(fabs(i.average - 0.2) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.25) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.070710678) < epsilon);
-
+    ASSERT_NEAR(i.average, 0.2, epsilon);
+    ASSERT_NEAR(i.median, 0.25, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.070710678, epsilon);
+    
     /* distribution[0] 0.1 0.5 0.05
      * Avg 0.216666667
      * Median 0.1
@@ -95,10 +92,9 @@ TEST_F(StatisticCollectorTest, NodeStatisticTest)
      * */
     i = ret[2];
 
-    EXPECT_TRUE(fabs(i.average - 0.216666667) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.1) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.201384101) < epsilon);
-
+    ASSERT_NEAR(i.average, 0.216666667, epsilon);
+    ASSERT_NEAR(i.median, 0.1, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.201384101, epsilon);
 
 }
 
@@ -164,10 +160,9 @@ TEST_F(StatisticCollectorTest, TreeStatisticTest)
      * */
     StatisticInfo i = ret[0];
 
-    EXPECT_TRUE(fabs(i.average - 0.5) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.5) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.24494) < epsilon);
-
+    ASSERT_NEAR(i.average, 0.5, epsilon);
+    ASSERT_NEAR(i.median, 0.5, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.24494, epsilon);
 
     /* distribution[1] 0.25 0.25 0.1
      * Avg 0.2
@@ -175,10 +170,10 @@ TEST_F(StatisticCollectorTest, TreeStatisticTest)
      * std deviation 0.095742713
      * */
     i = ret[1];
-
-    EXPECT_TRUE(fabs(i.average - 0.2) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.25) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.070710678) < epsilon);
+    
+    ASSERT_NEAR(i.average, 0.2, epsilon);
+    ASSERT_NEAR(i.median, 0.25, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.070710678, epsilon);
 
     /* distribution[0] 0.1 0.5 0.05
      * Avg 0.216666667
@@ -187,9 +182,10 @@ TEST_F(StatisticCollectorTest, TreeStatisticTest)
      * */
     i = ret[2];
 
-    EXPECT_TRUE(fabs(i.average - 0.216666667) < epsilon);
-    EXPECT_TRUE(fabs(i.median - 0.1) < epsilon);
-    EXPECT_TRUE(fabs(i.stdDeviation - 0.201384101) < epsilon);
+
+    ASSERT_NEAR(i.average, 0.216666667, epsilon);
+    ASSERT_NEAR(i.median, 0.1, epsilon);
+    ASSERT_NEAR(i.stdDeviation, 0.201384101, epsilon);
 
 }
 }

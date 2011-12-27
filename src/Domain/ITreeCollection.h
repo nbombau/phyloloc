@@ -52,7 +52,7 @@ public:
     */
     virtual ITree<T>* addTree()
     {
-        TreeId nextId = getNextTreeId();
+        const TreeId nextId = getNextTreeId();
         ITree<T>* const tree = new ITree<T>(nextId);
         trees.push_back(tree);
         return tree;
@@ -119,9 +119,7 @@ private:
     
     TreeId getNextTreeId()
     {
-        TreeId ret = nextTreeId;
-        ++nextTreeId;
-        return ret;
+        return nextTreeId++;
     }
     
     std::list<ITree<T>*> trees;

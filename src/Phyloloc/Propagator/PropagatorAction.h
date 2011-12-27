@@ -64,7 +64,7 @@ public:
                                 Weight geographic,
                                 Weight branch,
                                 Locations::LocationManager& manager,
-                                Observer* obs) :
+                                Observer& obs) :
         locationManager(manager),
         branchLengthSum(blSum),
         geographicFactorWeight(geographic),
@@ -76,7 +76,7 @@ public:
     VisitAction visitNode(T* n)
     {
         n->propagateFromChildren(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight, locationManager);
-        observer->onNodePropagated(n);
+        observer.onNodePropagated(n);
         return ContinueTraversing;
     }
 
@@ -86,7 +86,7 @@ private:
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
     const Locations::DistanceVector& dispersalVector;
-    Observer* observer;
+    Observer& observer;
 
 };
 
@@ -98,7 +98,7 @@ public:
                               const Locations::DistanceVector& dispersal,
                               Weight geographic,
                               Weight branch, 
-                              Observer* obs) :
+                              Observer& obs) :
         branchLengthSum(blSum),
         geographicFactorWeight(geographic),
         branchLenghtFactorWeight(branch),
@@ -109,7 +109,7 @@ public:
     VisitAction visitNode(T* n)
     {
         n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);
-        observer->onNodePropagated(n);
+        observer.onNodePropagated(n);
         return ContinueTraversing;
     }
 
@@ -119,7 +119,7 @@ private:
     Weight geographicFactorWeight;
     Weight branchLenghtFactorWeight;
     const Locations::DistanceVector& dispersalVector;
-    Observer* observer;
+    Observer& observer;
 };
 
 }
