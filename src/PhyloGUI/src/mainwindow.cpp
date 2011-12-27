@@ -232,7 +232,7 @@ void MainWindow::on_actionProcess_tree_triggered()
                                                        propagateDialog.getGCF(),
                                                        propagateDialog.getBLCF(),
                                                        locationManager,
-                                                       &obs);
+                                                       obs);
                     }
                     else
                     {

@@ -46,7 +46,7 @@ public:
     ITree(TreeId treeId) : root(), id(treeId)
     {}
 
-    ITree() : root()
+    ITree() : root(), id(1)
     {}
 
     /*
@@ -84,7 +84,7 @@ public:
 
 private:
     T root;
-    TreeId id;
+    const TreeId id;
 };
 }
 

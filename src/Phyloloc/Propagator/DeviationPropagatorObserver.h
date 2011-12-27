@@ -29,15 +29,16 @@ namespace Propagation
                 if(node->isLeaf())
                 {
                     LocationProbabilities initial;
-                    LocationProbabilities deviation;
                     node->getInitialProbabilities(initial);
                     
                     ProbabilitiesConstIterator initialIter;
                     ProbabilitiesConstIterator currentIter;
                     
+                    LocationProbabilities deviation;
+                    
                     for(initialIter = initial.begin(), currentIter = node->probabilitiesBegin(); 
-                    initialIter != initial.end() && currentIter != node->probabilitiesEnd(); 
-                    ++initialIter, ++currentIter)
+                        initialIter != initial.end() && currentIter != node->probabilitiesEnd(); 
+                        ++initialIter, ++currentIter)
                     {
                         deviation.push_back(fabs(*initialIter - *currentIter));
                     }

@@ -85,7 +85,7 @@ public:
                           double geographicFactorWeight,
                           double branchLengthFactorWeight,
                           Locations::LocationManager& locationManager,
-                          Observer* obs
+                          Observer& obs
                          )
     {
         //sets rounded mode towards zero, so that convertion from double to float does not bring errors in propagation arguments
@@ -112,7 +112,7 @@ public:
                         )
     {
         Observer o;
-        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, &o);
+        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, o);
     }
 
     static void propagate(Domain::ITree<T>* tree,
@@ -120,7 +120,7 @@ public:
                           Weight geographicFactorWeight,
                           Weight branchLengthFactorWeight,
                           Locations::LocationManager& locationManager,
-                          Observer* observer
+                          Observer& observer
                          )
     {
         assertPropagationPremises(geographicFactorWeight, branchLengthFactorWeight, locationManager);
@@ -141,11 +141,11 @@ public:
                 branchLengthFactorWeight,
                 observer);
 
-        observer->onPropagationStart(tree->getId());        
+        observer.onPropagationStart(tree->getId());        
         
         for (unsigned int i = 0; i < passesCount; i++)
         {
-            observer->onIterationStart(i);
+            observer.onIterationStart(i);
             
             if (isUpPass(i))
             {
@@ -168,7 +168,7 @@ public:
                           )
     {
         Observer o;
-        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, &o);
+        propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, o);
     }
 
 private:

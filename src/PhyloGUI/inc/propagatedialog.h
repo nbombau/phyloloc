@@ -69,7 +69,7 @@ public:
     *
     * @return returns the number of iterations.
     */
-    int getPasses() const;
+    unsigned int getPasses() const;
 
     /**
     * Returns if the process should export deviations to a given file
@@ -105,7 +105,7 @@ private:
     QPushButton* propagateButton;
     QPushButton* cancelButton;
 
-    static const int passesNumber = 2;
+    static const unsigned int passesNumber = 2;
     
 private slots:
     void acceptInput();

@@ -164,7 +164,7 @@ double PropagateDialog::getGCF() const
     return GCFLine->value();
 }
 
-int PropagateDialog::getPasses() const
+unsigned int PropagateDialog::getPasses() const
 {
     return this->passesNumber;
     //return passLine->value();
@@ -177,9 +177,7 @@ bool PropagateDialog::getExportDeviations() const
 
 std::string PropagateDialog::getExportPath() const
 {
-    return pathLineEdit->text().toStdString(
-    
-    );
+    return pathLineEdit->text().toStdString();
 }
 
 void PropagateDialog::selectFile()

@@ -85,25 +85,25 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
 
     Propagator<PropNode>::propagate(&t, 2, 0.4, 0.4, locationManager);
 
-    ASSERT_TRUE(fabs(root->probabilities[0] - 0.541936) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[1] - 0.235484) < epsilon);
-    ASSERT_TRUE(fabs(root->probabilities[2] - 0.222581) < epsilon);
+    ASSERT_NEAR(root->probabilities[0], 0.541936, epsilon);
+    ASSERT_NEAR(root->probabilities[1], 0.235484, epsilon);
+    ASSERT_NEAR(root->probabilities[2], 0.222581, epsilon);
+    
+    ASSERT_NEAR(c1->probabilities[0], 0.781372, epsilon);
+    ASSERT_NEAR(c1->probabilities[1], 0.112393, epsilon);
+    ASSERT_NEAR(c1->probabilities[2], 0.106235, epsilon);
 
-    ASSERT_TRUE(fabs(c1->probabilities[0] - 0.781372) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[1] - 0.112393) < epsilon);
-    ASSERT_TRUE(fabs(c1->probabilities[2] - 0.106235) < epsilon);
+    ASSERT_NEAR(c2->probabilities[0], 0.781887, epsilon);
+    ASSERT_NEAR(c2->probabilities[1], 0.112128, epsilon);
+    ASSERT_NEAR(c2->probabilities[2], 0.105984, epsilon);
 
-    ASSERT_TRUE(fabs(c2->probabilities[0] - 0.781887) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[1] - 0.112128) < epsilon);
-    ASSERT_TRUE(fabs(c2->probabilities[2] - 0.105984) < epsilon);
+    ASSERT_NEAR(c3->probabilities[0], 0.284252, epsilon);
+    ASSERT_NEAR(c3->probabilities[1], 0.606486, epsilon);
+    ASSERT_NEAR(c3->probabilities[2], 0.109262, epsilon);
 
-    ASSERT_TRUE(fabs(c3->probabilities[0] - 0.284252) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[1] - 0.606486) < epsilon);
-    ASSERT_TRUE(fabs(c3->probabilities[2] - 0.109262) < epsilon);
-
-    ASSERT_TRUE(fabs(c4->probabilities[0] - 0.285007) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[1] - 0.115475) < epsilon);
-    ASSERT_TRUE(fabs(c4->probabilities[2] - 0.599520) < epsilon);
+    ASSERT_NEAR(c4->probabilities[0], 0.285007, epsilon);
+    ASSERT_NEAR(c4->probabilities[1], 0.115475, epsilon);
+    ASSERT_NEAR(c4->probabilities[2], 0.599520, epsilon);
 }
 
 TEST_F(PropagatorTest, invalidFactors)
