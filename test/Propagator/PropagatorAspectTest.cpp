@@ -107,11 +107,6 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
     ASSERT_NEAR(c4->probabilities[0], 0.25, epsilon);
     ASSERT_NEAR(c4->probabilities[1], 0.125, epsilon);
     ASSERT_NEAR(c4->probabilities[2], 0.625, epsilon);
-
-    delete c1;
-    delete c2;
-    delete c3;
-    delete c4;
 }
 
 TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
@@ -196,10 +191,6 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     ASSERT_NEAR(c4->probabilities[1], 0.115475, epsilon);
     ASSERT_NEAR(c4->probabilities[2], 0.599520, epsilon);
     
-    delete c1;
-    delete c2;
-    delete c3;
-    delete c4;
 }
 
 

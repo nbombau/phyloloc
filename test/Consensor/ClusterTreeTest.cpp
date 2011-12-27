@@ -420,6 +420,7 @@ TEST_F(ClusterTreeTest, ToTreeTest)
     ASSERT_STREQ("C", d112_2->getName().c_str());
     ASSERT_TRUE(d112_2->getBranchLength() == 2);
 
+    delete tree;
     locMgr.clear();
 }
 
@@ -544,6 +545,7 @@ TEST_F(ClusterTreeTest, ToTreeDiferentBranchLengthTest)
     ASSERT_TRUE(d112_2->getBranchLength() == 1);
 
     locMgr.clear();
+    delete tree;
 }
 
 }

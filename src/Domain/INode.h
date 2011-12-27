@@ -48,10 +48,10 @@ public:
         parent(NULL)
     {}
 
-    ~Node()
+    virtual ~Node()
     {
         //Call to MiLi's delete_container
-        //delete_container(children);
+        delete_container(children);
     }
 
 

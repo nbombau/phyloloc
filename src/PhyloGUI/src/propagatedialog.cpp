@@ -166,8 +166,7 @@ double PropagateDialog::getGCF() const
 
 unsigned int PropagateDialog::getPasses() const
 {
-    return this->passesNumber;
-    //return passLine->value();
+    return this->NUMBER_OF_PASSES;
 }
 
 bool PropagateDialog::getExportDeviations() const

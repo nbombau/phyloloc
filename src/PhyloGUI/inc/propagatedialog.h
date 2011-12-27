@@ -105,7 +105,7 @@ private:
     QPushButton* propagateButton;
     QPushButton* cancelButton;
 
-    static const unsigned int passesNumber = 2;
+    static const unsigned int NUMBER_OF_PASSES = 2;
     
 private slots:
     void acceptInput();
