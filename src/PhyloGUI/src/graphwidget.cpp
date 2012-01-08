@@ -31,16 +31,16 @@ public:
     {
         color = c;
     }
-
+    
     VisitAction visitNode(GuiNode* n)
     {
         n->setColor(color);
         n->setSelected(false);
         n->update();
-
+        
         return ContinueTraversing;
     }
-
+    
 private:
     QColor color;
 };
@@ -53,7 +53,7 @@ public:
     {
         n->setSelected(true);
         n->update();
-
+        
         return ContinueTraversing;
     }
 };
@@ -74,7 +74,7 @@ public:
             edge->setSelected(false);
             edge->update();
         }
-
+        
         return ContinueTraversing;
     }
 };
@@ -91,7 +91,7 @@ public:
             n->setSelected(true);
             n->update();
             QList<Edge*> edgesTo = n->edgesTo();
-
+            
             const unsigned int size = edgesTo.count();
             for (unsigned int i = 0; i < size; i++)
             {
@@ -112,19 +112,19 @@ public:
     {
         QList<Edge*> edgesFrom;
         QList<Edge*> edgesTo = n->edgesTo();
-
+        
         const unsigned int size = edgesTo.count();
-
+        
         for (unsigned int i = 0; i < size; i++)
         {
             Edge* edge = edgesTo.at(i);
-
+            
             if (edge->isSelected())
             {
                 n->setSelected(true);
                 n->update();
             }
-
+            
         }
         if (n->isSelected())
         {
@@ -144,21 +144,21 @@ public:
 class SelectCollectorAction
 {
 public:
-
+    
     VisitAction visitNode(GuiNode* n)
     {
         Traverser<GuiNode, SelectAncestorsAction, AlwaysTruePredicate> tAncestor;
         SelectAncestorsAction aAncestor;
         tAncestor.traverseAncestors(n, aAncestor);
-
+        
         return ContinueTraversing;
     }
 };
 
 
 GraphWidget::GraphWidget(Locations::LocationManager& locationManager, QWidget* parent)
-    : QGraphicsView(parent),
-      lm(locationManager)
+: QGraphicsView(parent),
+lm(locationManager)
 {
     //Properties
     setCacheMode(CacheBackground);
@@ -167,6 +167,20 @@ GraphWidget::GraphWidget(Locations::LocationManager& locationManager, QWidget* p
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
     setParent(parent);
+}
+
+GraphWidget::~GraphWidget()
+{
+    QGraphicsScene* scene;
+    if (this->scene() != NULL)
+    {
+        scene = this->scene();
+        QListIterator<QGraphicsItem*> items(scene->items());
+        while (items.hasNext())
+        {
+            scene->removeItem(items.next());
+        }
+    }
 }
 
 void GraphWidget::wheelEvent(QWheelEvent* event)
@@ -189,7 +203,7 @@ void GraphWidget::scaleView(qreal scaleFactor)
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
     ListIterator<GuiNode, Domain::Node>  it = node->getChildrenIterator<GuiNode>();
-
+    
     list<QPointF> points;
     QPointF nodeCoord;
     QPointF ret;
@@ -217,9 +231,9 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         nodeCoord.setX((first.x() + (last.x() - first.x()) / 2.0));
         nodeCoord.setY((depth + node->getBranchLength()) * 100);
     }
-
+    
     node->setPos(nodeCoord.x() + 200, nodeCoord.y() + 200);
-
+    
     if (node->isLeaf())
     {
         text = new QGraphicsTextItem(QString(node->getName().c_str()));
@@ -228,9 +242,9 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         node->setGraphicsName(text);
         scene->addItem(text);
     }
-
+    
     it.restart();
-
+    
     for (; !it.end(); it.next())
     {
         GuiNode* auxNode = it.get();
@@ -239,14 +253,14 @@ QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float dep
         {
             edge->setVisible(false);
         }
-
+        
         scene->addItem(edge);
-
+        
         auxNode->addEdgeFrom(edge);
         node->addEdgeTo(edge);
     }
     scene->addItem(node);
-
+    
     return nodeCoord;
 }
 
@@ -254,7 +268,7 @@ void GraphWidget::drawTree(QGraphicsScene* scene, GuiNode* node)
 {
     unsigned int leafNumber = 0;
     unsigned int depth = 50;
-
+    
     drawTreeAux(scene, node, depth, &leafNumber);
 }
 
@@ -264,7 +278,7 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
     resetCachedContent();
     resetMatrix();
     resetTransform();
-
+    
     //Set Properties
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -272,13 +286,24 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
     setTransformationAnchor(AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
-
+    
     //Create scene
-    QGraphicsScene* scene = new QGraphicsScene(this);
+    QGraphicsScene* scene;
+    if (this->scene() != NULL)
+    {
+        scene = this->scene();
+        QListIterator<QGraphicsItem*> items(scene->items());
+        while (items.hasNext())
+        {
+            scene->removeItem(items.next());
+        }
+        delete scene;
+    }
+    scene = new QGraphicsScene(this);
     this->setScene(scene);
     this->tree = tree;
     drawTree(scene, tree->getRoot());
-
+    
     //Ensure visibility of the tree
     fitInView(this->scene()->sceneRect(), Qt::KeepAspectRatio);
 }
@@ -298,7 +323,7 @@ void GraphWidget::paintNode(QColor color, ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, ColorAction, IsSelectedPredicate> t;
     ColorAction v = ColorAction(color);
-
+    
     GuiNode* const startNode = tree->getRoot();
     t.traverseDescendants(startNode, v);
 }
@@ -307,7 +332,7 @@ void GraphWidget::selectAllNodes(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectAction, AlwaysTruePredicate> t;
     SelectAction a;
-
+    
     GuiNode* const startNode = tree->getRoot();
     t.traverseDescendants(startNode, a);
 }
@@ -324,7 +349,7 @@ void GraphWidget::selectNodeDescendants(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectDescendantsAction, AlwaysTruePredicate> t;
     SelectDescendantsAction a;
-
+    
     GuiNode* const startNode = tree->getRoot();
     t.traverseDescendants(startNode, a);
 }
@@ -333,11 +358,11 @@ void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
 {
     Traverser<GuiNode, SelectCollectorAction, IsSelectedPredicate> t;
     SelectCollectorAction a;
-
+    
     GuiNode* const startNode = tree->getRoot();
-
+    
     t.traverseDescendants(startNode, a);
-
+    
 }
 
 QSize GraphWidget::sizeHint() const
