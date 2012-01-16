@@ -70,7 +70,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         QStringList propTitles("Location");
         propTitles.append(QString("Probabilities"));
         propGrid->setHorizontalHeaderLabels(propTitles);
-        VariantsSet::iterator it = locationManager->getLocations();
+        mili::VariantsSet::iterator it = locationManager->getLocations();
         for (unsigned int i = 0; i < probabilities.size(); ++i, it++)
         {
             QTableWidgetItem* prob = new QTableWidgetItem(QString().setNum(probabilities[i], 'f', 3));
@@ -103,7 +103,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         consTitles.append(QString("Percentile 75"));
         consGrid->setHorizontalHeaderLabels(consTitles);
         Propagation::StatisticInfoConstIterator it2 = statistics.begin();
-        VariantsSet::iterator itLocations = locationManager->getLocations();
+        mili::VariantsSet::iterator itLocations = locationManager->getLocations();
         for (unsigned int i = 0; it2 != statistics.end(); it2++, i++, itLocations++)
         {
             QTableWidgetItem* location = new QTableWidgetItem(QString(itLocations->first.c_str()));

@@ -29,6 +29,8 @@
 namespace Propagation
 {
 
+using namespace mili;
+
 class DeviationsExporter
 {
 public:

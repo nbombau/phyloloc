@@ -38,7 +38,7 @@ public:
     template <class T>
     bool validate(const T* node) const
     {
-        return implies(node->isLeaf(), !node->getName().empty());
+        return mili::implies(node->isLeaf(), !node->getName().empty());
     }
 };
 

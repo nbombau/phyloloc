@@ -33,7 +33,7 @@ static const unsigned int ID_INCREMENT = 1;
 
 class LocationExceptionHierarchy {};
 
-typedef GenericException<LocationExceptionHierarchy> LocationException;
+typedef mili::GenericException<LocationExceptionHierarchy> LocationException;
 typedef float Distance;
 typedef std::vector<Distance> DistanceVector;
 typedef std::string Location;
@@ -60,7 +60,7 @@ class LocationManager
 
 public:
 
-    VariantsSet::iterator getLocations()
+    mili::VariantsSet::iterator getLocations()
     {
         return locationIdSet.begin();
     }
@@ -186,7 +186,7 @@ public:
         {
             id = locationIdSet.get_element<LocationId>(location);
         }
-        catch (const BadElementName&)
+        catch (const mili::BadElementName&)
         {
             id = LOCATION_NOT_FOUND;
         }
@@ -206,7 +206,7 @@ public:
         {
             id = nodeNameIdSet.get_element<NodeNameId>(name);
         }
-        catch (const BadElementName&)
+        catch (const mili::BadElementName&)
         {
             id = NODENAME_NOT_FOUND;
         }
@@ -273,9 +273,9 @@ public:
 
 private:
 
-    VariantsSet nodeLocationSet;
-    VariantsSet locationIdSet;
-    VariantsSet nodeNameIdSet;
+    mili::VariantsSet nodeLocationSet;
+    mili::VariantsSet locationIdSet;
+    mili::VariantsSet nodeNameIdSet;
     std::vector<std::vector<Distance> > locationsDistances;
     DistanceVector dispersionVector;
 
@@ -292,11 +292,11 @@ private:
     {
         bool valid = true;
 
-        VariantsSet::const_iterator it = nodeLocationSet.begin();
+        mili::VariantsSet::const_iterator it = nodeLocationSet.begin();
 
         while (valid && it != nodeLocationSet.end())
         {
-            valid = implies(!it->first.empty(), !it->second.empty());
+            valid = mili::implies(!it->first.empty(), !it->second.empty());
 
             it++;
         }
@@ -316,7 +316,7 @@ private:
             unsigned int j = 0;
             while (valid && j < locationsCount)
             {
-                valid = implies(i != j, locationsDistances[i][j] != 0.0f);
+                valid = mili::implies(i != j, locationsDistances[i][j] != 0.0f);
                 j++;
             }
             i++;

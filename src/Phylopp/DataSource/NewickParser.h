@@ -33,7 +33,7 @@
 
 class TreeFileExceptionHierarchy {};
 
-typedef GenericException<TreeFileExceptionHierarchy> TreeFileException;
+typedef mili::GenericException<TreeFileExceptionHierarchy> TreeFileException;
 
 /**
 * MissingTreeSeparator
@@ -126,7 +126,7 @@ public:
 
 private:
     ValidationPolicy validationPolicy;
-    VariantsSet set;
+    mili::VariantsSet set;
     const char* character;
 
     /****************************************************
@@ -233,16 +233,16 @@ private:
 
     static inline bool is_namechar(char c)
     {
-        return in_range(c, '0', '9') ||
-               in_range(c, 'a', 'z') ||
-               in_range(c, 'A', 'Z') ||
+        return mili::in_range(c, '0', '9') ||
+               mili::in_range(c, 'a', 'z') ||
+               mili::in_range(c, 'A', 'Z') ||
                c == '_' ||
                c == '-';
     }
 
     static inline bool is_branchlen_char(char c)
     {
-        return in_range(c, '0', '9') ||
+        return mili::in_range(c, '0', '9') ||
                c == '.';
     }
 
@@ -278,7 +278,7 @@ private:
                 ++character;
             }
 
-            if (!from_string(branchLenStr, ret))
+            if (!mili::from_string(branchLenStr, ret))
                 throw MalformedExpression(getLineNumberText());
 
         }

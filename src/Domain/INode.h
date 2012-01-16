@@ -51,7 +51,7 @@ public:
     virtual ~Node()
     {
         //Call to MiLi's delete_container
-        delete_container(children);
+        mili::delete_container(children);
     }
 
 
