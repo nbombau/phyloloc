@@ -24,7 +24,7 @@
 #include "ClusterTree.h"
 
 class StrictConsensorExceptionHierarchy {};
-typedef GenericException<StrictConsensorExceptionHierarchy> StrictConsensorException;
+typedef mili::GenericException<StrictConsensorExceptionHierarchy> StrictConsensorException;
 
 
 /**

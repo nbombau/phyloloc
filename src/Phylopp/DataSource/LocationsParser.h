@@ -34,7 +34,7 @@ using namespace Locations;
 
 class DataFileExceptionHierarchy {};
 
-typedef GenericException<DataFileExceptionHierarchy> DataFileException;
+typedef mili::GenericException<DataFileExceptionHierarchy> DataFileException;
 
 /**
 * MalformedFile
@@ -76,13 +76,13 @@ public:
 
         std::vector<std::string> values;
 
-        while (f >> Separator(values, ','))
+        while (f >> mili::Separator(values, ','))
         {
             if (values.size() != 2)
                 throw MalformedFile(getLineNumberText());
 
-            Domain::NodeName name = trim(values[0]);
-            Location location = trim(values[1]);
+            Domain::NodeName name = mili::trim(values[0]);
+            Location location = mili::trim(values[1]);
 
             addLocation(name, location, locationManager);
 

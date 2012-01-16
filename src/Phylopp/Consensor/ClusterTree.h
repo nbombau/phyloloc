@@ -27,7 +27,7 @@ along with Phyloloc.  If not, see <http://www.gnu.org/licenses/>.
 #include "Domain/ITree.h"
 
 class ConsensorExceptionHierarchy {};
-typedef GenericException<ConsensorExceptionHierarchy> ConsensorException;
+typedef mili::GenericException<ConsensorExceptionHierarchy> ConsensorException;
 
 
 /**

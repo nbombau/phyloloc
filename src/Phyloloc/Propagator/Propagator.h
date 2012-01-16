@@ -28,7 +28,7 @@
 #include "Phylopp/Traversal/Traverser.h"
 
 class PropagationExceptionHierarchy {};
-typedef GenericException<PropagationExceptionHierarchy> PropagationException;
+typedef mili::GenericException<PropagationExceptionHierarchy> PropagationException;
 
 
 /**

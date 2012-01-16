@@ -9,7 +9,7 @@ using namespace std;
 
 class BitSetExceptionHierarchy {};
 
-typedef GenericException<BitSetExceptionHierarchy> BitsetException;
+typedef mili::GenericException<BitSetExceptionHierarchy> BitsetException;
 
 DEFINE_SPECIFIC_EXCEPTION_TEXT(InvalidSizeException,
                                BitSetExceptionHierarchy,

@@ -105,14 +105,14 @@ public:
     void clear()
     {
         nextTreeId = 1;
-        delete_container(trees);
+        mili::delete_container(trees);
     }
 
     //Destructor
     ~ITreeCollection()
     {
         //Call to MiLi's delete_container
-        delete_container(trees);
+        mili::delete_container(trees);
     }
 
 private:

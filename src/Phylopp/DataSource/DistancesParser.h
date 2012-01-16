@@ -34,7 +34,7 @@ using namespace Locations;
 
 class DistancesFileExceptionHierarchy {};
 
-typedef GenericException<DistancesFileExceptionHierarchy> DistancesFileException;
+typedef mili::GenericException<DistancesFileExceptionHierarchy> DistancesFileException;
 
 
 /**
@@ -76,16 +76,16 @@ public:
 
         std::vector<std::string> values;
 
-        while (f >> Separator(values, ','))
+        while (f >> mili::Separator(values, ','))
         {
             if (values.size() != 3)
                 throw MalformedDistancesFile(getLineNumberText());
 
-            Location location1 = trim(values[0]);
-            Location location2 = trim(values[1]);
+            Location location1 = mili::trim(values[0]);
+            Location location2 = mili::trim(values[1]);
 
             float distance;
-            if (!from_string(values[2], distance))
+            if (!mili::from_string(values[2], distance))
                 throw MalformedDistancesFile(getLineNumberText());
 
             addDistance(distance, location1, location2, locationManager);
