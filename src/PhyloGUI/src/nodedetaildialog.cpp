@@ -68,7 +68,7 @@ NodeDetailDialog::NodeDetailDialog(Domain::NodeName& name,
         propGrid->setColumnWidth(0, 260);
         propGrid->setColumnWidth(1, 100);
         QStringList propTitles("Location");
-        propTitles.append(QString("Probabilities"));
+        propTitles.append(QString("Plausibility"));
         propGrid->setHorizontalHeaderLabels(propTitles);
         mili::VariantsSet::iterator it = locationManager->getLocations();
         for (unsigned int i = 0; i < probabilities.size(); ++i, it++)
