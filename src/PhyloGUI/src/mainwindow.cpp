@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionZoom_2->setEnabled(false);
     ui->actionActual_size->setEnabled(false);
     ui->splitter->addWidget(graph);
-
+    this->consensedTreeRow = NO_CONSENSED_TREE;
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
 }
 
@@ -225,14 +225,14 @@ void MainWindow::on_actionProcess_tree_triggered()
                 DeviationPropagatorObserver<GuiNode> obs(exporter);
                 for (; !it.end(); it.next())
                 {
-                    if(propagateDialog.getExportDeviations())
+                    if (propagateDialog.getExportDeviations())
                     {
                         Propagator<GuiNode, DeviationPropagatorObserver<GuiNode> >::propagate(it.get(),
-                                                       propagateDialog.getPasses(),
-                                                       propagateDialog.getGCF(),
-                                                       propagateDialog.getBLCF(),
-                                                       locationManager,
-                                                       obs);
+                                propagateDialog.getPasses(),
+                                propagateDialog.getGCF(),
+                                propagateDialog.getBLCF(),
+                                locationManager,
+                                obs);
                     }
                     else
                     {
@@ -241,8 +241,8 @@ void MainWindow::on_actionProcess_tree_triggered()
                                                        propagateDialog.getGCF(),
                                                        propagateDialog.getBLCF(),
                                                        locationManager);
-                    }                    
-                    
+                    }
+
                     ++i;
                 }
                 if (actualTree != NULL)
