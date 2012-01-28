@@ -282,6 +282,14 @@ void MainWindow::on_actionProcess_tree_triggered()
                 msg.exec();
                 consensedTreeRow = NO_CONSENSED_TREE;
             }
+            catch (const DuplicateNameException& ex)
+            {
+                QMessageBox msg(QMessageBox::Information, "Propagation finished"
+                , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail.\n\nNo consensus tree is available because the input trees' terminal node names have duplicates"
+                , QMessageBox::NoButton, this);
+                msg.exec();
+                consensedTreeRow = NO_CONSENSED_TREE;
+            }
         }
     }
 }
