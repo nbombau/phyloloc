@@ -41,9 +41,9 @@ class ITreeCollection
 public:
 
     typedef ListIterator<ITree<T> > iterator;
-    
+
     ITreeCollection() : nextTreeId(1) { }
-    
+
     /*
     * Method: addTree
     * ---------------
@@ -116,12 +116,12 @@ public:
     }
 
 private:
-    
+
     TreeId getNextTreeId()
     {
         return nextTreeId++;
     }
-    
+
     std::list<ITree<T>*> trees;
     TreeId nextTreeId;
 };

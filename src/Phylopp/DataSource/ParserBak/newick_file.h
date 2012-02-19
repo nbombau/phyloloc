@@ -40,7 +40,7 @@ class NewickParser
 {
 public:
 
-    void loadNewickFile(const std::string fname, Domain::ITree<T>*phyloTree)
+    void loadNewickFile(const std::string fname, Domain::ITree<T>* phyloTree)
     {
         const int filedes = open(fname.c_str(), 0, 0); // FIXME: not exception safe
         struct stat file_stat;
@@ -63,7 +63,7 @@ public:
 
     }
 
-    void saveNewickFile(const std::string fname, Domain::ITree<T>*phyloTree)
+    void saveNewickFile(const std::string fname, Domain::ITree<T>* phyloTree)
     {
         std::ofstream os(fname.c_str());
         saveTree(phyloTree->getRoot(), os);

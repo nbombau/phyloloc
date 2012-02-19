@@ -160,7 +160,7 @@ public:
                 foundParent = true;
             }
             //if we didn't find the parent yet, keep looking backwards
-            else if(parentIndex == 0)
+            else if (parentIndex == 0)
             {
                 canContinue = false;
             }

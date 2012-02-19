@@ -77,7 +77,7 @@ public:
     * @return returns true if deviations of propagation process should be exported
     */
     bool getExportDeviations() const;
-    
+
     /**
     * Returns the path where the propagation deviations should be exported
     *
@@ -106,7 +106,7 @@ private:
     QPushButton* cancelButton;
 
     static const unsigned int NUMBER_OF_PASSES = 2;
-    
+
 private slots:
     void acceptInput();
     void selectFile();

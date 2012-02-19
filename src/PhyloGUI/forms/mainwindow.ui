@@ -68,6 +68,7 @@
     <addaction name="actionSelect_Ancestors"/>
     <addaction name="separator"/>
     <addaction name="actionColor_nodes"/>
+    <addaction name="actionClear_nodes_color"/>
     <addaction name="separator"/>
     <addaction name="actionSearch_terminal_nodes"/>
    </widget>
@@ -215,6 +216,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionClear_nodes_color">
+   <property name="text">
+    <string>Clear nodes color</string>
    </property>
   </action>
  </widget>

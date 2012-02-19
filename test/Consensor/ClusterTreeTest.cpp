@@ -383,7 +383,7 @@ TEST_F(ClusterTreeTest, ToTreeTest)
 
     cluster1.intersectWith(cluster2);
 
-    ITree<PropNode> * tree = cluster1.toTree();
+    ITree<PropNode>* tree = cluster1.toTree();
     PropNode* rootTest = tree->getRoot();
     ListIterator<PropNode, Node> it = rootTest->getChildrenIterator<PropNode>();
     ASSERT_STREQ("", rootTest->getName().c_str());
@@ -507,7 +507,7 @@ TEST_F(ClusterTreeTest, ToTreeDiferentBranchLengthTest)
 
     cluster1.intersectWith(cluster2);
 
-    ITree<PropNode> * tree = cluster1.toTree();
+    ITree<PropNode>* tree = cluster1.toTree();
     PropNode* rootTest = tree->getRoot();
     ListIterator<PropNode, Node> it = rootTest->getChildrenIterator<PropNode>();
     ASSERT_STREQ("", rootTest->getName().c_str());

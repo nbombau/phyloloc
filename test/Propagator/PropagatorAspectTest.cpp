@@ -79,23 +79,23 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenUnweightedTest)
     c3->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
     c4->propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
     root.propagateFromChildren(10, dispersalVector, 0, 0, locationManager);
-    
+
     ASSERT_NEAR(root.probabilities[0], 0.5, epsilon);
     ASSERT_NEAR(root.probabilities[1], 0.25, epsilon);
     ASSERT_NEAR(root.probabilities[2], 0.25, epsilon);
-    
+
     c1->propagateFromParent(10, dispersalVector, 0, 0);;
 
     ASSERT_NEAR(c1->probabilities[0], 0.75, epsilon);
     ASSERT_NEAR(c1->probabilities[1], 0.125, epsilon);
     ASSERT_NEAR(c1->probabilities[2], 0.125, epsilon);
-    
+
     c2->propagateFromParent(10, dispersalVector, 0, 0);;
 
     ASSERT_NEAR(c2->probabilities[0], 0.75, epsilon);
     ASSERT_NEAR(c2->probabilities[1], 0.125, epsilon);
     ASSERT_NEAR(c2->probabilities[2], 0.125, epsilon);
-    
+
     c3->propagateFromParent(10, dispersalVector, 0, 0);;
 
     ASSERT_NEAR(c3->probabilities[0], 0.25, epsilon);
@@ -162,7 +162,7 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     c3->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
     c4->propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
     root.propagateFromChildren(10, dispersalVector, 0.4, 0.4, locationManager);
-    
+
     ASSERT_NEAR(root.probabilities[0], 0.541936, epsilon);
     ASSERT_NEAR(root.probabilities[1], 0.235484, epsilon);
     ASSERT_NEAR(root.probabilities[2], 0.22258, epsilon);
@@ -172,25 +172,25 @@ TEST_F(PropagatorAspectTest, propagateFromChildrenWeightedTest)
     ASSERT_NEAR(c1->probabilities[0], 0.781372, epsilon);
     ASSERT_NEAR(c1->probabilities[1], 0.112393, epsilon);
     ASSERT_NEAR(c1->probabilities[2], 0.106235, epsilon);
-    
+
     c2->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-  
+
     ASSERT_NEAR(c2->probabilities[0], 0.781887, epsilon);
     ASSERT_NEAR(c2->probabilities[1], 0.112128, epsilon);
     ASSERT_NEAR(c2->probabilities[2], 0.105984, epsilon);
-    
+
     c3->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-    
+
     ASSERT_NEAR(c3->probabilities[0], 0.28425, epsilon);
     ASSERT_NEAR(c3->probabilities[1], 0.606486, epsilon);
     ASSERT_NEAR(c3->probabilities[2], 0.109262, epsilon);
-    
+
     c4->propagateFromParent(10, dispersalVector, 0.4, 0.4);
-    
+
     ASSERT_NEAR(c4->probabilities[0], 0.285007, epsilon);
     ASSERT_NEAR(c4->probabilities[1], 0.115475, epsilon);
     ASSERT_NEAR(c4->probabilities[2], 0.599520, epsilon);
-    
+
 }
 
 

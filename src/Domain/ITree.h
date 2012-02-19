@@ -31,7 +31,7 @@ namespace Domain
 {
 
 typedef unsigned int TreeId;
-    
+
 /**
 * Class: ITree
 * ----------------------
@@ -70,7 +70,7 @@ public:
     {
         return &root;
     }
-    
+
     /*
     * Method: getId
     * -------------

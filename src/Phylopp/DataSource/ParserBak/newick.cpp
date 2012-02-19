@@ -195,7 +195,7 @@ struct newick_grammar : public boost::spirit::grammar<newick_grammar>
 
         boost::spirit::rule<scanner_t> leaf_r, inner_node_r, edge_r;
         boost::spirit::rule<scanner_t> tree_start_r, tree_end_r;
-        const boost::spirit::rule<scanner_t> &
+        const boost::spirit::rule<scanner_t>&
         start() const
         {
             return tree_start_r;
