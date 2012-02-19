@@ -105,11 +105,11 @@ public:
     }
 
     static void propagate(Domain::ITree<T>* tree,
-                        unsigned int passesCount,
-                        double geographicFactorWeight,
-                        double branchLengthFactorWeight,
-                        Locations::LocationManager& locationManager
-                        )
+                          unsigned int passesCount,
+                          double geographicFactorWeight,
+                          double branchLengthFactorWeight,
+                          Locations::LocationManager& locationManager
+                         )
     {
         Observer o;
         propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, o);
@@ -141,12 +141,12 @@ public:
                 branchLengthFactorWeight,
                 observer);
 
-        observer.onPropagationStart(tree->getId());        
-        
+        observer.onPropagationStart(tree->getId());
+
         for (unsigned int i = 0; i < passesCount; i++)
         {
             observer.onIterationStart(i);
-            
+
             if (isUpPass(i))
             {
                 Traverser<T, PropagateFromChildrenAction<T, Observer>, AlwaysTruePredicate<T> >
@@ -159,13 +159,13 @@ public:
             }
         }
     }
-    
+
     static void propagate(Domain::ITree<T>* tree,
                           unsigned int passesCount,
                           Weight geographicFactorWeight,
                           Weight branchLengthFactorWeight,
                           Locations::LocationManager& locationManager
-                          )
+                         )
     {
         Observer o;
         propagate(tree, passesCount, geographicFactorWeight, branchLengthFactorWeight, locationManager, o);

@@ -189,7 +189,7 @@ void PropagateDialog::selectFile()
     // this is to store the files without extension .csv
     // with .csv extension
     dialog.setDefaultSuffix("csv");
-    
+
     if (dialog.exec())
     {
         QStringList list = dialog.selectedFiles();

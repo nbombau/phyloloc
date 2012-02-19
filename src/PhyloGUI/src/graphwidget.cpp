@@ -45,6 +45,16 @@ private:
     QColor color;
 };
 
+class ClearColorAction
+{
+public:
+    VisitAction visitNode(GuiNode* n)
+    {
+        n->clearColor();
+        n->update();
+        return ContinueTraversing;
+    }
+};
 
 class SelectAction
 {
@@ -362,7 +372,16 @@ void GraphWidget::selectNodeAncestors(ITree<GuiNode>* tree)
     GuiNode* const startNode = tree->getRoot();
 
     t.traverseDescendants(startNode, a);
+}
 
+void GraphWidget::clearNodeColoring(ITree<GuiNode>* tree)
+{
+    Traverser<GuiNode, ClearColorAction, AlwaysTruePredicate> t;
+    ClearColorAction a;
+
+    GuiNode* const startNode = tree->getRoot();
+
+    t.traverseDescendants(startNode, a);
 }
 
 QSize GraphWidget::sizeHint() const

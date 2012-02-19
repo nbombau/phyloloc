@@ -64,6 +64,7 @@ public slots:
     void drawTree();
 
 private slots:
+    void on_actionClear_nodes_color_triggered();
     void on_actionClose_all_triggered();
     void on_actionActual_size_triggered();
     void on_actionProcess_tree_triggered();

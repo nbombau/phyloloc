@@ -48,12 +48,12 @@ DEFINE_SPECIFIC_EXCEPTION_TEXT(EmptyTreeCollectionException,
 * duplicate nodename. In that case, consensus is not possible.
 */
 DEFINE_SPECIFIC_EXCEPTION_TEXT(DuplicateNameException,
-                                StrictConsensorExceptionHierarchy,
-                                "Can't generate consensus when trees have duplicate node names");
-                                
+                               StrictConsensorExceptionHierarchy,
+                               "Can't generate consensus when trees have duplicate node names");
+
 namespace Consensus
 {
-    
+
 template <class T>
 struct IsLeafPredicate
 {
@@ -66,36 +66,36 @@ struct IsLeafPredicate
 template <class Node>
 class DuplicateNameAction
 {
-    public:
-        
-        DuplicateNameAction() : hasDuplicateNames(false) {}
-        
-        VisitAction visitNode(Node* n)
+public:
+
+    DuplicateNameAction() : hasDuplicateNames(false) {}
+
+    VisitAction visitNode(Node* n)
+    {
+        VisitAction ret = ContinueTraversing;
+        if (mili::contains(nodeNames, n->getName()))
         {
-            VisitAction ret = ContinueTraversing;
-            if(mili::contains(nodeNames, n->getName()))
-            {
-                ret = StopTraversing;
-                hasDuplicateNames = true;
-            }
-            else 
-                nodeNames.insert(n->getName());
-            
-            return ret;
+            ret = StopTraversing;
+            hasDuplicateNames = true;
         }
-        
-        bool foundDuplicateName() const
-        {
-            return hasDuplicateNames;
-        }
-        
-    private:
-        
-        typedef std::set<Domain::NodeName> NodeNameSet;
-        NodeNameSet nodeNames;
-        bool hasDuplicateNames;
+        else
+            nodeNames.insert(n->getName());
+
+        return ret;
+    }
+
+    bool foundDuplicateName() const
+    {
+        return hasDuplicateNames;
+    }
+
+private:
+
+    typedef std::set<Domain::NodeName> NodeNameSet;
+    NodeNameSet nodeNames;
+    bool hasDuplicateNames;
 };
-    
+
 template <class Node2, class Observer>
 class StrictConsensor
 {
@@ -107,8 +107,8 @@ public:
     {
         unsigned int i = 0;
         observer.onStart(trees);
-        Domain::ListIterator<Domain::ITree<Node2> > it = trees.getIterator();      
-        
+        Domain::ListIterator<Domain::ITree<Node2> > it = trees.getIterator();
+
         validateCollection(trees);
 
         ClusterTree<Node2, Observer> first(trees.elementAt(i), observer, locManager);
@@ -131,27 +131,27 @@ public:
 
         return consensedTree;
     }
-    
+
 private:
-    
+
     static void validateCollection(const Domain::ITreeCollection<Node2>& trees)
-    {       
+    {
         Domain::ListIterator<Domain::ITree<Node2> > treesIter = trees.getIterator();
-        
+
         if (treesIter.count() == 0)
             throw EmptyTreeCollectionException();
-        
-        for(; !treesIter.end(); treesIter.next())
-            validateTree(treesIter.get());   
+
+        for (; !treesIter.end(); treesIter.next())
+            validateTree(treesIter.get());
     }
-    
+
     static void validateTree(Domain::ITree<Node2>* tree)
     {
         DuplicateNameAction<Node2> action;
         Traversal::Traverser<Node2, DuplicateNameAction<Node2>, IsLeafPredicate<Node2> > traverser;
         traverser.traversePostOrder(tree, action);
-        
-        if(action.foundDuplicateName())
+
+        if (action.foundDuplicateName())
             throw DuplicateNameException();
     }
 };

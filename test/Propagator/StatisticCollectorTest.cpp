@@ -69,7 +69,7 @@ TEST_F(StatisticCollectorTest, NodeStatisticTest)
      * Median 0.5
      * std deviation 0.24494
      * */
-    StatisticInfo i = ret[0];  
+    StatisticInfo i = ret[0];
 
     ASSERT_NEAR(i.average, 0.5, epsilon);
     ASSERT_NEAR(i.median, 0.5, epsilon);
@@ -84,7 +84,7 @@ TEST_F(StatisticCollectorTest, NodeStatisticTest)
     ASSERT_NEAR(i.average, 0.2, epsilon);
     ASSERT_NEAR(i.median, 0.25, epsilon);
     ASSERT_NEAR(i.stdDeviation, 0.070710678, epsilon);
-    
+
     /* distribution[0] 0.1 0.5 0.05
      * Avg 0.216666667
      * Median 0.1
@@ -170,7 +170,7 @@ TEST_F(StatisticCollectorTest, TreeStatisticTest)
      * std deviation 0.095742713
      * */
     i = ret[1];
-    
+
     ASSERT_NEAR(i.average, 0.2, epsilon);
     ASSERT_NEAR(i.median, 0.25, epsilon);
     ASSERT_NEAR(i.stdDeviation, 0.070710678, epsilon);

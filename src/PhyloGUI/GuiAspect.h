@@ -170,6 +170,11 @@ public:
         color = c;
     }
 
+    void clearColor()
+    {
+        color = Qt::yellow;
+    }
+
     void addEdgeFrom(Edge* edge)
     {
         edgeListFrom.push_back(edge);
@@ -330,7 +335,10 @@ private:
     {
         QColor color = QColorDialog::getColor();
         if (color.isValid())
+        {
             setColor(color);
+            update();
+        }
     }
 
     void expandCollapseAction()

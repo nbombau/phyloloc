@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Thu Jan 12 17:48:06 2012
-**      by: Qt User Interface Compiler version 4.7.4
+** Created: Sat Feb 18 09:41:01 2012
+**      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -46,6 +46,7 @@ public:
     QAction* actionActual_size;
     QAction* actionClose_all;
     QAction* actionAbout;
+    QAction* actionClear_nodes_color;
     QWidget* centralWidget;
     QHBoxLayout* horizontalLayout;
     QSplitter* splitter;
@@ -96,6 +97,8 @@ public:
         actionClose_all->setObjectName(QString::fromUtf8("actionClose_all"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QString::fromUtf8("actionAbout"));
+        actionClear_nodes_color = new QAction(MainWindow);
+        actionClear_nodes_color->setObjectName(QString::fromUtf8("actionClear_nodes_color"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         horizontalLayout = new QHBoxLayout(centralWidget);
@@ -152,6 +155,7 @@ public:
         menuNode->addAction(actionSelect_Ancestors);
         menuNode->addSeparator();
         menuNode->addAction(actionColor_nodes);
+        menuNode->addAction(actionClear_nodes_color);
         menuNode->addSeparator();
         menuNode->addAction(actionSearch_terminal_nodes);
         menuTools->addAction(actionProcess_tree);
@@ -199,11 +203,12 @@ public:
         actionActual_size->setShortcut(QApplication::translate("MainWindow", "Ctrl+0", 0, QApplication::UnicodeUTF8));
         actionClose_all->setText(QApplication::translate("MainWindow", "Close all...", 0, QApplication::UnicodeUTF8));
         actionAbout->setText(QApplication::translate("MainWindow", "About", 0, QApplication::UnicodeUTF8));
-        menuFile->setTitle(QApplication::translate("MainWindow", "&File", 0, QApplication::UnicodeUTF8));
-        menuNode->setTitle(QApplication::translate("MainWindow", "&Node", 0, QApplication::UnicodeUTF8));
-        menuTools->setTitle(QApplication::translate("MainWindow", "&Tools", 0, QApplication::UnicodeUTF8));
-        menuView->setTitle(QApplication::translate("MainWindow", "&View", 0, QApplication::UnicodeUTF8));
-        menuHelp->setTitle(QApplication::translate("MainWindow", "&Help", 0, QApplication::UnicodeUTF8));
+        actionClear_nodes_color->setText(QApplication::translate("MainWindow", "Clear nodes color", 0, QApplication::UnicodeUTF8));
+        menuFile->setTitle(QApplication::translate("MainWindow", "File", 0, QApplication::UnicodeUTF8));
+        menuNode->setTitle(QApplication::translate("MainWindow", "Node", 0, QApplication::UnicodeUTF8));
+        menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0, QApplication::UnicodeUTF8));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0, QApplication::UnicodeUTF8));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

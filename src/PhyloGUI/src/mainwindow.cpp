@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->actionZoom->setEnabled(false);
     ui->actionZoom_2->setEnabled(false);
     ui->actionActual_size->setEnabled(false);
+    ui->actionClose_all->setEnabled(false);
+    ui->actionClear_nodes_color->setEnabled(false);
     ui->splitter->addWidget(graph);
     this->consensedTreeRow = NO_CONSENSED_TREE;
     QObject::connect(ui->listWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(drawTree()), Qt::QueuedConnection);
@@ -79,6 +81,7 @@ void MainWindow::on_actionOpen_triggered()
             loadTree(filesInfo, fileDialog.isMissingDataCheckBoxChecked(), locationManager);
 
             ui->actionSave_As->setEnabled(true);
+            ui->actionClose_all->setEnabled(true);
         }
         //else not needed: user closed or canceled the dialog
     }
@@ -189,6 +192,11 @@ void MainWindow::on_actionSelect_Ancestors_triggered()
     graph->selectNodeAncestors(actualTree);
 }
 
+void MainWindow::on_actionClear_nodes_color_triggered()
+{
+    graph->clearNodeColoring(actualTree);
+}
+
 void MainWindow::on_actionSearch_terminal_nodes_triggered()
 {
     bool ok;
@@ -199,7 +207,13 @@ void MainWindow::on_actionSearch_terminal_nodes_triggered()
     {
         const std::string searchString = text.toStdString();
         SearchNode<GuiNode> sn;
-        sn.setRoot(actualTree->getRoot());
+
+        const int row = ui->listWidget->currentRow();
+        if (row == consensedTreeRow)
+            sn.setRoot(consensedTree->getRoot());
+        else
+            sn.setRoot(actualTree->getRoot());
+
         sn.search(searchString, locationManager);
     }
     //else not needed
@@ -285,8 +299,8 @@ void MainWindow::on_actionProcess_tree_triggered()
             catch (const DuplicateNameException& ex)
             {
                 QMessageBox msg(QMessageBox::Information, "Propagation finished"
-                , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail.\n\nNo consensus tree is available because the input trees' terminal node names have duplicates"
-                , QMessageBox::NoButton, this);
+                                , "The propagation has ended.\n\nPlausibility vector is now available in the node's detail.\n\nNo consensus tree is available because the input trees' terminal node names have duplicates"
+                                , QMessageBox::NoButton, this);
                 msg.exec();
                 consensedTreeRow = NO_CONSENSED_TREE;
             }
@@ -305,9 +319,13 @@ void MainWindow::drawTree()
     ui->actionZoom->setEnabled(true);
     ui->actionZoom_2->setEnabled(true);
     ui->actionActual_size->setEnabled(true);
+    ui->actionClear_nodes_color->setEnabled(true);
     const int row = ui->listWidget->currentRow();
     if (row == consensedTreeRow)
+    {
+        actualTree = consensedTree;
         graph->draw(consensedTree);
+    }
     else
     {
         actualTree = trees.elementAt(row);
@@ -359,5 +377,7 @@ void MainWindow::on_actionClose_all_triggered()
         ui->actionZoom_2->setEnabled(false);
         ui->actionActual_size->setEnabled(false);
         ui->actionSave_As->setEnabled(false);
+        ui->actionClose_all->setEnabled(false);
+        ui->actionClear_nodes_color->setEnabled(false);
     }
 }

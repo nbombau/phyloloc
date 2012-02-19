@@ -97,7 +97,7 @@ public:
     PropagateFromParentAction(Domain::BranchLength blSum,
                               const Locations::DistanceVector& dispersal,
                               Weight geographic,
-                              Weight branch, 
+                              Weight branch,
                               Observer& obs) :
         branchLengthSum(blSum),
         geographicFactorWeight(geographic),
@@ -105,7 +105,7 @@ public:
         dispersalVector(dispersal),
         observer(obs)
     {}
-    
+
     VisitAction visitNode(T* n)
     {
         n->propagateFromParent(branchLengthSum, dispersalVector, geographicFactorWeight, branchLenghtFactorWeight);

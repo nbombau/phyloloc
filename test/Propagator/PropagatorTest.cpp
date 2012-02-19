@@ -88,7 +88,7 @@ TEST_F(PropagatorTest, TwoPassPropagatorTest)
     ASSERT_NEAR(root->probabilities[0], 0.541936, epsilon);
     ASSERT_NEAR(root->probabilities[1], 0.235484, epsilon);
     ASSERT_NEAR(root->probabilities[2], 0.222581, epsilon);
-    
+
     ASSERT_NEAR(c1->probabilities[0], 0.781372, epsilon);
     ASSERT_NEAR(c1->probabilities[1], 0.112393, epsilon);
     ASSERT_NEAR(c1->probabilities[2], 0.106235, epsilon);
