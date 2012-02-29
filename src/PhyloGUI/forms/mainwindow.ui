@@ -49,7 +49,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_As"/>
@@ -60,7 +60,7 @@
    </widget>
    <widget class="QMenu" name="menuNode">
     <property name="title">
-     <string>Node</string>
+     <string>&amp;Node</string>
     </property>
     <addaction name="actionSelect_all_nodes"/>
     <addaction name="actionClear_selection"/>
@@ -74,13 +74,13 @@
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>Tools</string>
+     <string>&amp;Tools</string>
     </property>
     <addaction name="actionProcess_tree"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionZoom"/>
     <addaction name="actionZoom_2"/>
@@ -89,7 +89,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>Help</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout"/>
    </widget>

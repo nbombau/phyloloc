@@ -72,7 +72,6 @@ public:
         color(Qt::yellow),
         graphicsName(NULL)
     {
-        setCacheMode(DeviceCoordinateCache);
         setZValue(1000);
     }
 
@@ -372,7 +371,6 @@ protected:
     {
         Q_UNUSED(event);
         QString description = QString::fromAscii("Name: ");
-        //Locations::LocationManager & lm=((class GraphWidget*)(this->scene()->parent()))->getLocationManager();
         Locations::Location location = lm->getLocation(this->getName());
         Domain::NodeName name = this->getName();
         NodeDetailDialog detail(name, location, this->probabilities, lm, this->getStatistics());
