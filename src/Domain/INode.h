@@ -45,7 +45,8 @@ class Node
 {
 public:
     Node() :
-        parent(NULL)
+        parent(NULL),
+        branchLength(0)
     {}
 
     virtual ~Node()

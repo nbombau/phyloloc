@@ -172,8 +172,8 @@ GraphWidget::GraphWidget(Locations::LocationManager& locationManager, QWidget* p
 {
     //Properties
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
-    setTransformationAnchor(AnchorUnderMouse);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
     setParent(parent);
@@ -218,7 +218,6 @@ void GraphWidget::resizeEvent(QResizeEvent* event)
 QPointF GraphWidget::drawTreeAux(QGraphicsScene* scene, GuiNode* node, float depth, unsigned int* leafNumber)
 {
     ListIterator<GuiNode, Domain::Node>  it = node->getChildrenIterator<GuiNode>();
-
     list<QPointF> points;
     QPointF nodeCoord;
     QPointF ret;
@@ -296,11 +295,11 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
 
     //Set Properties
     setCacheMode(CacheBackground);
-    setViewportUpdateMode(BoundingRectViewportUpdate);
-    setRenderHint(QPainter::Antialiasing);
-    setTransformationAnchor(AnchorUnderMouse);
+    setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setDragMode(QGraphicsView::ScrollHandDrag);
     rotate(qreal(-90));
+
 
     //Create scene
     QGraphicsScene* scene;
@@ -317,10 +316,10 @@ void GraphWidget::draw(ITree<GuiNode>* tree)
     scene = new QGraphicsScene(this);
     this->setScene(scene);
     this->tree = tree;
-    drawTree(scene, tree->getRoot());
+    drawTree(this->scene(), tree->getRoot());
 
     //Ensure visibility of the tree
-    fitInView(this->scene()->sceneRect(), Qt::KeepAspectRatio);
+    this->fitInView(this->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
 void GraphWidget::draw()
