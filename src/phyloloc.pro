@@ -4,6 +4,8 @@
 #
 #-------------------------------------------------
 
+MILI_PATH=C:/mili/
+
 QT       += core gui
 
 TARGET = phyloloc
@@ -54,6 +56,9 @@ HEADERS  += PhyloGUI/inc/mainwindow.h \
 FORMS    += PhyloGUI/forms/mainwindow.ui
 
 QMAKE_CXXFLAGS += -pedantic -Wextra -ansi -Wno-long-long -ggdb3
+win32 {
+    QMAKE_CXXFLAGS += -I$${MILI_PATH} -U__STRICT_ANSI__
+}
 
 OTHER_FILES += \
     Phylopp/Consensor/StatisticConsensorObserverTest
