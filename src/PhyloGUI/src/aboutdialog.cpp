@@ -1,5 +1,5 @@
-#include "PhyloGUI/inc/aboutdialog.h"
 #include <iostream>
+#include "inc/aboutdialog.h"
 
 using namespace PhyloGUI;
 

@@ -21,10 +21,10 @@
 
 #include <QGraphicsItem>
 #include <Qt>
-#include "Phyloloc/Propagator/PropagatorAspect.h"
-#include "Domain/LocationAspect.h"
-#include "Phyloloc/Propagator/StatisticsAspect.h"
-#include "Phylopp/Consensor/ConsensorAspect.h"
+#include "phylopp/Domain/LocationAspect.h"
+#include "phylopp/Consensor/ConsensorAspect.h"
+#include "phyloloc/Propagator/PropagatorAspect.h"
+#include "phyloloc/Propagator/StatisticsAspect.h"
 
 namespace PhyloGUI
 {

@@ -25,7 +25,7 @@
 #include <QCheckBox>
 #include <QPushButton>
 #include <QDialog>
-#include "Phylopp/DataSource/FilesInfo.h"
+#include "phylopp/DataSource/FilesInfo.h"
 
 namespace PhyloGUI
 {

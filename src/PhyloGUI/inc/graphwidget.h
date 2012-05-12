@@ -19,22 +19,22 @@
 #ifndef GRAPHWIDGET_H
 #define GRAPHWIDGET_H
 
-#include <QtGui/QGraphicsView>
 #include <math.h>
-#include <QMouseEvent>
 #include <queue>
 #include <list>
+#include <QtGui/QGraphicsView>
+#include <QMouseEvent>
 #include <QSizePolicy>
 #include <QSize>
 #include <QGraphicsTextItem>
 
-#include "Domain/ITree.h"
-#include "Domain/INode.h"
-#include "Domain/ITreeCollection.h"
-#include "PhyloGUI/GuiAspect.h"
-#include "Phyloloc/Propagator/PropagatorAspect.h"
-#include "Domain/LocationAspect.h"
-#include "Domain/LocationManager.h"
+#include "phylopp/Domain/ITree.h"
+#include "phylopp/Domain/INode.h"
+#include "phylopp/Domain/ITreeCollection.h"
+#include "phylopp/Domain/LocationAspect.h"
+#include "phylopp/Domain/LocationManager.h"
+#include "phyloloc/Propagator/PropagatorAspect.h"
+#include "GuiAspect.h"
 
 namespace PhyloGUI
 {

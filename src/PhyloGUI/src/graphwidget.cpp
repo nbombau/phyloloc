@@ -1,6 +1,6 @@
-#include "PhyloGUI/inc/graphwidget.h"
-#include "Phylopp/Traversal/NodeVisitor.h"
-#include "Phylopp/Traversal/Traverser.h"
+#include "phylopp/Traversal/NodeVisitor.h"
+#include "phylopp/Traversal/Traverser.h"
+#include "inc/graphwidget.h"
 
 using namespace Traversal;
 using namespace Domain;

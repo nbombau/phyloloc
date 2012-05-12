@@ -27,8 +27,8 @@
 #include <QDoubleSpinBox>
 #include <QSpinBox>
 #include <QTableWidget>
-#include "Phyloloc/Propagator/PropagatorAspect.h"
-#include "Phyloloc/Propagator/StatisticsAspect.h"
+#include "phyloloc/Propagator/PropagatorAspect.h"
+#include "phyloloc/Propagator/StatisticsAspect.h"
 
 
 namespace PhyloGUI

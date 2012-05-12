@@ -20,6 +20,7 @@
 #define GUIASPECT_H
 
 #include <string>
+#include <list>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -30,22 +31,21 @@
 #include <QMenu>
 #include <QAction>
 #include <QRectF>
-#include <mili/mili.h>
 #include <QObject>
 #include <QList>
-#include <list>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QContextMenuEvent>
 #include <QMessageBox>
 #include <QGraphicsItem>
+#include <mili/mili.h>
 
-#include "PhyloGUI/inc/edge.h"
-#include "PhyloGUI/inc/nodedetaildialog.h"
-#include "Domain/INode.h"
-#include "Phyloloc/Propagator/PropagatorAspect.h"
-#include "Domain/LocationAspect.h"
-#include "Phyloloc/Propagator/StatisticsAspect.h"
-#include "Phylopp/Consensor/ConsensorAspect.h"
+#include "phylopp/Domain/INode.h"
+#include "phylopp/Domain/LocationAspect.h"
+#include "phylopp/Consensor/ConsensorAspect.h"
+#include "phyloloc/Propagator/PropagatorAspect.h"
+#include "phyloloc/Propagator/StatisticsAspect.h"
+#include "inc/edge.h"
+#include "inc/nodedetaildialog.h"
 
 namespace PhyloGUI
 {

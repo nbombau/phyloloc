@@ -1,0 +1,10 @@
+Import ('env')
+
+name = 'phyloloc'
+inc = env.Dir('.')
+src = env.Glob('*.cpp')
+deps = ['phylopp','phyloloc', 'gmock','gtest_main', 'gtest']
+CXXFLAGS=['-Wall', '-Wextra', '-Wno-sign-compare']
+
+env.Replace(CXXFLAGS=CXXFLAGS, CFLAGS=CXXFLAGS)
+env.CreateTest(name, inc, src, deps)

@@ -3,19 +3,18 @@
 #include <QMessageBox>
 #include <QInputDialog>
 
-#include "PhyloGUI/inc/mainwindow.h"
-#include "PhyloGUI/ui_mainwindow.h"
-#include "PhyloGUI/inc/graphwidget.h"
-#include "PhyloGUI/inc/filedialog.h"
-#include "PhyloGUI/inc/aboutdialog.h"
-#include "PhyloGUI/inc/propagatedialog.h"
-#include "Phylopp/Searching/SearchNode.h"
-#include "PhyloGUI/inc/nodedetaildialog.h"
-#include "Phylopp/Consensor/StrictConsensor.h"
-#include "Phyloloc/Propagator/StatisticCollectorObserver.h"
-#include "Phyloloc/Propagator/DeviationPropagatorObserver.h"
-#include "Phyloloc/Propagator/DeviationsExporter.h"
-
+#include "phylopp/Searching/SearchNode.h"
+#include "phylopp/Consensor/StrictConsensor.h"
+#include "phyloloc/Propagator/StatisticCollectorObserver.h"
+#include "phyloloc/Propagator/DeviationPropagatorObserver.h"
+#include "phyloloc/Propagator/DeviationsExporter.h"
+#include "inc/nodedetaildialog.h"
+#include "inc/mainwindow.h"
+#include "ui_mainwindow.h"
+#include "inc/graphwidget.h"
+#include "inc/filedialog.h"
+#include "inc/aboutdialog.h"
+#include "inc/propagatedialog.h"
 
 using namespace DataSource;
 using namespace Propagation;
