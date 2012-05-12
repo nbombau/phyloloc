@@ -1,0 +1,9 @@
+Import ('env')
+
+name = 'phyloloc'
+inc = env.Dir('.')
+ext_inc = env.Dir('phyloloc')
+src = env.Glob('src/*.cpp')
+deps = ['mili', 'phylopp']
+
+env.CreateSharedLibrary(name, inc, ext_inc, src, deps)

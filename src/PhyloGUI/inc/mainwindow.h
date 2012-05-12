@@ -26,12 +26,12 @@
 #include <QListWidgetItem>
 #include <QList>
 
-#include "PhyloGUI/inc/graphwidget.h"
-#include "Domain/ITreeCollection.h"
-#include "Phylopp/DataSource/FileDataSource.h"
-#include "Phylopp/DataSource/FilesInfo.h"
-#include "Phyloloc/Propagator/Propagator.h"
-#include "Domain/ITree.h"
+#include "phylopp/Domain/ITree.h"
+#include "phylopp/Domain/ITreeCollection.h"
+#include "phylopp/DataSource/FileDataSource.h"
+#include "phylopp/DataSource/FilesInfo.h"
+#include "phyloloc/Propagator/Propagator.h"
+#include "inc/graphwidget.h"
 
 namespace Ui
 {

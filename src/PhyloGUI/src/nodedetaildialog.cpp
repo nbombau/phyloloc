@@ -3,7 +3,7 @@
 #include <QIntValidator>
 #include <QDoubleValidator>
 #include <limits>
-#include "PhyloGUI/inc/nodedetaildialog.h"
+#include "inc/nodedetaildialog.h"
 
 using namespace PhyloGUI;
 using namespace std;

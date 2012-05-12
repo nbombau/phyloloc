@@ -7,6 +7,9 @@
 
 namespace
 {
+
+using mili::Randomizer;
+
 void produce_random_tree_rec(std::vector<int>::const_iterator beg,
                              std::vector<int>::const_iterator end,
                              std::ostream& os)
@@ -35,7 +38,7 @@ void produce_random_tree_rec(std::vector<int>::const_iterator beg,
 void produce_random_tree(size_t size, std::ostream& os)
 {
     std::vector<int> labels(size);
-    for (int i = 0; i < size; ++i)
+    for (size_t i = 0; i < size; ++i)
         labels[i] = i;
     std::random_shuffle(labels.begin(), labels.end());
 
@@ -44,8 +47,7 @@ void produce_random_tree(size_t size, std::ostream& os)
 }
 }
 
-int
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     unsigned int size;
     if (argc < 2)
@@ -55,7 +57,7 @@ main(int argc, char* argv[])
     }
     else
     {
-        from_string(argv[1], size);
+        mili::from_string(argv[1], size);
     }
 
     std::ofstream os("tmp.nwk");

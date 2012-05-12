@@ -1,0 +1,9 @@
+Import ('env')
+
+name = 'phyloloc-gui'
+inc = env.Dir('.')
+src = env.Glob('src/*.cpp')
+
+deps = ['phylopp', 'phyloloc', 'QtCore', 'QtGui']
+
+env.CreateProgram(name, inc, src, deps)

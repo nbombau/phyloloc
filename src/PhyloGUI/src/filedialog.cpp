@@ -1,6 +1,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
-#include "PhyloGUI/inc/filedialog.h"
+#include "inc/filedialog.h"
 
 static QString lastDialogDir;
 

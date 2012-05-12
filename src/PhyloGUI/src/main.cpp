@@ -1,6 +1,5 @@
 #include <QtGui/QApplication>
-#include "PhyloGUI/inc/mainwindow.h"
-
+#include "inc/mainwindow.h"
 
 int main(int argc, char* argv[])
 {

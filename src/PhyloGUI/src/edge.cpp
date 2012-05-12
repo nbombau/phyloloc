@@ -1,7 +1,7 @@
 #include <QPainter>
 
-#include "PhyloGUI/GuiAspect.h"
-#include "PhyloGUI/inc/edge.h"
+#include "inc/edge.h"
+#include "GuiAspect.h"
 
 using namespace PhyloGUI;
 

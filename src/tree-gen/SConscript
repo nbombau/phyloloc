@@ -1,0 +1,8 @@
+Import ('env')
+
+name = 'phyloloc-tree-gen'
+inc = env.Dir('.')
+src = env.Glob('*.cpp')
+deps = ['mili']
+
+env.CreateProgram(name, inc, src, deps)
