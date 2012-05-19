@@ -39,7 +39,7 @@ public:
         of.open(fileName.c_str());
     }
 
-    void write(Domain::TreeId id, const NodeName& nodeName, unsigned int iteration,
+    void write(Domain::TreeId id, const Domain::NodeName& nodeName, unsigned int iteration,
                ProbabilitiesConstIterator begin, ProbabilitiesConstIterator end)
     {
         std::vector<float> v;
