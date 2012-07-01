@@ -25,35 +25,10 @@
 #include "phylopp/Traversal/Traverser.h"
 #include "phyloloc/Propagator/PropagatorAspect.h"
 #include "phyloloc/Propagator/Propagator.h"
+#include "phyloloc/Propagator/TraversalPredicates.h"
 
 namespace Propagation
 {
-template <class T>
-struct IsNotRootPredicate
-{
-    bool operator()(T* node) const
-    {
-        return !node->isRoot();
-    }
-};
-
-template <class T>
-struct IsNotLeafPredicate
-{
-    bool operator()(T* node) const
-    {
-        return !node->isLeaf();
-    }
-};
-
-template <class T>
-struct AlwaysTruePredicate
-{
-    bool operator()(T* /*node*/) const
-    {
-        return true;
-    }
-};
 
 template <class T, class Observer>
 class PropagateFromChildrenAction
