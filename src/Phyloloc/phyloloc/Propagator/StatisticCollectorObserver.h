@@ -27,6 +27,7 @@
 #include "phyloloc/Propagator/PropagatorAspect.h"
 #include "phyloloc/Propagator/StatisticCollector.h"
 #include "phyloloc/Propagator/StatisticLoadAction.h"
+#include "phyloloc/Propagator/TraversalPredicates.h"
 
 namespace Propagation
 {

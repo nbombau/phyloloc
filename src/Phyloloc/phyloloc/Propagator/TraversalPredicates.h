@@ -22,6 +22,7 @@
 
 namespace Propagation
 {
+
 template <class T>
 struct IsNotRootPredicate
 {
