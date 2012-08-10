@@ -32,7 +32,6 @@ namespace PhyloGUI
 
 class FileDialog : public QDialog
 {
-    Q_OBJECT
 
 public:
     FileDialog(QWidget* parent = NULL);
