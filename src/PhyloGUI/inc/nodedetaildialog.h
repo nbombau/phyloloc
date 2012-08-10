@@ -36,7 +36,6 @@ namespace PhyloGUI
 
 class NodeDetailDialog : public QDialog
 {
-    Q_OBJECT
 
 public:
     /**

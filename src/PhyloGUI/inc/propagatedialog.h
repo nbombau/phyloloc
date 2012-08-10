@@ -35,7 +35,6 @@ namespace PhyloGUI
 
 class PropagateDialog : public QDialog
 {
-    Q_OBJECT
 
 public:
     /**
